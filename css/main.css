@@ -1,0 +1,90 @@
+/* vim: set et sw=4 ts=4 sts=4 fdm=marker ff=unix fenc=utf8: */ 
+
+/* header */
+.main-head {
+    padding-bottom: 3px;
+    border-bottom: 1px solid #C6C6C6;
+}
+
+/* main-control */
+#main-control {
+    margin-top: 10px;
+}
+
+#select-btn {
+    margin-right: 30px;
+}
+.select-box {
+    display: inline-block;
+    border: 1px solid #C6C6C6;
+    border: 1px solid rgba(155, 155, 155, .57);
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+}
+
+#do-all-btn {
+    margin-left: 10px;
+}
+
+#info-btn {
+    margin-left: 10px;
+}
+
+#other-grp {
+}
+
+/* active-tasks */
+#active-tasks {
+    margin-top: 40px;
+}
+.section-header {
+    font-size: 16px;
+}
+.section-header i {
+    margin-right: 5px;
+    vertical-align: baseline;
+}
+
+/* tasks */
+.tasks-table {
+    margin-top: 10px;
+}
+tr.task.selected {
+    background-color: #F9F9F9;
+}
+.task td {
+    border-bottom: 1px solid #DDD;
+}
+
+.task .right-area {
+    width: 370px;
+}
+
+.task .task-name .select-box {
+    vertical-align: -15%;
+}
+.task .task-name .select-box:hover {
+    border-color: #666;
+}
+.task .task-name span {
+    margin-left: 3px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.task .task-info span {
+    margin-right: 8px;
+}
+
+.task .task-info,
+.task .progress-info {
+    margin-top: 4px;
+}
+.task .progress {
+    margin: 1px 0;
+}
+
+.task .upload-speed {
+    margin-left: 8px;
+}

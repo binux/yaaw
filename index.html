@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset=utf-8 />
+    <title>Yet Another Aria2 Web Frontend</title>
+    <meta name="author" content="Binux" />
+    
+    <link href="css/main.css" rel="stylesheet" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-responsive.min.css" rel="stylesheet" />
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <header class="main-head page-header">
+        <h1>Yet Another Aria2 Web Frontend</h1>
+      </header>
+
+      <div class="clearfix" id="main-control">
+        <div class="btn-group pull-left" id="select-btn">
+          <button class="btn" rel="tooltip" title="Select All">
+            <i class="select-box icon-minus"></i>
+          </button>
+          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Select Active</a></li>
+            <li><a href="#">Select Waiting</a></li>
+            <li><a href="#">Select Paused</a></li>
+            <li><a href="#">Select Stoped</a></li>
+          </ul>
+        </div>
+
+        <div class="pull-left" id="not-selected-grp" style="display: none;">
+          <div class="pull-left">
+            <button class="btn" id="add-task-btn" rel="tooltip" title="Add Task">
+              <i class="icon-plus"></i> Add
+            </button>
+          </div>
+          <div class="btn-group pull-left" id="do-all-btn">
+            <button class="btn" id="unpause-all" rel="tooltip" title="Start All">
+              <i class="icon-forward"></i>
+            </button>
+            <button class="btn" id="pause-all" rel="tooltip" title="Pause All">
+              <i class="icon-stop"></i>
+            </button>
+            <button class="btn" id="pure-all" rel="tooltip" title="Remove Finished Tasks">
+              <i class="icon-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="pull-left" id="selected-grp">
+          <div class="btn-group pull-left">
+            <button class="btn" rel="tooltip" title="Start">
+              <i class="icon-play"></i>
+            </button>
+            <button class="btn" rel="tooltip" title="Pause">
+              <i class="icon-pause"></i>
+            </button>
+            <button class="btn" rel="tooltip" title="Remove">
+              <i class="icon-remove"></i>
+            </button>
+          </div>
+          <button class="btn pull-left" id="info-btn" rel="tooltip" title="Task Info">
+            <i class="icon-info-sign"></i> Info
+          </button>
+        </div>
+
+        <div class="pull-right" id="other-grp">
+          <div class="btn-group">
+            <button class="btn" id="refresh-btn" rel="tooltip" title="Refresh">
+              <i class="icon-refresh"></i> Refresh
+            </button>
+            <button class="btn" id="setting-btn" rel="tooltip" title="Settings">
+              <i class="icon-wrench"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <section id="active-tasks">
+      <div class="section-header">
+        <i class="icon-chevron-down"></i><b>Active Tasks</b>
+      </div>
+      <table class="tasks-table table" id="active-tasks-table"> </table>
+      </section>
+
+      <section id="other-tasks">
+      </section>
+    </div>
+
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.jsonrpc.js"></script>
+    <script src="js/mustache.js"></script>
+    
+    <script id="task-tpl" type="text/mustache-template">
+      {{#tasks}}
+      <tr class="task" id="task-gid-{{gid}}">
+        <td class="left-area">
+          <div class="task-name">
+            <i class="select-box"></i>
+            <span>{{name}}</span>
+          </div>
+          <div class="task-info">
+            <span class="task-status" rel="tooltip" title="active"><i class="icon-download-alt"></i></span>
+            <span>{{completed_length}} / {{total_length}}</span>
+            {{#upload_length}}<span>(uploaded {{upload_length}}){{/upload_length}}
+          </div>
+        </td>
+        <td class="right-area">
+          <div class="progress progress-striped active">
+            <div class="bar" style="width: {{process}}%">{{process}}%</div>
+          </div>
+          <div class="progress-info">
+            <span class="download-speed"><i class="icon-download"></i> {{download_speed}} KB/s</span>
+            {{#upload_speed}}<span class="upload-speed"><i class="icon-upload"></i> {{upload_speed}} KB/s</span>{{/upload_speed}}
+          </div>
+        </td>
+      </tr>
+      {{/tasks}}
+    </script>
+    <script>
+      // test info for tasks
+      var test_data = {
+        "gid": "1",
+        "name": "123.zip",
+        "status": "active",
+        "total_length": "123MB",
+        "completed_length": "23MB",
+        "upload_length": "45MB",
+        "process": 21,
+        "download_speed": 123,
+        "upload_speed": 45,
+      }
+      $("#active-tasks-table").append($("#task-tpl").mustache({
+        "tasks": [test_data, test_data, test_data, test_data, test_data, test_data, test_data]}));
+      $("[rel=tooltip]").tooltip({"placement": "bottom"});
+      $("#refresh-btn").click(function () {
+        $("#not-selected-grp").toggle();
+        $("#selected-grp").toggle();
+      });
+      $(".task .select-box").click(function () {
+        $(this).toggleClass("icon-ok");
+        $(this).parents("tr").toggleClass("selected");
+      });
+    </script>
+  </body>
+</html>
+<!-- vim: set et sw=2 ts=2 sts=2 ff=unix fenc=utf8: -->
