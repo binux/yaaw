@@ -34,11 +34,11 @@
           </ul>
         </div>
 
-        <div class="pull-left" id="not-selected-grp" style="display: none;">
+        <div class="pull-left hide" id="not-selected-grp">
           <div class="pull-left">
-            <button class="btn" id="add-task-btn" rel="tooltip" title="Add Task">
+            <a class="btn" id="add-task-btn" data-toggle="modal" href="#add-task-modal" rel="tooltip" title="Add Task">
               <i class="icon-plus"></i> Add
-            </button>
+            </a>
           </div>
           <div class="btn-group pull-left" id="do-all-btn">
             <button class="btn" id="unpause-all" rel="tooltip" title="Start All">
@@ -97,6 +97,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.jsonrpc.js"></script>
     <script src="js/mustache.js"></script>
+    <script src="js/aria2.js"></script>
     
     <script id="task-tpl" type="text/mustache-template">
       {{#tasks}}
@@ -124,7 +125,11 @@
       </tr>
       {{/tasks}}
     </script>
+
     <script>
+      // init
+      ARIA2.init("http://127.0.0.1:6800/jsonrpc");
+
       // test info for tasks
       var test_data = {
         "gid": "1",
@@ -136,9 +141,10 @@
         "process": 21,
         "download_speed": 123,
         "upload_speed": 45,
-      }
+      };
       $("#active-tasks-table").append($("#task-tpl").mustache({
         "tasks": [test_data, test_data, test_data, test_data, test_data, test_data, test_data]}));
+
       $("[rel=tooltip]").tooltip({"placement": "bottom"});
       $("#refresh-btn").click(function () {
         $("#not-selected-grp").toggle();
@@ -148,7 +154,30 @@
         $(this).toggleClass("icon-ok");
         $(this).parents("tr").toggleClass("selected");
       });
+
+      function add_task_uri_submit(_this) {
+        ARIA2.add_task(_this.uri.value);
+        $("#add-task-submit").button("Adding...");
+      }
     </script>
+
+    <section class="modal hide fade" id="add-task-modal">
+    <div class="modal-header">
+      <button class="close" data-dismiss="modal">×</button>
+      <h3>Add Task</h3>
+    </div>
+    <div class="modal-body">
+      <form id="add-task-uri" onsubmit="add_task_uri_submit(this);return false;">
+        <div class="input-append">
+          <input type="text" name="uri" id="uri-input" class="span5" placeholder="HTTP, FTP or Magnet" /><button type="button span2" class="btn">Upload Torrent</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="javascript:$('#add-task-uri').submit()" id="add-task-submit" class="btn btn-primary">Add</a>
+      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    </div>
+    </section>
   </body>
 </html>
 <!-- vim: set et sw=2 ts=2 sts=2 ff=unix fenc=utf8: -->

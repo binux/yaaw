@@ -169,7 +169,7 @@
           type: 'POST',
           async: false !== options.async,
           dataType: 'json',
-          contentType: 'application/json',
+          //contentType: 'application/json',
           url: this._requestUrl(options.url),
           data: data,
           cache: false,
@@ -205,7 +205,7 @@
       // Handles calling of error callback function
       _requestError: function(json, error) {
         if (typeof(error) !== 'undefined' && typeof(error) === 'function') {
-            error(this._response());
+            error(this._response(json.responseText));
         }
       },
 

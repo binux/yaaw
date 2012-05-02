@@ -88,3 +88,8 @@ tr.task.selected {
 .task .upload-speed {
     margin-left: 8px;
 }
+
+/* add task modal */
+#add-task-uri {
+    padding: 10px 19px;
+}
