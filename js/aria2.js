@@ -1,5 +1,7 @@
 if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     var jsonrpc_interface, interval_id;
+    var active_tasks_snapshot="", select_lock=false, need_refresh=false;
+    var auto_refresh=false;
 
     function get_error(result) {
         if (typeof result == "string")
@@ -34,6 +36,10 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         $("#main-alert").show();
         if (timeout)
             window.setTimeout(function() { $("#main-alert").fadeOut(); }, timeout);
+    }
+
+    function bind_event(dom) {
+        dom.find("[rel=tooltip]").tooltip({"placement": "bottom"});
     }
 
     return {
@@ -80,12 +86,48 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                 function(result) {
                     console.debug(result);
 
+                    if (select_lock) return;
                     if (!result.result) {
                         main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
                     }
 
+                    var snapshot = new Array();
+                    $.each(result.result, function(i, e) {
+                        snapshot.push(e.gid);
+                    });
+                    if (snapshot.sort().join(",") != active_tasks_snapshot) {
+                        active_tasks_snapshot = snapshot.sort().join(",");
+                        need_refresh = true;
+                        if (auto_refresh && !select_lock)
+                            ARIA2.refresh();
+                    }
+                
                     result = ARIA2.status_fix(result.result);
-                    $("#active-tasks-table").empty().append($("#active-task-tpl").mustache({"tasks": result})).find("[rel=tooltip]").tooltip({"placement": "bottom"});
+                    $("#active-tasks-table").empty().append($("#active-task-tpl").mustache({"tasks": result}));
+                    bind_event($("#active-tasks-table"))
+                }
+            );
+        },
+
+        check_active_list: function() {
+            ARIA2.request("tellActive", [["gid"]],
+                function(result) {
+                    console.debug(result);
+
+                    if (!result.result) {
+                        main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+                    }
+
+                    var snapshot = new Array();
+                    $.each(result.result, function(i, e) {
+                        snapshot.push(e.gid);
+                    });
+                    if (snapshot.sort().join(",") != active_tasks_snapshot) {
+                        active_tasks_snapshot = snapshot.sort().join(",");
+                        need_refresh = true;
+                        if (auto_refresh && !select_lock)
+                            ARIA2.refresh();
+                    }
                 }
             );
         },
@@ -97,12 +139,14 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                 function(result) {
                     console.debug(result);
 
+                    if (select_lock) return;
                     if (!result.result) {
                         main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
                     }
 
                     result = ARIA2.status_fix(result.result);
-                    $("#waiting-tasks-table").empty().append($("#other-task-tpl").mustache({"tasks": result})).find("[rel=tooltip]").tooltip({"placement": "bottom"});
+                    $("#waiting-tasks-table").empty().append($("#other-task-tpl").mustache({"tasks": result}));
+                    bind_event($("#waiting-tasks-table"))
 
                     if ($("#other-tasks .task").length == 0)
                         $("#waiting-tasks-table").append($("#other-task-empty").text())
@@ -117,12 +161,14 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                 function(result) {
                     console.debug(result);
 
+                    if (select_lock) return;
                     if (!result.result) {
                         main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
                     }
 
                     result = ARIA2.status_fix(result.result);
-                    $("#stoped-tasks-table").empty().append($("#other-task-tpl").mustache({"tasks": result})).find("[rel=tooltip]").tooltip({"placement": "bottom"});
+                    $("#stoped-tasks-table").empty().append($("#other-task-tpl").mustache({"tasks": result}));
+                    bind_event($("#stoped-tasks-table"))
 
                     if ($("#waiting-tasks-table .empty-tasks").length > 0 &&
                         $("#stoped-tasks-table .task").length > 0) {
@@ -245,18 +291,41 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         },
 
         refresh: function() {
+            need_refresh = false;
             ARIA2.tell_active();
             ARIA2.tell_waiting();
             ARIA2.tell_stoped();
         },
 
+        select_lock: function (bool) {
+            select_lock = bool;
+        },
+
         auto_refresh: function(interval) {
-            if (interval == undefined)
-                interval = 5000;
             if (interval_id)
                 window.clearInterval(interval_id);
-            interval_id = window.setInterval(function() { ARIA2.tell_active(); }, interval);
-        }
+            if (interval == undefined) {
+                auto_refresh = false;
+                return ;
+            }
+            interval_id = window.setInterval(function() {
+                if (select_lock) {
+                    if (need_refresh) {
+                        main_alert("", "Task list have changed since last update. Click 'Refresh' button to update task list.");
+                    } else {
+                        ARIA2.check_active_list();
+                    }
+                } else {
+                    if (need_refresh) {
+                        ARIA2.refresh();
+                    } else {
+                        ARIA2.tell_active();
+                    }
+                }
+            }, interval);
+            auto_refresh = true;
+        },
+
 
     }
 })();

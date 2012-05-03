@@ -28,7 +28,7 @@
 
         <div class="btn-group pull-left" id="select-btn">
           <button class="btn" rel="tooltip" title="Select All">
-            <i class="select-box icon-minus"></i>
+            <i class="select-box"></i>
           </button>
           <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
             <span class="caret"></span>
@@ -79,6 +79,7 @@
 
         <div class="pull-right" id="other-grp">
           <div class="btn-group">
+            <!--TODO: refresh all. clear selected items-->
             <a href="javascript:ARIA2.refresh();" class="btn" id="refresh-btn" rel="tooltip" title="Refresh">
               <i class="icon-refresh"></i> Refresh
             </a>
@@ -153,7 +154,7 @@
       </tr>
       {{/tasks}}
       {{^tasks}}
-      <tr class="task">
+      <tr>
         <td class="empty-tasks">
           <strong>No Active Tasks</strong>
         </td>
@@ -186,7 +187,7 @@
 
     <script id="other-task-empty" type="text/mustache-template">
       {{^tasks}}
-      <tr class="task">
+      <tr>
         <td class="empty-tasks">
           <strong>No Tasks</strong>
         </td>
@@ -198,16 +199,31 @@
       // init
       ARIA2.init("http://127.0.0.1:6800/jsonrpc");
       ARIA2.refresh();
-      ARIA2.auto_refresh();
+      ARIA2.auto_refresh(5000);
 
       $("[rel=tooltip]").tooltip({"placement": "bottom"});
       $("#setting-btn").click(function () {
         $("#not-selected-grp").toggle();
         $("#selected-grp").toggle();
       });
-      $(".task .select-box").click(function () {
-        $(this).toggleClass("icon-ok");
+
+      function check_select() {
+        var selected = $(".tasks-table tr.selected");
+        if (selected.length == 0) {
+          ARIA2.select_lock(false);
+          $("#select-btn .select-box").removeClass("icon-minus icon-ok");
+        } else if (selected.length < $(".tasks-table tr.task").length) {
+          ARIA2.select_lock(true);
+          $("#select-btn .select-box").removeClass("icon-ok").addClass("icon-minus");
+        } else {
+          ARIA2.select_lock(true);
+          $("#select-btn .select-box").removeClass("icon-minus").addClass("icon-ok");
+        }
+      }
+      $(".task-name").live("click", function () {
+        $(this).find(".select-box").toggleClass("icon-ok");
         $(this).parents("tr").toggleClass("selected");
+        check_select();
       });
 
       function add_task_uri_submit(_this) {

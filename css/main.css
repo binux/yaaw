@@ -30,6 +30,7 @@
 }
 .select-box {
     display: inline-block;
+    vertical-align: text-top;
     border: 1px solid #C6C6C6;
     border: 1px solid rgba(155, 155, 155, .57);
     width: 14px;
@@ -54,6 +55,7 @@
 }
 td.empty-tasks {
     text-align: center !important;
+    border-bottom: 1px solid #DDD;
 }
 .section-header {
     font-size: 16px;
@@ -94,6 +96,7 @@ tr.task.selected {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    cursor: pointer;
 }
 .task .task-name .select-box {
     vertical-align: -15%;
