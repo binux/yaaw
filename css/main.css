@@ -52,12 +52,26 @@
 #active-tasks {
     margin-top: 40px;
 }
+td.empty-tasks {
+    text-align: center !important;
+}
 .section-header {
     font-size: 16px;
 }
 .section-header i {
     margin-right: 5px;
     vertical-align: baseline;
+}
+
+/* other-tasks */
+#other-tasks {
+    margin-top: 40px;
+}
+#waiting-tasks-table {
+    margin-bottom: 0;
+}
+#stoped-tasks-table {
+    margin-top: -1px;
 }
 
 /* tasks */
@@ -72,9 +86,15 @@ tr.task.selected {
 }
 
 .task .right-area {
-    width: 370px;
+    width: 270px;
 }
 
+.task .task-name {
+    width: 630px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .task .task-name .select-box {
     vertical-align: -15%;
 }
@@ -99,9 +119,23 @@ tr.task.selected {
     margin: 1px 0;
 }
 
+.task .download-speed,
 .task .upload-speed,
 .task .seeders {
-    margin-left: 8px;
+    margin-right: 8px;
+}
+
+#other-tasks .task .task-name {
+    width: 500px;
+}
+#other-tasks .task .right-area {
+    width: 400px;
+}
+#other-tasks .task .task-info {
+    margin: 0;
+}
+#other-tasks .progress {
+    width: 200px;
 }
 
 /* add task modal */

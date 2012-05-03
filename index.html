@@ -21,7 +21,7 @@
       <div class="clearfix" id="main-control">
         <div id="main-alert" class="hide">
           <div id="main-alert-inline" class="alert">
-            <a href="javascript:$('main-alert').hide()" class="close">×</a>
+            <a href="javascript:$('#main-alert').hide()" class="close">×</a>
             <span class="alert-msg">Loading</span>
           </div>
         </div>
@@ -48,15 +48,15 @@
             </a>
           </div>
           <div class="btn-group pull-left" id="do-all-btn">
-            <button class="btn" id="unpause-all" rel="tooltip" title="Start All">
+            <a href="javascript:ARIA2.unpause_all();" class="btn" id="unpause-all" rel="tooltip" title="Start All">
               <i class="icon-forward"></i>
-            </button>
-            <button class="btn" id="pause-all" rel="tooltip" title="Pause All">
+            </a>
+            <a href="javascript:ARIA2.pause_all();" class="btn" id="pause-all" rel="tooltip" title="Pause All">
               <i class="icon-stop"></i>
-            </button>
-            <button class="btn" id="pure-all" rel="tooltip" title="Remove Finished Tasks">
+            </a>
+            <a href="javascript:ARIA2.purge_download_result();" class="btn" id="pure-all" rel="tooltip" title="Remove Finished Tasks">
               <i class="icon-trash"></i>
-            </button>
+            </a>
           </div>
         </div>
 
@@ -79,9 +79,9 @@
 
         <div class="pull-right" id="other-grp">
           <div class="btn-group">
-            <button class="btn" id="refresh-btn" rel="tooltip" title="Refresh">
+            <a href="javascript:ARIA2.refresh();" class="btn" id="refresh-btn" rel="tooltip" title="Refresh">
               <i class="icon-refresh"></i> Refresh
-            </button>
+            </a>
             <button class="btn" id="setting-btn" rel="tooltip" title="Settings">
               <i class="icon-wrench"></i>
             </button>
@@ -93,10 +93,28 @@
       <div class="section-header">
         <i class="icon-chevron-down"></i><b>Active Tasks</b>
       </div>
-      <table class="tasks-table table" id="active-tasks-table"> </table>
+      <table class="tasks-table table" id="active-tasks-table">
+        <tr class="task">
+          <td class="empty-tasks">
+            <strong>No Active Tasks</strong>
+          </td>
+        </tr>
+      </table>
       </section>
 
       <section id="other-tasks">
+      <div class="section-header">
+        <i class="icon-chevron-down"></i><b>Other Tasks</b>
+      </div>
+      <table id="waiting-tasks-table" class="tasks-table table">
+        <tr class="task">
+          <td class="empty-tasks">
+            <strong>No Tasks</strong>
+          </td>
+        </tr>
+      </table>
+      <table id="stoped-tasks-table" class="tasks-table table">
+      </table>
       </section>
     </div>
 
@@ -106,18 +124,19 @@
     <script src="js/mustache.js"></script>
     <script src="js/aria2.js"></script>
     
-    <script id="task-tpl" type="text/mustache-template">
+    <script id="active-task-tpl" type="text/mustache-template">
       {{#tasks}}
       <tr class="task" id="task-gid-{{gid}}">
         <td class="left-area">
           <div class="task-name">
             <i class="select-box"></i>
-            <span>{{title}}</span>
+            <span title="{{title}}">{{title}}</span>
           </div>
           <div class="task-info">
             <span class="task-status" rel="tooltip" title="{{status}}"><i class="{{status_icon}}"></i></span>
             <span>{{completedLength}} / {{totalLength}}</span>
-            {{#uploadLength}}<span>(uploaded {{uploadLength}}){{/uploadLength}}
+            {{#uploadLength}}<span>(uploaded {{uploadLength}})</span>{{/uploadLength}}
+            {{#etc}}<span>ETC: {{etc}}</span>{{/etc}}
           </div>
         </td>
         <td class="right-area">
@@ -127,8 +146,49 @@
           <div class="progress-info">
             {{#downloadSpeed}}<span class="download-speed"><i class="icon-download"></i> {{downloadSpeed}}/s</span>{{/downloadSpeed}}
             {{#uploadSpeed}}<span class="upload-speed"><i class="icon-upload"></i> {{uploadSpeed}}/s</span>{{/uploadSpeed}}
+            {{#connections}}<span class="seeders"><i class="icon-signal" rel="tooltip" title="Connections"></i> {{connections}}</span>{{/connections}}
             {{#numSeeders}}<span class="seeders"><i class="icon-magnet" rel="tooltip" title="Seeders"></i> {{numSeeders}}</span>{{/numSeeders}}
           </div>
+        </td>
+      </tr>
+      {{/tasks}}
+      {{^tasks}}
+      <tr class="task">
+        <td class="empty-tasks">
+          <strong>No Active Tasks</strong>
+        </td>
+      </tr>
+      {{/tasks}}
+    </script>
+    
+    <script id="other-task-tpl" type="text/mustache-template">
+      {{#tasks}}
+      <tr class="task" id="task-gid-{{gid}}">
+        <td class="left-area">
+          <div class="task-name">
+            <i class="select-box"></i>
+            <span title="{{title}}">{{title}}</span>
+          </div>
+        </td>
+        <td class="right-area">
+          <div class="task-info pull-left">
+            <span class="task-status" rel="tooltip" title="{{status}}"><i class="{{status_icon}}"></i></span>
+            <span>{{totalLength}}</span>
+            {{#uploadLength}}<span>(uploaded {{uploadLength}}){{/uploadLength}}
+          </div>
+          <div class="progress progress-striped pull-right">
+            <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
+          </div>
+        </td>
+      </tr>
+      {{/tasks}}
+    </script>
+
+    <script id="other-task-empty" type="text/mustache-template">
+      {{^tasks}}
+      <tr class="task">
+        <td class="empty-tasks">
+          <strong>No Tasks</strong>
         </td>
       </tr>
       {{/tasks}}
@@ -137,26 +197,11 @@
     <script>
       // init
       ARIA2.init("http://127.0.0.1:6800/jsonrpc");
-      ARIA2.tell_active();
-      ARIA2.tell_stoped();
-
-      // test info for tasks
-      var test_data = {
-        "gid": "1",
-        "name": "123.zip",
-        "status": "active",
-        "total_length": "123MB",
-        "completed_length": "23MB",
-        "upload_length": "45MB",
-        "process": 21,
-        "download_speed": 123,
-        "upload_speed": 45,
-      };
-      //$("#active-tasks-table").append($("#task-tpl").mustache({
-      //  "tasks": [test_data, test_data, test_data, test_data, test_data, test_data, test_data]}));
+      ARIA2.refresh();
+      ARIA2.auto_refresh();
 
       $("[rel=tooltip]").tooltip({"placement": "bottom"});
-      $("#refresh-btn").click(function () {
+      $("#setting-btn").click(function () {
         $("#not-selected-grp").toggle();
         $("#selected-grp").toggle();
       });
