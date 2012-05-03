@@ -229,7 +229,7 @@
 
       // Returns a generic RPC 2.0 compatible response object
       _response: function(json) {
-        if (typeof(json) === 'undefined') {
+        if (typeof(json) === 'undefined' || json === "") {
           return {
             error: 'Internal server error',
             version: '2.0'

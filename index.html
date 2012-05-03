@@ -19,6 +19,13 @@
       </header>
 
       <div class="clearfix" id="main-control">
+        <div id="main-alert" class="hide">
+          <div id="main-alert-inline" class="alert">
+            <a href="javascript:$('main-alert').hide()" class="close">×</a>
+            <span class="alert-msg">Loading</span>
+          </div>
+        </div>
+
         <div class="btn-group pull-left" id="select-btn">
           <button class="btn" rel="tooltip" title="Select All">
             <i class="select-box icon-minus"></i>
@@ -34,7 +41,7 @@
           </ul>
         </div>
 
-        <div class="pull-left hide" id="not-selected-grp">
+        <div class="pull-left" id="not-selected-grp">
           <div class="pull-left">
             <a class="btn" id="add-task-btn" data-toggle="modal" href="#add-task-modal" rel="tooltip" title="Add Task">
               <i class="icon-plus"></i> Add
@@ -53,7 +60,7 @@
           </div>
         </div>
 
-        <div class="pull-left" id="selected-grp">
+        <div class="pull-left hide" id="selected-grp">
           <div class="btn-group pull-left">
             <button class="btn" rel="tooltip" title="Start">
               <i class="icon-play"></i>
@@ -105,21 +112,22 @@
         <td class="left-area">
           <div class="task-name">
             <i class="select-box"></i>
-            <span>{{name}}</span>
+            <span>{{title}}</span>
           </div>
           <div class="task-info">
-            <span class="task-status" rel="tooltip" title="active"><i class="icon-download-alt"></i></span>
-            <span>{{completed_length}} / {{total_length}}</span>
-            {{#upload_length}}<span>(uploaded {{upload_length}}){{/upload_length}}
+            <span class="task-status" rel="tooltip" title="{{status}}"><i class="{{status_icon}}"></i></span>
+            <span>{{completedLength}} / {{totalLength}}</span>
+            {{#uploadLength}}<span>(uploaded {{uploadLength}}){{/uploadLength}}
           </div>
         </td>
         <td class="right-area">
           <div class="progress progress-striped active">
-            <div class="bar" style="width: {{process}}%">{{process}}%</div>
+            <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
           </div>
           <div class="progress-info">
-            <span class="download-speed"><i class="icon-download"></i> {{download_speed}} KB/s</span>
-            {{#upload_speed}}<span class="upload-speed"><i class="icon-upload"></i> {{upload_speed}} KB/s</span>{{/upload_speed}}
+            {{#downloadSpeed}}<span class="download-speed"><i class="icon-download"></i> {{downloadSpeed}}/s</span>{{/downloadSpeed}}
+            {{#uploadSpeed}}<span class="upload-speed"><i class="icon-upload"></i> {{uploadSpeed}}/s</span>{{/uploadSpeed}}
+            {{#numSeeders}}<span class="seeders"><i class="icon-magnet" rel="tooltip" title="Seeders"></i> {{numSeeders}}</span>{{/numSeeders}}
           </div>
         </td>
       </tr>
@@ -129,6 +137,8 @@
     <script>
       // init
       ARIA2.init("http://127.0.0.1:6800/jsonrpc");
+      ARIA2.tell_active();
+      ARIA2.tell_stoped();
 
       // test info for tasks
       var test_data = {
@@ -142,8 +152,8 @@
         "download_speed": 123,
         "upload_speed": 45,
       };
-      $("#active-tasks-table").append($("#task-tpl").mustache({
-        "tasks": [test_data, test_data, test_data, test_data, test_data, test_data, test_data]}));
+      //$("#active-tasks-table").append($("#task-tpl").mustache({
+      //  "tasks": [test_data, test_data, test_data, test_data, test_data, test_data, test_data]}));
 
       $("[rel=tooltip]").tooltip({"placement": "bottom"});
       $("#refresh-btn").click(function () {
@@ -167,9 +177,13 @@
       <h3>Add Task</h3>
     </div>
     <div class="modal-body">
+      <div id="add-task-alert" class="alert alert-error hide">
+        <a href="javascript:$('#add-task-alert').hide();" class="close">×</a>
+        <strong>Error:</strong> <span class="alert-msg"></span>
+      </div>
       <form id="add-task-uri" onsubmit="add_task_uri_submit(this);return false;">
         <div class="input-append">
-          <input type="text" name="uri" id="uri-input" class="span5" placeholder="HTTP, FTP or Magnet" /><button type="button span2" class="btn">Upload Torrent</button>
+          <input type="text" name="uri" id="uri-input" placeholder="HTTP, FTP or Magnet" /><button type="button" id="torrent-upload-btn" class="btn">Upload Torrent</button>
         </div>
       </form>
     </div>

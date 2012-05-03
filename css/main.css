@@ -6,6 +6,20 @@
     border-bottom: 1px solid #C6C6C6;
 }
 
+#main-alert {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+#main-alert-inline {
+    display: inline-block;
+    text-align: left;
+    position: relative;
+    top: -10px;
+    z-index: 99;
+}
+
 /* main-control */
 #main-control {
     margin-top: 10px;
@@ -85,11 +99,22 @@ tr.task.selected {
     margin: 1px 0;
 }
 
-.task .upload-speed {
+.task .upload-speed,
+.task .seeders {
     margin-left: 8px;
 }
 
 /* add task modal */
 #add-task-uri {
     padding: 10px 19px;
+    margin: 0 0 10px;
+}
+#uri-input {
+    width: 370px; 
+}
+#torrent-upload-btn {
+}
+#add-task-alert {
+    position: relative;
+    top: 5px;
 }
