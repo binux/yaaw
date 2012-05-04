@@ -3,8 +3,8 @@ var YAAW = (function() {
     var on_gid = null;
     return {
         init: function() {
-            YAAW.contextmenu.init();
-            YAAW.setting.init();
+            this.contextmenu.init();
+            this.setting.init();
 
             $("[rel=tooltip]").tooltip({"placement": "bottom"});
 
@@ -13,7 +13,7 @@ var YAAW = (function() {
                 YAAW.tasks.check_select();
             })
 
-            $("#refresh-btn").click(YAAW.refresh_btn);
+            $("#refresh-btn").click(this.refresh_btn);
             $("#select-all-btn").click(function() {
                 if (selected_tasks) {
                     YAAW.tasks.unSelectAll();
@@ -22,9 +22,9 @@ var YAAW = (function() {
                 }
             });
 
-            ARIA2.init(YAAW.setting.jsonrpc_path);
+            ARIA2.init(this.setting.jsonrpc_path);
             ARIA2.refresh();
-            ARIA2.auto_refresh(YAAW.setting.refresh_interval);
+            ARIA2.auto_refresh(this.setting.refresh_interval);
         },
 
         add_task_uri_submit: function(_this) {
@@ -78,50 +78,56 @@ var YAAW = (function() {
             },
             
             unSelectAll: function(notupdate) {
+                var _this = this;
                 $(".tasks-table .task.selected").each(function(i, n) {
-                    YAAW.tasks.unSelect(n);
+                    _this.unSelect(n);
                 });
                 if (!notupdate)
-                    YAAW.tasks.check_select();
+                    this.check_select();
             },
 
             selectAll: function() {
+                var _this = this;
                 $(".tasks-table .task").each(function(i, n) {
-                    YAAW.tasks.select(n);
+                    _this.select(n);
                 });
-                YAAW.tasks.check_select();
+                this.check_select();
             },
 
             selectActive: function() {
-                YAAW.tasks.unSelectAll(true);
+                var _this = this;
+                this.unSelectAll(true);
                 $(".tasks-table .task[data-status=active]").each(function(i, n) {
-                    YAAW.tasks.select(n);
+                    _this.select(n);
                 });
-                YAAW.tasks.check_select();
+                this.check_select();
             },
 
             selectWaiting: function() {
-                YAAW.tasks.unSelectAll(true);
+                var _this = this;
+                this.unSelectAll(true);
                 $(".tasks-table .task[data-status=waiting]").each(function(i, n) {
-                    YAAW.tasks.select(n);
+                    _this.select(n);
                 });
-                YAAW.tasks.check_select();
+                this.check_select();
             },
 
             selectPaused: function() {
-                YAAW.tasks.unSelectAll(true);
+                var _this = this;
+                this.unSelectAll(true);
                 $(".tasks-table .task[data-status=paused]").each(function(i, n) {
-                    YAAW.tasks.select(n);
+                    _this.select(n);
                 });
-                YAAW.tasks.check_select();
+                this.check_select();
             },
 
             selectStoped: function() {
-                YAAW.tasks.unSelectAll(true);
+                var _this = this;
+                this.unSelectAll(true);
                 $("#stoped-tasks-table .task").each(function(i, n) {
-                    YAAW.tasks.select(n);
+                    _this.select(n);
                 });
-                YAAW.tasks.check_select();
+                this.check_select();
             },
 
             getSelectedGids: function() {
@@ -133,15 +139,15 @@ var YAAW = (function() {
             },
 
             pause: function() {
-                ARIA2.pause(YAAW.tasks.getSelectedGids());
+                ARIA2.pause(this.getSelectedGids());
             },
 
             unpause: function() {
-                ARIA2.unpause(YAAW.tasks.getSelectedGids());
+                ARIA2.unpause(this.getSelectedGids());
             },
 
             remove: function() {
-                ARIA2.remove(YAAW.tasks.getSelectedGids());
+                ARIA2.remove(this.getSelectedGids());
             },
         },
 
@@ -196,10 +202,14 @@ var YAAW = (function() {
         setting: {
             init: function() {
                 this.jsonrpc_path = $.Storage.get("jsonrpc_path") || "http://"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
-                this.refresh_interval = $.Storage.get("refresh_interval") || 10000;
+                this.refresh_interval = Number($.Storage.get("refresh_interval") || 10000);
+
+                var _this = this;
+                $('#setting-modal').on('hidden', function () {
+                    _this.update();
+                });
 
                 this.update();
-                console.log(this);
             },
 
             update: function() {
@@ -208,13 +218,30 @@ var YAAW = (function() {
             },
 
             submit: function() {
-                this.jsonrpc_path = $("#setting-form #rpc-path").val();
-                this.refresh_interval = $("#setting-form input:radio[name=refresh_interval]:checked").val();
+                _this = $("#setting-form");
+                var _jsonrpc_path = _this.find("#rpc-path").val();
+                var _refresh_interval = Number(_this.find("input:radio[name=refresh_interval]:checked").val());
+
+                var changed = false;
+                if (_jsonrpc_path != undefined && this.jsonrpc_path != _jsonrpc_path) {
+                    this.jsonrpc_path = _jsonrpc_path;
+                    ARIA2.init(this.jsonrpc_path);
+                    ARIA2.refresh();
+                    changed = true;
+                }
+                if (_refresh_interval != undefined && this.refresh_interval != _refresh_interval) {
+                    this.refresh_interval = _refresh_interval;
+                    ARIA2.auto_refresh(this.refresh_interval);
+                    changed = true;
+                }
+
+                if (changed) this.save();
+                $("#setting-modal").modal('hide');
             },
 
             save: function() {
                 $.Storage.set("jsonrpc_path", this.jsonrpc_path);
-                $.Storage.set("refresh_interval", this.refresh_interval);
+                $.Storage.set("refresh_interval", String(this.refresh_interval));
             },
         },
     }

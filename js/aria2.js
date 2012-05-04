@@ -43,9 +43,8 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     }
 
     return {
-        init: function() {
-            var args = arguments;
-            jsonrpc_interface = args[0] || "http://"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
+        init: function(path) {
+            jsonrpc_interface = path || "http://"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
             $.jsonRPC.setup({endPoint: jsonrpc_interface, namespace: 'aria2'});
         },
 
@@ -79,7 +78,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     ARIA2.refresh();
                     $("#add-task-modal").modal('hide');
                     $("#add-task-modal uri-input").val("");
-                    $("#add-task-alert").hide();
+                    $("#add-task-alert").modal('hide');
                 }, 
                 function(result) {
                     //console.debug(result);
@@ -378,7 +377,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         auto_refresh: function(interval) {
             if (interval_id)
                 window.clearInterval(interval_id);
-            if (interval == undefined) {
+            if (!(interval > 0)) {
                 auto_refresh = false;
                 return ;
             }
@@ -399,7 +398,5 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             }, interval);
             auto_refresh = true;
         },
-
-
     }
 })();

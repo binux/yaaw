@@ -143,7 +143,7 @@
       </form>
     </div>
     <div class="modal-footer">
-      <a href="javascript:$('#add-task-uri').submit()" id="add-task-submit" class="btn btn-primary">Add</a>
+      <a href="javascript:$('#add-task-uri').submit();" id="add-task-submit" class="btn btn-primary">Add</a>
       <a href="#" class="btn" data-dismiss="modal">Cancel</a>
     </div>
     </section>
@@ -154,7 +154,7 @@
       <h2>Settings</h2>
     </div>
     <div class="modal-body">
-      <form id="setting-form" class="form-horizontal">
+      <form id="setting-form" class="form-horizontal" onsubmit="javascript:YAAW.setting.submit();return false;">
         <fieldset>
           <div class="control-group">
             <label class="control-label" for="rpc-path">JSON-RPC Path</label>
@@ -178,7 +178,7 @@
                 <input type="radio" name="refresh_interval" value="300000"> 5min
               </label>
               <label class="radio inline">
-                <input type="radio" name="refresh_interval"> off 
+                <input type="radio" name="refresh_interval" value="0"> off 
               </label>
             </div>
           </div>
@@ -186,7 +186,7 @@
       </form>
     </div>
     <div class="modal-footer">
-      <a href="#" id="add-task-submit" class="btn btn-success">Save</a>
+      <a href="javascript:$('#setting-form').submit();" id="add-task-submit" class="btn btn-success">Save</a>
       <a href="#" class="btn" data-dismiss="modal">Cancel</a>
     </div>
     </section>
