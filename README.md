@@ -9,7 +9,7 @@ No HTTP server, backend server-side program. All you need is just a Browser.
 Usage
 -----
 1. run aria2 with RPC enabled
-> aria2c --enable-rpc --rpc-listen-all=true  --rpc-allow-origin-all --save-session=aria2.session -i aris2.session
+> aria2c --enable-rpc --rpc-listen-all=true  --rpc-allow-origin-all
 >
 > Warning: This options will not verify the identity of caller. KEEP THE ADDRESS SECRET.
 
