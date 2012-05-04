@@ -210,7 +210,7 @@
             <span title="{{title}}">{{title}}</span>
           </div>
           <div class="task-info">
-            <span class="task-status" rel="tooltip" title="{{status}}"><i class="{{status_icon}}"></i></span>
+            <span class="task-status" rel="tooltip" title="{{status}}{{#error_msg}}: {{error_msg}}{{/error_msg}}"><i class="{{status_icon}}"></i></span>
             <span>{{completedLength}} / {{totalLength}}</span>
             {{#uploadLength}}<span>(uploaded {{uploadLength}})</span>{{/uploadLength}}
             {{#etc}}<span>ETC: {{etc}}</span>{{/etc}}
@@ -249,7 +249,7 @@
         </td>
         <td class="right-area">
           <div class="task-info pull-left">
-            <span class="task-status" rel="tooltip" title="{{status}}"><i class="{{status_icon}}"></i></span>
+            <span class="task-status" rel="tooltip" title="{{status}}{{#error_msg}}: {{error_msg}}{{/error_msg}}"><i class="{{status_icon}}"></i></span>
             <span>{{totalLength}}</span>
             {{#uploadLength}}<span>(uploaded {{uploadLength}}){{/uploadLength}}
           </div>

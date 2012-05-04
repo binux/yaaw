@@ -52,7 +52,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             title = title.replace(new RegExp("^"+dir+"/?"), "").split("/");
             title = title[0]
             if (title.length == 0)
-                title = "Unknown";
+                title = result.files[0].uris[0].uri || "Unknown";
 
             if (result.files.length > 1)
                 title += " ("+result.files.length+ " files..)"
@@ -95,6 +95,39 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         }
         return result;
     }
+    var error_code_map = {
+        0: "",
+        1: "unknown error occurred.",
+        2: "time out occurred.",
+        3: "resource was not found.",
+        4: "resource was not found. See --max-file-not-found option.",
+        5: "resource was not found. See --lowest-speed-limit option.",
+        6: "network problem occurred.",
+        7: "unfinished download.",
+        8: "remote server did not support resume when resume was required to complete download.",
+        9: "there was not enough disk space available.",
+        10: "piece length was different from one in .aria2 control file. See --allow-piece-length-change option.",
+        11: "aria2 was downloading same file at that moment.",
+        12: "aria2 was downloading same info hash torrent at that moment.",
+        13: "file already existed. See --allow-overwrite option.",
+        14: "renaming file failed. See --auto-file-renaming option.",
+        15: "aria2 could not open existing file.",
+        16: "aria2 could not create new file or truncate existing file.",
+        17: "I/O error occurred.",
+        18: "aria2 could not create directory.",
+        19: "name resolution failed.",
+        20: "could not parse Metalink document.",
+        21: "FTP command failed.",
+        22: "HTTP response header was bad or unexpected.",
+        23: "too many redirections occurred.",
+        24: "HTTP authorization failed.",
+        25: "aria2 could not parse bencoded file(usually .torrent file).",
+        26: ".torrent file was corrupted or missing information that aria2 needed.",
+        27: "Magnet URI was bad.",
+        28: "bad/unrecognized option was given or unexpected option argument was given.",
+        29: "the remote server was unable to handle the request due to a temporary overloading or maintenance.",
+        30: "aria2 could not parse JSON-RPC request.",
+    };
 
     return {
         init: function(path) {
@@ -255,12 +288,12 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     result.progress = (result.completedLength * 1.0 / result.totalLength * 100).toFixed(2);
                 result.etc = format_time((result.totalLength - result.completedLength)/result.downloadSpeed)
 
+                result.error_msg = error_code_map[result.errorCode] || "";
                 result.completedLength = format_size(result.completedLength);
                 result.uploadLength = format_size(result.uploadLength);
                 result.totalLength = format_size(result.totalLength);
                 result.uploadSpeed = format_size(result.uploadSpeed);
                 result.downloadSpeed = format_size(result.downloadSpeed);
-
 
                 result.numSeeders = parseInt(result.numSeeders);
                 result.connections = parseInt(result.connections);
