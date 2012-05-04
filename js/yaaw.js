@@ -226,7 +226,7 @@ var YAAW = (function() {
                 if (_jsonrpc_path != undefined && this.jsonrpc_path != _jsonrpc_path) {
                     this.jsonrpc_path = _jsonrpc_path;
                     ARIA2.init(this.jsonrpc_path);
-                    ARIA2.refresh();
+                    YAAW.refresh_btn();
                     changed = true;
                 }
                 if (_refresh_interval != undefined && this.refresh_interval != _refresh_interval) {

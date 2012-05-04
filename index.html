@@ -21,7 +21,7 @@
       <div class="clearfix" id="main-control">
         <div id="main-alert" class="hide">
           <div id="main-alert-inline" class="alert">
-            <a href="javascript:$('#main-alert').hide()" class="close">×</a>
+            <a href="###" onclick="$('#main-alert').hide();" class="close">×</a>
             <span class="alert-msg">Loading</span>
           </div>
         </div>
@@ -34,10 +34,10 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="javascript:YAAW.tasks.selectActive();">Select Active</a></li>
-            <li><a href="javascript:YAAW.tasks.selectWaiting();">Select Waiting</a></li>
-            <li><a href="javascript:YAAW.tasks.selectPaused();">Select Paused</a></li>
-            <li><a href="javascript:YAAW.tasks.selectStoped();">Select Stoped</a></li>
+            <li><a href="###" onclick="YAAW.tasks.selectActive();">Select Active</a></li>
+            <li><a href="###" onclick="YAAW.tasks.selectWaiting();">Select Waiting</a></li>
+            <li><a href="###" onclick="YAAW.tasks.selectPaused();">Select Paused</a></li>
+            <li><a href="###" onclick="YAAW.tasks.selectStoped();">Select Stoped</a></li>
           </ul>
         </div>
 
@@ -48,13 +48,13 @@
             </a>
           </div>
           <div class="btn-group pull-left" id="do-all-btn">
-            <a href="javascript:ARIA2.unpause_all();" class="btn" id="unpause-all" rel="tooltip" title="Start All">
+            <a href="###" onclick="ARIA2.unpause_all();" class="btn" id="unpause-all" rel="tooltip" title="Start All">
               <i class="icon-forward"></i>
             </a>
-            <a href="javascript:ARIA2.pause_all();" class="btn" id="pause-all" rel="tooltip" title="Pause All">
+            <a href="###" onclick="ARIA2.pause_all();" class="btn" id="pause-all" rel="tooltip" title="Pause All">
               <i class="icon-stop"></i>
             </a>
-            <a href="javascript:ARIA2.purge_download_result();" class="btn" id="pure-all" rel="tooltip" title="Remove Finished Tasks">
+            <a href="###" onclick="ARIA2.purge_download_result();" class="btn" id="pure-all" rel="tooltip" title="Remove Finished Tasks">
               <i class="icon-trash"></i>
             </a>
           </div>
@@ -62,13 +62,13 @@
 
         <div class="pull-left hide" id="selected-grp">
           <div class="btn-group pull-left">
-            <a href="javascript:YAAW.tasks.unpause();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="Start">
+            <a href="###" onclick="YAAW.tasks.unpause();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="Start">
               <i class="icon-play"></i>
             </a>
-            <a href="javascript:YAAW.tasks.pause();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="Pause">
+            <a href="###" onclick="YAAW.tasks.pause();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="Pause">
               <i class="icon-pause"></i>
             </a>
-            <a href="javascript:YAAW.tasks.remove();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="Remove">
+            <a href="###" onclick="YAAW.tasks.remove();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="Remove">
               <i class="icon-remove"></i>
             </a>
           </div>
@@ -119,9 +119,9 @@
     </div>
 
     <ul id="task-contextmenu" class="dropdown-menu">
-      <li><a href="javascript:YAAW.contextmenu.unpause();">Start</a></li>
-      <li><a href="javascript:YAAW.contextmenu.pause();">Pause</a></li>
-      <li><a href="javascript:YAAW.contextmenu.remove();">Remove</a></li>
+      <li><a href="###" onclick="YAAW.contextmenu.unpause();">Start</a></li>
+      <li><a href="###" onclick="YAAW.contextmenu.pause();">Pause</a></li>
+      <li><a href="###" onclick="YAAW.contextmenu.remove();">Remove</a></li>
       <li class="divider"></li>
       <li><a href="#">Info</a></li>
     </ul>
@@ -133,7 +133,7 @@
     </div>
     <div class="modal-body">
       <div id="add-task-alert" class="alert alert-error hide">
-        <a href="javascript:$('#add-task-alert').hide();" class="close">×</a>
+        <a href="###" onclick="$('#add-task-alert').hide();" class="close">×</a>
         <strong>Error:</strong> <span class="alert-msg"></span>
       </div>
       <form id="add-task-uri" onsubmit="YAAW.add_task_uri_submit(this);return false;">
@@ -143,7 +143,7 @@
       </form>
     </div>
     <div class="modal-footer">
-      <a href="javascript:$('#add-task-uri').submit();" id="add-task-submit" class="btn btn-primary">Add</a>
+      <a href="###" onclick="$('#add-task-uri').submit();" id="add-task-submit" class="btn btn-primary">Add</a>
       <a href="#" class="btn" data-dismiss="modal">Cancel</a>
     </div>
     </section>
@@ -154,7 +154,7 @@
       <h2>Settings</h2>
     </div>
     <div class="modal-body">
-      <form id="setting-form" class="form-horizontal" onsubmit="javascript:YAAW.setting.submit();return false;">
+      <form id="setting-form" class="form-horizontal" onsubmit="YAAW.setting.submit();return false;">
         <fieldset>
           <div class="control-group">
             <label class="control-label" for="rpc-path">JSON-RPC Path</label>
@@ -186,7 +186,7 @@
       </form>
     </div>
     <div class="modal-footer">
-      <a href="javascript:$('#setting-form').submit();" id="add-task-submit" class="btn btn-success">Save</a>
+      <a href="###" onclick="$('#setting-form').submit();" id="add-task-submit" class="btn btn-success">Save</a>
       <a href="#" class="btn" data-dismiss="modal">Cancel</a>
     </div>
     </section>
