@@ -27,17 +27,17 @@
         </div>
 
         <div class="btn-group pull-left" id="select-btn">
-          <button class="btn" rel="tooltip" title="Select All">
+          <button id="select-all-btn" class="btn" rel="tooltip" title="Select All">
             <i class="select-box"></i>
           </button>
           <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="#">Select Active</a></li>
-            <li><a href="#">Select Waiting</a></li>
-            <li><a href="#">Select Paused</a></li>
-            <li><a href="#">Select Stoped</a></li>
+            <li><a href="javascript:YAAW.tasks.selectActive();">Select Active</a></li>
+            <li><a href="javascript:YAAW.tasks.selectWaiting();">Select Waiting</a></li>
+            <li><a href="javascript:YAAW.tasks.selectPaused();">Select Paused</a></li>
+            <li><a href="javascript:YAAW.tasks.selectStoped();">Select Stoped</a></li>
           </ul>
         </div>
 
@@ -62,15 +62,15 @@
 
         <div class="pull-left hide" id="selected-grp">
           <div class="btn-group pull-left">
-            <button class="btn" rel="tooltip" title="Start">
+            <a href="javascript:YAAW.tasks.unpause();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="Start">
               <i class="icon-play"></i>
-            </button>
-            <button class="btn" rel="tooltip" title="Pause">
+            </a>
+            <a href="javascript:YAAW.tasks.pause();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="Pause">
               <i class="icon-pause"></i>
-            </button>
-            <button class="btn" rel="tooltip" title="Remove">
+            </a>
+            <a href="javascript:YAAW.tasks.remove();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="Remove">
               <i class="icon-remove"></i>
-            </button>
+            </a>
           </div>
           <button class="btn pull-left" id="info-btn" rel="tooltip" title="Task Info">
             <i class="icon-info-sign"></i> Info
@@ -79,13 +79,12 @@
 
         <div class="pull-right" id="other-grp">
           <div class="btn-group">
-            <!--TODO: refresh all. clear selected items-->
-            <a href="javascript:ARIA2.refresh();" class="btn" id="refresh-btn" rel="tooltip" title="Refresh">
+            <a href="#" class="btn" id="refresh-btn" rel="tooltip" title="Refresh">
               <i class="icon-refresh"></i> Refresh
             </a>
-            <button class="btn" id="setting-btn" rel="tooltip" title="Settings">
+            <a class="btn" id="setting-btn" data-toggle="modal" href="#setting-modal" rel="tooltip" title="Settings">
               <i class="icon-wrench"></i>
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -119,15 +118,82 @@
       </section>
     </div>
 
-    <script src="js/jquery-1.7.2.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.jsonrpc.js"></script>
-    <script src="js/mustache.js"></script>
-    <script src="js/aria2.js"></script>
+    <ul id="task-contextmenu" class="dropdown-menu">
+      <li><a href="javascript:YAAW.contextmenu.unpause();">Start</a></li>
+      <li><a href="javascript:YAAW.contextmenu.pause();">Pause</a></li>
+      <li><a href="javascript:YAAW.contextmenu.remove();">Remove</a></li>
+      <li class="divider"></li>
+      <li><a href="#">Info</a></li>
+    </ul>
+
+    <section class="modal hide fade" id="add-task-modal">
+    <div class="modal-header">
+      <button class="close" data-dismiss="modal">×</button>
+      <h3>Add Task</h3>
+    </div>
+    <div class="modal-body">
+      <div id="add-task-alert" class="alert alert-error hide">
+        <a href="javascript:$('#add-task-alert').hide();" class="close">×</a>
+        <strong>Error:</strong> <span class="alert-msg"></span>
+      </div>
+      <form id="add-task-uri" onsubmit="YAAW.add_task_uri_submit(this);return false;">
+        <div class="input-append">
+          <input type="text" name="uri" id="uri-input" placeholder="HTTP, FTP or Magnet" /><button type="button" id="torrent-upload-btn" class="btn">Upload Torrent</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="javascript:$('#add-task-uri').submit()" id="add-task-submit" class="btn btn-primary">Add</a>
+      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    </div>
+    </section>
+
+    <section class="modal hide fade" id="setting-modal">
+    <div class="modal-header">
+      <button class="close" data-dismiss="modal">×</button>
+      <h2>Settings</h2>
+    </div>
+    <div class="modal-body">
+      <form id="setting-form" class="form-horizontal">
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label" for="rpc-path">JSON-RPC Path</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" id="rpc-path">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Auto Refresh Every</label>
+            <div class="controls">
+              <label class="radio inline">
+                <input type="radio" name="refresh_interval" value="5000"> 5s
+              </label>
+              <label class="radio inline">
+                <input type="radio" name="refresh_interval" value="10000" checked> 10s
+              </label>
+              <label class="radio inline">
+                <input type="radio" name="refresh_interval" value="30000"> 30s
+              </label>
+              <label class="radio inline">
+                <input type="radio" name="refresh_interval" value="300000"> 5min
+              </label>
+              <label class="radio inline">
+                <input type="radio" name="refresh_interval"> off 
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="#" id="add-task-submit" class="btn btn-success">Save</a>
+      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    </div>
+    </section>
     
     <script id="active-task-tpl" type="text/mustache-template">
       {{#tasks}}
-      <tr class="task" id="task-gid-{{gid}}">
+      <tr class="task" id="task-gid-{{gid}}" data-status="{{status}}" data-gid="{{gid}}">
         <td class="left-area">
           <div class="task-name">
             <i class="select-box"></i>
@@ -164,7 +230,7 @@
     
     <script id="other-task-tpl" type="text/mustache-template">
       {{#tasks}}
-      <tr class="task" id="task-gid-{{gid}}">
+      <tr class="task" id="task-gid-{{gid}}" data-status="{{status}}" data-gid="{{gid}}">
         <td class="left-area">
           <div class="task-name">
             <i class="select-box"></i>
@@ -195,64 +261,13 @@
       {{/tasks}}
     </script>
 
-    <script>
-      // init
-      ARIA2.init("http://127.0.0.1:6800/jsonrpc");
-      ARIA2.refresh();
-      ARIA2.auto_refresh(5000);
-
-      $("[rel=tooltip]").tooltip({"placement": "bottom"});
-      $("#setting-btn").click(function () {
-        $("#not-selected-grp").toggle();
-        $("#selected-grp").toggle();
-      });
-
-      function check_select() {
-        var selected = $(".tasks-table tr.selected");
-        if (selected.length == 0) {
-          ARIA2.select_lock(false);
-          $("#select-btn .select-box").removeClass("icon-minus icon-ok");
-        } else if (selected.length < $(".tasks-table tr.task").length) {
-          ARIA2.select_lock(true);
-          $("#select-btn .select-box").removeClass("icon-ok").addClass("icon-minus");
-        } else {
-          ARIA2.select_lock(true);
-          $("#select-btn .select-box").removeClass("icon-minus").addClass("icon-ok");
-        }
-      }
-      $(".task-name").live("click", function () {
-        $(this).find(".select-box").toggleClass("icon-ok");
-        $(this).parents("tr").toggleClass("selected");
-        check_select();
-      });
-
-      function add_task_uri_submit(_this) {
-        ARIA2.add_task(_this.uri.value);
-        $("#add-task-submit").button("Adding...");
-      }
-    </script>
-
-    <section class="modal hide fade" id="add-task-modal">
-    <div class="modal-header">
-      <button class="close" data-dismiss="modal">×</button>
-      <h3>Add Task</h3>
-    </div>
-    <div class="modal-body">
-      <div id="add-task-alert" class="alert alert-error hide">
-        <a href="javascript:$('#add-task-alert').hide();" class="close">×</a>
-        <strong>Error:</strong> <span class="alert-msg"></span>
-      </div>
-      <form id="add-task-uri" onsubmit="add_task_uri_submit(this);return false;">
-        <div class="input-append">
-          <input type="text" name="uri" id="uri-input" placeholder="HTTP, FTP or Magnet" /><button type="button" id="torrent-upload-btn" class="btn">Upload Torrent</button>
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <a href="javascript:$('#add-task-uri').submit()" id="add-task-submit" class="btn btn-primary">Add</a>
-      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
-    </div>
-    </section>
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.jsonrpc.js"></script>
+    <script src="js/jquery.Storage.js"></script>
+    <script src="js/mustache.js"></script>
+    <script src="js/aria2.js"></script>
+    <script src="js/yaaw.js"></script>
   </body>
 </html>
 <!-- vim: set et sw=2 ts=2 sts=2 ff=unix fenc=utf8: -->

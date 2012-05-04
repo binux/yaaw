@@ -21,7 +21,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     };
 
     function default_error(result) {
-        console.debug(result);
+        //console.debug(result);
 
         var error_msg = get_error(result);
 
@@ -45,7 +45,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     return {
         init: function() {
             var args = arguments;
-            jsonrpc_interface = args[0] || "http://"+location.host+":6800"+"/jsonrpc";
+            jsonrpc_interface = args[0] || "http://"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
             $.jsonRPC.setup({endPoint: jsonrpc_interface, namespace: 'aria2'});
         },
 
@@ -55,13 +55,24 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             $.jsonRPC.request(method, {params:params, success:success, error:error});
         },
 
+        batch_request: function(method, params, success, error) {
+            if (error == undefined)
+                error = default_error;
+            var commands = new Array();
+            $.each(params, function(i, n) {
+                if (!$.isArray(n)) n = [n];
+                commands.push({method: method, params: n});
+            });
+            $.jsonRPC.batchRequest(commands, {success:success, error:error});
+        },
+
         add_task: function() {
             var args = arguments;
             uri = args[0];
             if (!uri) return false;
             ARIA2.request("addUri", [[uri]],
                 function(result) {
-                    console.debug(result);
+                    //console.debug(result);
                     //id:1
                     //jsonrpc:"2.0"
                     //result:"2"
@@ -71,7 +82,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     $("#add-task-alert").hide();
                 }, 
                 function(result) {
-                    console.debug(result);
+                    //console.debug(result);
 
                     var error_msg = get_error(result);
 
@@ -84,7 +95,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         tell_active: function(keys) {
             ARIA2.request("tellActive", keys,
                 function(result) {
-                    console.debug(result);
+                    //console.debug(result);
 
                     if (select_lock) return;
                     if (!result.result) {
@@ -112,7 +123,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         check_active_list: function() {
             ARIA2.request("tellActive", [["gid"]],
                 function(result) {
-                    console.debug(result);
+                    //console.debug(result);
 
                     if (!result.result) {
                         main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
@@ -137,7 +148,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             if (keys) params.push(keys);
             ARIA2.request("tellWaiting", params,
                 function(result) {
-                    console.debug(result);
+                    //console.debug(result);
 
                     if (select_lock) return;
                     if (!result.result) {
@@ -159,7 +170,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             if (keys) params.push(keys);
             ARIA2.request("tellStopped", params,
                 function(result) {
-                    console.debug(result);
+                    //console.debug(result);
 
                     if (select_lock) return;
                     if (!result.result) {
@@ -257,10 +268,73 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             return results;
         },
 
+        pause: function(gids) {
+            if (!$.isArray(gids)) gids = [gids];
+            ARIA2.batch_request("pause", gids,
+                function(result) {
+                    //console.debug(result);
+
+                    var error = new Array();
+                    $.each(result, function(i, n) {
+                        var error_msg = get_error(n);
+                        if (error_msg) error.push(error_msg);
+                    });
+
+                    if (error.length == 0) {
+                        main_alert("alert-info", "Paused", 1000);
+                    } else {
+                        main_alert("alert-error", error.join("<br />"), 3000);
+                    }
+                }
+            );
+        },
+
+        unpause: function(gids) {
+            if (!$.isArray(gids)) gids = [gids];
+            ARIA2.batch_request("unpause", gids,
+                function(result) {
+                    //console.debug(result);
+
+                    var error = new Array();
+                    $.each(result, function(i, n) {
+                        var error_msg = get_error(n);
+                        if (error_msg) error.push(error_msg);
+                    });
+
+                    if (error.length == 0) {
+                        main_alert("alert-info", "Started", 1000);
+                    } else {
+                        main_alert("alert-error", error.join("<br />"), 3000);
+                    }
+                }
+            );
+        },
+
+        remove: function(gids) {
+            if (!$.isArray(gids)) gids = [gids];
+            ARIA2.batch_request("remove", gids,
+                function(result) {
+                    //console.debug(result);
+
+                    var error = new Array();
+                    $.each(result, function(i, n) {
+                        var error_msg = get_error(n);
+                        if (error_msg) error.push(error_msg);
+                    });
+
+                    if (error.length == 0) {
+                        main_alert("alert-info", "Paused", 1000);
+                    } else {
+                        main_alert("alert-error", error.join("<br />"), 3000);
+                    }
+                }
+            );
+        },
+
         pause_all: function() {
             ARIA2.request("pauseAll", [],
                 function(result) {
-                    console.debug(result);
+                    //console.debug(result);
 
                     ARIA2.refresh();
                     main_alert("alert-info", "Paused all tasks. Please wait for action such as contacting BitTorrent tracker.", 2000);
@@ -271,7 +345,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         unpause_all: function() {
             ARIA2.request("unpauseAll", [],
                 function(result) {
-                    console.debug(result);
+                    //console.debug(result);
 
                     ARIA2.refresh();
                     main_alert("alert-info", "Unpaused all tasks.", 2000);
@@ -282,7 +356,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         purge_download_result: function() {
             ARIA2.request("purgeDownloadResult", [],
                 function(result) {
-                    console.debug(result);
+                    //console.debug(result);
 
                     ARIA2.refresh();
                     main_alert("alert-info", "Removed all completed/error/removed downloads tasks.", 2000);

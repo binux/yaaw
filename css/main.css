@@ -101,7 +101,7 @@ tr.task.selected {
 .task .task-name .select-box {
     vertical-align: -15%;
 }
-.task .task-name .select-box:hover {
+.task .task-name:hover .select-box {
     border-color: #666;
 }
 .task .task-name span {
@@ -139,6 +139,11 @@ tr.task.selected {
 }
 #other-tasks .progress {
     width: 200px;
+}
+
+#task-contextmenu {
+    position: fixed;
+    z-index: 99;
 }
 
 /* add task modal */
