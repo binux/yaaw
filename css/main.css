@@ -2,6 +2,7 @@
 
 /* header */
 .main-head {
+    position: relative;
     padding-bottom: 3px;
     border-bottom: 1px solid #C6C6C6;
 }
@@ -18,6 +19,15 @@
     position: relative;
     top: -10px;
     z-index: 99;
+}
+
+#global-info {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+#global-version {
+    text-align: right;
 }
 
 /* main-control */

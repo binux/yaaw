@@ -1,6 +1,6 @@
 if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     var jsonrpc_interface, interval_id;
-    var active_tasks_snapshot="", select_lock=false, need_refresh=false;
+    var active_tasks_snapshot="", tasks_cnt_snapshot="", select_lock=false, need_refresh=false;
     var auto_refresh=false;
 
     function get_error(result) {
@@ -40,6 +40,60 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
     function bind_event(dom) {
         dom.find("[rel=tooltip]").tooltip({"placement": "bottom"});
+    }
+
+    function get_title(result) {
+        if (result.files.length == 0) {
+            return "Unknown";
+        } else {
+            var dir = result.dir;
+            var title = result.files[0].path;
+
+            title = title.replace(new RegExp("^"+dir+"/?"), "").split("/");
+            title = title[0]
+            if (title.length == 0)
+                title = "Unknown";
+
+            if (result.files.length > 1)
+                title += " ("+result.files.length+ " files..)"
+            return title;
+        }
+    }
+    var format_text = ["B", "KB", "MB", "GB", "TB", ];
+    function format_size(size) {
+        size = parseInt(size);
+        var i = 0;
+        while (size > 1024) {
+            size /= 1024;
+            i++;
+        }
+        if (size==0) {
+            return size;
+        } else {
+            return size.toFixed(2)+" "+format_text[i];
+        }
+    }
+    var time_interval = [60, 60, 24];
+    var time_text = ["s", "m", "h"];
+    function format_time(time) {
+        if (time == Infinity) {
+            return "INF";
+        } else if (time == 0) {
+            return "0s";
+        }
+
+        time = Math.floor(time);
+        var i = 0;
+        var result = "";
+        while (time > 0 && i < 3) {
+            result = time % time_interval[i] + time_text[i] + result;
+            time = Math.floor(time/time_interval[i]);
+            i++;
+        }
+        if (time > 0) {
+            result = time + "d" + result;
+        }
+        return result;
     }
 
     return {
@@ -190,59 +244,6 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         },
 
         status_fix: function(results) {
-            function get_title(result) {
-                if (result.files.length == 0) {
-                    return "Unknown";
-                } else {
-                    var dir = result.dir;
-                    var title = result.files[0].path;
-
-                    title = title.replace(new RegExp("^"+dir+"/?"), "").split("/");
-                    title = title[0]
-                    if (title.length == 0)
-                        title = "Unknown";
-
-                    if (result.files.length > 1)
-                        title += " ("+result.files.length+ " files..)"
-                    return title;
-                }
-            }
-            var format_text = ["B", "KB", "MB", "GB", "TB", ];
-            function format_size(size) {
-                size = parseInt(size);
-                var i = 0;
-                while (size > 1024) {
-                    size /= 1024;
-                    i++;
-                }
-                if (size==0) {
-                    return size;
-                } else {
-                    return size.toFixed(2)+" "+format_text[i];
-                }
-            }
-            var time_interval = [60, 60, 24];
-            var time_text = ["s", "m", "h"];
-            function format_time(time) {
-                if (time == Infinity) {
-                    return "INF";
-                } else if (time == 0) {
-                    return "0s";
-                }
-
-                time = Math.floor(time);
-                var i = 0;
-                var result = "";
-                while (time > 0 && i < 3) {
-                    result = time % time_interval[i] + time_text[i] + result;
-                    time = Math.floor(time/time_interval[i]);
-                    i++;
-                }
-                if (time > 0) {
-                    result = time + "d" + result;
-                }
-                return result;
-            }
             for (var i=0; i<results.length; i++) {
                 var result = results[i];
 
@@ -363,6 +364,42 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             );
         },
 
+        global_stat: function() {
+            ARIA2.request("getGlobalStat", [],
+                function(result) {
+                    if (!result.result) {
+                        main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+                    }
+
+                    result = result.result;
+                    result.downloadSpeed = format_size(result.downloadSpeed) || "0 KB";
+                    result.uploadSpeed = format_size(result.uploadSpeed) || "0 KB";
+                    var _tasks_cnt_snapshot = ""+result.numActive+","+result.numWaiting+","+result.numStopped;
+
+                    if (_tasks_cnt_snapshot != tasks_cnt_snapshot) {
+                        tasks_cnt_snapshot = _tasks_cnt_snapshot;
+                        need_refresh = true;
+                        if (auto_refresh && !select_lock)
+                            ARIA2.refresh();
+                    }
+
+                    $("#global-speed").empty().append($("#global-speed-tpl").mustache(result));
+                }
+            );
+        },
+
+        get_version: function() {
+            ARIA2.request("getVersion", [],
+                function(result) {
+                    if (!result.result) {
+                        main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+                    }
+
+                    $("#aria2-version").text(result.result.version || "");
+                }
+            );
+        },
+
         refresh: function() {
             need_refresh = false;
             ARIA2.tell_active();
@@ -382,11 +419,10 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                 return ;
             }
             interval_id = window.setInterval(function() {
+                ARIA2.global_stat();
                 if (select_lock) {
                     if (need_refresh) {
                         main_alert("", "Task list have changed since last update. Click 'Refresh' button to update task list.");
-                    } else {
-                        ARIA2.check_active_list();
                     }
                 } else {
                     if (need_refresh) {

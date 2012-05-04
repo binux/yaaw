@@ -16,6 +16,10 @@
     <div class="container">
       <header class="main-head page-header">
         <h1>Yet Another Aria2 Web Frontend</h1>
+        <div id="global-info" class="pull-right">
+          <div id="global-version">Aria2 <span id="aria2-version"></span></div>
+          <div id="global-speed"></div>
+        </div>
       </header>
 
       <div class="clearfix" id="main-control">
@@ -186,11 +190,17 @@
       </form>
     </div>
     <div class="modal-footer">
-      <a href="###" onclick="$('#setting-form').submit();" id="add-task-submit" class="btn btn-success">Save</a>
+      <a href="###" onclick="$('#setting-form').submit();" class="btn btn-success">Save</a>
       <a href="#" class="btn" data-dismiss="modal">Cancel</a>
     </div>
     </section>
     
+    <script id="global-speed-tpl" type="text/mustache-template">
+      <i class="icon-download"></i> <span>{{downloadSpeed}}</span>/s
+        / 
+      <i class="icon-upload"></i>  <span>{{uploadSpeed}}</span>/s
+    </script>
+
     <script id="active-task-tpl" type="text/mustache-template">
       {{#tasks}}
       <tr class="task" id="task-gid-{{gid}}" data-status="{{status}}" data-gid="{{gid}}">

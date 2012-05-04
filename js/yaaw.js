@@ -23,12 +23,14 @@ var YAAW = (function() {
             });
 
             ARIA2.init(this.setting.jsonrpc_path);
+            ARIA2.get_version();
             ARIA2.refresh();
             ARIA2.auto_refresh(this.setting.refresh_interval);
         },
 
         add_task_uri_submit: function(_this) {
             ARIA2.add_task(_this.uri.value);
+            _this.uri.value = "";
             $("#add-task-submit").button("Adding...");
         },
 
@@ -226,6 +228,7 @@ var YAAW = (function() {
                 if (_jsonrpc_path != undefined && this.jsonrpc_path != _jsonrpc_path) {
                     this.jsonrpc_path = _jsonrpc_path;
                     ARIA2.init(this.jsonrpc_path);
+                    ARIA2.get_version();
                     YAAW.refresh_btn();
                     changed = true;
                 }
