@@ -47,7 +47,7 @@ var YAAW = (function() {
                 ARIA2.get_global_option();
             });
 
-            if (window.FileReader) {
+            if (window.FileReader && location.host) {
                 var holder = $("#add-task-modal .modal-body").get(0);
                 holder.ondragover = function() {
                     $(this).addClass("hover");

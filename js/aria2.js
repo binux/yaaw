@@ -43,21 +43,18 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     }
 
     function get_title(result) {
-        if (result.files.length == 0) {
-            return "Unknown";
-        } else {
-            var dir = result.dir;
-            var title = result.files[0].path;
+        var dir = result.dir;
+        var title = "Unknown";
+        if (result.bittorrent && result.bittorrent.info && result.bittorrent.info.name)
+            title = result.bittorrent.info.name;
+        else if (result.files[0].path.replace(new RegExp("^"+dir+"/?"), "").split("/")[0])
+            title = result.files[0].path.replace(new RegExp("^"+dir+"/?"), "").split("/")[0]
+        else if (result.files.length && result.files[0].uris.length && result.files[0].uris[0].uri)
+            title = result.files[0].uris[0].uri;
 
-            title = title.replace(new RegExp("^"+dir+"/?"), "").split("/");
-            title = title[0]
-            if (title.length == 0)
-                title = result.files[0].uris[0].uri || "Unknown";
-
-            if (result.files.length > 1)
-                title += " ("+result.files.length+ " files..)"
-            return title;
-        }
+        if (result.files.length > 1)
+            title += " ("+result.files.length+ " files..)"
+        return title;
     }
     var format_text = ["B", "KB", "MB", "GB", "TB", ];
     function format_size(size) {
@@ -271,7 +268,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             if (keys) params.push(keys);
             ARIA2.request("tellWaiting", params,
                 function(result) {
-                    //console.debug(result);
+                    console.debug(result);
 
                     if (select_lock) return;
                     if (!result.result) {
