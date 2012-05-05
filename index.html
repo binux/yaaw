@@ -17,7 +17,7 @@
       <header class="main-head page-header">
         <h1>Yet Another Aria2 Web Frontend</h1>
         <div id="global-info" class="pull-right">
-          <div id="global-version">Aria2 <span id="aria2-version"></span></div>
+          <div id="global-version"></div>
           <div id="global-speed"></div>
         </div>
       </header>
@@ -142,9 +142,10 @@
       </div>
       <form id="add-task-uri" onsubmit="YAAW.add_task_uri_submit(this);return false;">
         <div class="input-append">
-          <input type="text" name="uri" id="uri-input" placeholder="HTTP, FTP or Magnet" /><button type="button" id="torrent-upload-btn" class="btn">Upload Torrent</button>
+          <input type="text" name="uri" id="uri-input" class="input-clear" placeholder="HTTP, FTP or Magnet" /><button type="button" id="torrent-upload-btn" class="btn">Upload Torrent</button>
         </div>
       </form>
+      <div id="add-task-option-wrap"></div>
     </div>
     <div class="modal-footer">
       <a href="###" onclick="$('#add-task-uri').submit();" id="add-task-submit" class="btn btn-primary">Add</a>
@@ -167,7 +168,7 @@
             </div>
           </div>
           <div class="control-group">
-            <label class="control-label">Auto Refresh Every</label>
+            <label class="control-label">Auto Refresh</label>
             <div class="controls">
               <label class="radio inline">
                 <input type="radio" name="refresh_interval" value="5000"> 5s
@@ -188,8 +189,11 @@
           </div>
         </fieldset>
       </form>
+      <div id="aria2-gsetting">
+      </div>
     </div>
     <div class="modal-footer">
+      <div id="copyright">© Copyright <a href="https://github.com/binux/yaaw">Binux</a></div>
       <a href="###" onclick="$('#setting-form').submit();" class="btn btn-success">Save</a>
       <a href="#" class="btn" data-dismiss="modal">Cancel</a>
     </div>
@@ -262,13 +266,132 @@
     </script>
 
     <script id="other-task-empty" type="text/mustache-template">
-      {{^tasks}}
       <tr>
         <td class="empty-tasks">
           <strong>No Tasks</strong>
         </td>
       </tr>
-      {{/tasks}}
+    </script>
+
+    <script id="add-task-option-tpl" type="text/mustache-template">
+      <hr />
+      <form id="add-task-option" class="form-horizontal" onsubmit="false">
+        <div class="control-group">
+          <label class="control-label" for="ati-out">File Name</label>
+          <div class="controls">
+            <input id="ati-out" class="input-xlarge input-clear" name="out" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="ati-header">Header</label>
+          <div class="controls">
+            <input id="ati-header" class="input-xlarge" name="header" value="{{header}}"/>
+          </div>
+        </div>
+        <div class="control-group half">
+          <div class="controls">
+            <label class="checkbox">
+              <input type="checkbox" name="pause" {{#pause}}checked{{/pause}} />
+              Pause When Added
+            </label>
+          </div>
+        </div>
+        <div class="control-group half">
+          <div class="controls">
+            <label class="checkbox">
+              <input type="checkbox" name="parameterized-uri" {{#parameterized-uri}}checked{{/parameterized-uri}} />
+              Parameterized URI
+            </label>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="control-group half">
+          <label class="control-label" for="ati-split">Split</label>
+          <div class="controls">
+            <input id="ati-split" class="input-small" name="split" value="{{split}}" />
+          </div>
+        </div>
+        <div class="control-group half">
+          <label class="control-label" for="ati-cps">Conn/Serv</label>
+          <div class="controls">
+            <input id="ati-cps" class="input-small" name="max-connection-per-server" value="{{max-connection-per-server}}" />
+          </div>
+        </div>
+        <div class="control-group half">
+          <label class="control-label" for="ati-sr">Seed Ratio</label>
+          <div class="controls">
+            <input id="ati-sr" class="input-small" name="seed-ratio" value="{{seed-ratio}}" />
+          </div>
+        </div>
+        <div class="control-group half">
+          <label class="control-label" for="ati-st">Seed Time</label>
+          <div class="controls">
+            <input id="ati-st" class="input-small" name="seed-time" value="{{seed-time}}" />
+          </div>
+        </div>
+      </form>
+    </script>
+
+    <script id="aria2-global-setting-tpl" type="text/mustache-template">
+      <hr />
+      <form id="aria2-gs-form" class="form-horizontal" onsubmit="false">
+        <div class="control-group half">
+          <label class="control-label" for="gsi-dl">Download Limit</label>
+          <div class="controls">
+            <input id="gsi-dl" name="max-overall-download-limit" class="input-small" value="{{max-overall-download-limit}}"/>
+          </div>
+        </div>
+        <div class="control-group half">
+          <label class="control-label" for="gsi-ul">Upload Limit</label>
+          <div class="controls">
+            <input id="gsi-ul" name="max-overall-upload-limit" class="input-small" value="{{max-overall-upload-limit}}"/>
+          </div>
+        </div>
+        <div class="control-group half">
+          <label class="control-label" for="gsi-cd">Concurrent Downs</label>
+          <div class="controls">
+            <input id="gsi-cd" name="max-concurrent-downloads" class="input-small" value="{{max-concurrent-downloads}}"/>
+          </div>
+        </div>
+        <div class="control-group half">
+          <label class="control-label" for="gsi-cps">Conn per Server</label>
+          <div class="controls">
+            <input id="gsi-cps" name="max-connection-per-server" class="input-small" value="{{max-connection-per-server}}"/>
+          </div>
+        </div>
+        <div class="control-group half">
+          <label class="control-label" for="gsi-split">Split</label>
+          <div class="controls">
+            <input id="gsi-split" name="split" class="input-small" value="{{split}}"/>
+          </div>
+        </div>
+        <div class="control-group half">
+          <label class="control-label" for="gsi-mss">Min Split Size</label>
+          <div class="controls">
+            <input id="gsi-mss" name="min-split-size" class="input-small" value="{{min-split-size}}"/>
+          </div>
+        </div>
+        <div class="control-group half">
+          <label class="control-label" for="gsi-sr">Seed Ratio</label>
+          <div class="controls">
+            <input id="gsi-sr" name="seed-ratio" class="input-small" value="{{seed-ratio}}"/>
+          </div>
+        </div>
+        <div class="control-group half">
+          <label class="control-label" for="gsi-st">Seed Time</label>
+          <div class="controls">
+            <input id="gsi-st" name="seed-time" class="input-small" value="{{seed-time}}"/>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="control-group">
+          <label class="control-label" for="gsi-ua">User Agent</label>
+          <div class="controls">
+            <input id="gsi-ua" name="user-agent" class="input-xlarge" value="{{user-agent}}"/>
+          </div>
+        </div>
+      </form>
     </script>
 
     <script src="js/jquery-1.7.2.min.js"></script>

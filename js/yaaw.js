@@ -3,8 +3,9 @@ var YAAW = (function() {
     var on_gid = null;
     return {
         init: function() {
-            this.contextmenu.init();
+            this.tpl.init();
             this.setting.init();
+            this.contextmenu.init();
 
             $("[rel=tooltip]").tooltip({"placement": "bottom"});
 
@@ -22,16 +23,33 @@ var YAAW = (function() {
                 }
             });
 
+            $("#setting-modal").on("show", function() {
+                ARIA2.get_global_option();
+            });
+
             ARIA2.init(this.setting.jsonrpc_path);
+            if (YAAW.setting.add_task_option) {
+                console.log(YAAW.setting.add_task_option);
+                $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option(YAAW.setting.add_task_option));
+            } else {
+                ARIA2.init_add_task_option();
+            }
             ARIA2.get_version();
             ARIA2.refresh();
             ARIA2.auto_refresh(this.setting.refresh_interval);
         },
 
         add_task_uri_submit: function(_this) {
-            ARIA2.add_task(_this.uri.value);
-            _this.uri.value = "";
-            $("#add-task-submit").button("Adding...");
+            var uri = $("#add-task-uri").val();
+            var options = {};
+            $("#add-task-option input[name]").each(function(i, n) {
+                var name = n.getAttribute("name");
+                var value = (n.type == "checkbox" ? n.checked : n.value);
+                if (name && value)
+                    options[name] = String(value);
+            });
+            YAAW.setting.save_add_task_option(options);
+            ARIA2.add_task(uri, options);
         },
 
         refresh_btn: function() {
@@ -39,6 +57,17 @@ var YAAW = (function() {
             $("#main-alert").hide();
             ARIA2.refresh();
             return false;
+        },
+
+        tpl: {
+            init: function() {
+                this.global_speed = Mustache.compile($("#global-speed-tpl").text());
+                this.active_task = Mustache.compile($("#active-task-tpl").text());
+                this.other_task = Mustache.compile($("#other-task-tpl").text());
+                this.other_task_empty = Mustache.compile($("#other-task-empty").text());
+                this.aria2_global_setting = Mustache.compile($("#aria2-global-setting-tpl").text());
+                this.add_task_option = Mustache.compile($("#add-task-option-tpl").text());
+            },
         },
 
         tasks: {
@@ -141,15 +170,36 @@ var YAAW = (function() {
             },
 
             pause: function() {
-                ARIA2.pause(this.getSelectedGids());
+                var gids = new Array();
+                $(".tasks-table .task.selected").each(function(i, n) {
+                    if (n.getAttribute("data-stauts") == "active" ||
+                        n.getAttribute("data-stauts") == "waiting")
+                        gids.push(n.getAttribute("data-gid"));
+                });
+                if (gids.length) ARIA2.pause(this.getSelectedGids());
             },
 
             unpause: function() {
-                ARIA2.unpause(this.getSelectedGids());
+                var gids = new Array();
+                $(".tasks-table .task.selected").each(function(i, n) {
+                    if (n.getAttribute("data-stauts") == "paused")
+                        gids.push(n.getAttribute("data-gid"));
+                });
+                if (gids.length) ARIA2.unpause(gids);
             },
 
             remove: function() {
-                ARIA2.remove(this.getSelectedGids());
+                var gids = new Array();
+                var remove_list = ["active", "waiting", "paused"];
+                var remove_gids = new Array();
+                $(".tasks-table .task.selected").each(function(i, n) {
+                    if (remove_list.indexOf(n.getAttribute("data-stauts")) != -1)
+                        remove_gids.push(n.getAttribute("data-gid"));
+                    else
+                        gids.push(n.getAttribute("data-gid"));
+                });
+                if (remove_gids.length) ARIA2.remove(remove_gids);
+                if (gids.length) ARIA2.remove_result(gids);
             },
         },
 
@@ -205,6 +255,10 @@ var YAAW = (function() {
             init: function() {
                 this.jsonrpc_path = $.Storage.get("jsonrpc_path") || "http://"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
                 this.refresh_interval = Number($.Storage.get("refresh_interval") || 10000);
+                this.add_task_option = $.Storage.get("add_task_option");
+                if (this.add_task_option) {
+                    this.add_task_option = JSON.parse(this.add_task_option);
+                }
 
                 var _this = this;
                 $('#setting-modal').on('hidden', function () {
@@ -212,6 +266,16 @@ var YAAW = (function() {
                 });
 
                 this.update();
+            },
+
+            save_add_task_option: function(options) {
+                this.add_task_option = options;
+                $.Storage.set("add_task_option", JSON.stringify(options));
+            },
+
+            save: function() {
+                $.Storage.set("jsonrpc_path", this.jsonrpc_path);
+                $.Storage.set("refresh_interval", String(this.refresh_interval));
             },
 
             update: function() {
@@ -239,12 +303,18 @@ var YAAW = (function() {
                 }
 
                 if (changed) this.save();
-                $("#setting-modal").modal('hide');
-            },
 
-            save: function() {
-                $.Storage.set("jsonrpc_path", this.jsonrpc_path);
-                $.Storage.set("refresh_interval", String(this.refresh_interval));
+
+                // submit aria2 global setting
+                var options = {};
+                $("#aria2-gs-form input[name]").each(function(i, n) {
+                    var name = n.getAttribute("name");
+                    var value = n.value;
+                    if (name && value)
+                        options[name] = value;
+                });
+                ARIA2.change_global_option(options);
+                $("#setting-modal").modal('hide');
             },
         },
     }

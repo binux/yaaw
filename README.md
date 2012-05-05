@@ -3,19 +3,19 @@ yaaw
 
 Yet Another Aria2 Web Frontend in pure HTML/CSS/Javascirpt.
 
-No HTTP server, backend server-side program. All you need is just a Browser.
+No HTTP server, backend or server-side program. All you need is just a browser.
 
 
 Usage
 -----
 1. run aria2 with RPC enabled
-> aria2c --enable-rpc --rpc-listen-all=true  --rpc-allow-origin-all
+> aria2c --enable-rpc --rpc-listen-all=true  --rpc-allow-origin-all -c -D
 >
 > Warning: This options will not verify the identity of caller. KEEP THE ADDRESS SECRET.
 
 2. visit index.html.
 
-3. Change the setting of "JSON-RPC Path" if needed.
+3. Change the setting of "JSON-RPC Path" if it's needed.
 
 Components
 ----------

@@ -170,3 +170,31 @@ tr.task.selected {
     position: relative;
     top: 5px;
 }
+#add-task-option .half {
+    float: left;
+    width: 240px;
+    margin-left: 10px;
+}
+#add-task-option .control-label {
+    width: 70px;
+}
+#add-task-option .controls {
+    margin-left: 90px;
+}
+
+/* aria2 global setting */
+#copyright {
+    margin-top: 10px;
+    float: left;
+}
+#aria2-gs-form .half {
+    float: left;
+    width: 240px;
+    margin-left: 10px;
+}
+#aria2-gs-form .half .control-label {
+    width: 110px;
+}
+#aria2-gs-form .half .controls {
+    margin-left: 130px;
+}

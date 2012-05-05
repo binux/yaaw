@@ -15,9 +15,9 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         active: "icon-download-alt",
         waiting: "icon-time",
         paused: "icon-pause",
-        error: "icon-warning-sign",
-        complete: "icon-inbox",
-        removed: "icon-remove",
+        error: "icon-remove",
+        complete: "icon-ok",
+        removed: "icon-trash",
     };
 
     function default_error(result) {
@@ -152,19 +152,15 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             $.jsonRPC.batchRequest(commands, {success:success, error:error});
         },
 
-        add_task: function() {
-            var args = arguments;
-            uri = args[0];
+        add_task: function(uri, options) {
             if (!uri) return false;
-            ARIA2.request("addUri", [[uri]],
+            if (!options) options = {};
+            ARIA2.request("addUri", [[uri], options],
                 function(result) {
                     //console.debug(result);
-                    //id:1
-                    //jsonrpc:"2.0"
-                    //result:"2"
                     ARIA2.refresh();
                     $("#add-task-modal").modal('hide');
-                    $("#add-task-modal uri-input").val("");
+                    $("#add-task-modal .input-clear").val("");
                     $("#add-task-alert").modal('hide');
                 }, 
                 function(result) {
@@ -200,7 +196,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     }
                 
                     result = ARIA2.status_fix(result.result);
-                    $("#active-tasks-table").empty().append($("#active-task-tpl").mustache({"tasks": result}));
+                    $("#active-tasks-table").empty().append(YAAW.tpl.active_task({"tasks": result}));
                     bind_event($("#active-tasks-table"))
                 }
             );
@@ -242,7 +238,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     }
 
                     result = ARIA2.status_fix(result.result);
-                    $("#waiting-tasks-table").empty().append($("#other-task-tpl").mustache({"tasks": result}));
+                    $("#waiting-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result}));
                     bind_event($("#waiting-tasks-table"))
 
                     if ($("#other-tasks .task").length == 0)
@@ -264,7 +260,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     }
 
                     result = ARIA2.status_fix(result.result);
-                    $("#stoped-tasks-table").empty().append($("#other-task-tpl").mustache({"tasks": result}));
+                    $("#stoped-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result}));
                     bind_event($("#stoped-tasks-table"))
 
                     if ($("#waiting-tasks-table .empty-tasks").length > 0 &&
@@ -356,7 +352,29 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     });
 
                     if (error.length == 0) {
-                        main_alert("alert-info", "Paused", 1000);
+                        main_alert("alert-info", "Removed", 1000);
+                    } else {
+                        main_alert("alert-error", error.join("<br />"), 3000);
+                    }
+                }
+            );
+        },
+
+        remove_result: function(gids) {
+            if (!$.isArray(gids)) gids = [gids];
+            ARIA2.batch_request("removeDownloadResult", gids,
+                function(result) {
+                    //console.debug(result);
+
+                    var error = new Array();
+                    $.each(result, function(i, n) {
+                        var error_msg = get_error(n);
+                        if (error_msg) error.push(error_msg);
+                    });
+
+                    if (error.length == 0) {
+                        main_alert("alert-info", "Removed", 1000);
+                        ARIA2.tell_stoped();
                     } else {
                         main_alert("alert-error", error.join("<br />"), 3000);
                     }
@@ -397,6 +415,42 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             );
         },
 
+        get_global_option: function() {
+            ARIA2.request("getGlobalOption", [],
+                function(result) {
+                    if (!result.result)
+                        main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+
+                    result = result.result;
+                    $("#aria2-gsetting").empty().append(YAAW.tpl.aria2_global_setting(result));
+                }
+            );
+        },
+
+        init_add_task_option: function() {
+            ARIA2.request("getGlobalOption", [],
+                function(result) {
+                    if (!result.result)
+                        main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+
+                    result = result.result;
+                    result["parameterized-uri"] = (result["parameterized-uri"] == "true" ? true : false)
+                    $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option(result));
+                }
+            );
+        },
+
+        change_global_option: function(options) {
+            ARIA2.request("changeGlobalOption", [options],
+                function(result) {
+                    if (!result.result)
+                        main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+                    else
+                        main_alert("alert-success", "Saved", 2000);
+                }
+            );
+        },
+
         global_stat: function() {
             ARIA2.request("getGlobalStat", [],
                 function(result) {
@@ -416,7 +470,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                             ARIA2.refresh();
                     }
 
-                    $("#global-speed").empty().append($("#global-speed-tpl").mustache(result));
+                    $("#global-speed").empty().append(YAAW.tpl.global_speed(result));
                 }
             );
         },
@@ -428,7 +482,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                         main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
                     }
 
-                    $("#aria2-version").text(result.result.version || "");
+                    $("#global-version").text("Aria2 "+result.result.version || "");
                 }
             );
         },
