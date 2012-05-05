@@ -210,44 +210,42 @@
     </script>
 
     <script id="active-task-tpl" type="text/mustache-template">
-      {{#tasks}}
       <tbody>
-        <tr class="task" id="task-gid-{{gid}}" data-status="{{status}}" data-gid="{{gid}}">
-          <td class="left-area">
-            <div class="task-name">
-              <i class="select-box"></i>
-              <span title="{{title}}">{{title}}</span>
-            </div>
-            <div class="task-info">
-              <span class="task-status" rel="tooltip" title="{{status}}{{#error_msg}}: {{error_msg}}{{/error_msg}}"><i class="{{status_icon}}"></i></span>
-              <span>{{completedLength}} / {{totalLength}}</span>
-              {{#uploadLength}}<span>(uploaded {{uploadLength}})</span>{{/uploadLength}}
-              {{#etc}}<span>ETC: {{etc}}</span>{{/etc}}
-            </div>
-          </td>
-          <td class="right-area">
-            <div class="progress progress-striped active">
-              <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
-            </div>
-            <div class="progress-info">
-              {{#downloadSpeed}}<span class="download-speed"><i class="icon-download"></i> {{downloadSpeed}}/s</span>{{/downloadSpeed}}
-              {{#uploadSpeed}}<span class="upload-speed"><i class="icon-upload"></i> {{uploadSpeed}}/s</span>{{/uploadSpeed}}
-              {{#connections}}<span class="seeders"><i class="icon-signal" rel="tooltip" title="Connections"></i> {{connections}}</span>{{/connections}}
-              {{#numSeeders}}<span class="seeders"><i class="icon-magnet" rel="tooltip" title="Seeders"></i> {{numSeeders}}</span>{{/numSeeders}}
-            </div>
-          </td>
-        </tr>
-      </tbody>
+      {{#tasks}}
+      <tr class="task" id="task-gid-{{gid}}" data-status="{{status}}" data-gid="{{gid}}">
+        <td class="left-area">
+          <div class="task-name">
+            <i class="select-box"></i>
+            <span title="{{title}}">{{title}}</span>
+          </div>
+          <div class="task-info">
+            <span class="task-status" rel="tooltip" title="{{status}}{{#error_msg}}: {{error_msg}}{{/error_msg}}"><i class="{{status_icon}}"></i></span>
+            <span>{{completedLength}} / {{totalLength}}</span>
+            {{#uploadLength}}<span>(uploaded {{uploadLength}})</span>{{/uploadLength}}
+            {{#etc}}<span>ETC: {{etc}}</span>{{/etc}}
+          </div>
+        </td>
+        <td class="right-area">
+          <div class="progress progress-striped active">
+            <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
+          </div>
+          <div class="progress-info">
+            {{#downloadSpeed}}<span class="download-speed"><i class="icon-download"></i> {{downloadSpeed}}/s</span>{{/downloadSpeed}}
+            {{#uploadSpeed}}<span class="upload-speed"><i class="icon-upload"></i> {{uploadSpeed}}/s</span>{{/uploadSpeed}}
+            {{#connections}}<span class="seeders"><i class="icon-signal" rel="tooltip" title="Connections"></i> {{connections}}</span>{{/connections}}
+            {{#numSeeders}}<span class="seeders"><i class="icon-magnet" rel="tooltip" title="Seeders"></i> {{numSeeders}}</span>{{/numSeeders}}
+          </div>
+        </td>
+      </tr>
       {{/tasks}}
       {{^tasks}}
-      <tbody>
         <tr>
           <td class="empty-tasks">
             <strong>No Active Tasks</strong>
           </td>
         </tr>
-      </tbody>
       {{/tasks}}
+      </tbody>
     </script>
     
     <script id="other-task-tpl" type="text/mustache-template">

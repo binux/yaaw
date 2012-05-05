@@ -229,8 +229,8 @@ var YAAW = (function() {
             pause: function() {
                 var gids = new Array();
                 $(".tasks-table .task.selected").each(function(i, n) {
-                    if (n.getAttribute("data-stauts") == "active" ||
-                        n.getAttribute("data-stauts") == "waiting")
+                    if (n.getAttribute("data-status") == "active" ||
+                        n.getAttribute("data-status") == "waiting")
                         gids.push(n.getAttribute("data-gid"));
                 });
                 if (gids.length) ARIA2.pause(this.getSelectedGids());
@@ -239,8 +239,9 @@ var YAAW = (function() {
             unpause: function() {
                 var gids = new Array();
                 $(".tasks-table .task.selected").each(function(i, n) {
-                    if (n.getAttribute("data-stauts") == "paused")
+                    if (n.getAttribute("data-status") == "paused") {
                         gids.push(n.getAttribute("data-gid"));
+                    }
                 });
                 if (gids.length) ARIA2.unpause(gids);
             },
@@ -250,7 +251,7 @@ var YAAW = (function() {
                 var remove_list = ["active", "waiting", "paused"];
                 var remove_gids = new Array();
                 $(".tasks-table .task.selected").each(function(i, n) {
-                    if (remove_list.indexOf(n.getAttribute("data-stauts")) != -1)
+                    if (remove_list.indexOf(n.getAttribute("data-status")) != -1)
                         remove_gids.push(n.getAttribute("data-gid"));
                     else
                         gids.push(n.getAttribute("data-gid"));

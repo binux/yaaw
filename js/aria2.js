@@ -213,6 +213,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         },
 
         tell_active: function(keys) {
+            if (select_lock) return;
             ARIA2.request("tellActive", keys,
                 function(result) {
                     //console.debug(result);
@@ -264,12 +265,11 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         },
 
         tell_waiting: function(keys) {
+            if (select_lock) return;
             var params = [0, 1000];
             if (keys) params.push(keys);
             ARIA2.request("tellWaiting", params,
                 function(result) {
-                    console.debug(result);
-
                     if (select_lock) return;
                     if (!result.result) {
                         main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
@@ -286,17 +286,18 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         },
 
         tell_stoped: function(keys) {
+            if (select_lock) return;
             var params = [0, 1000];
             if (keys) params.push(keys);
             ARIA2.request("tellStopped", params,
                 function(result) {
                     //console.debug(result);
 
-                    if (select_lock) return;
                     if (!result.result) {
                         main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
                     }
 
+                    if (select_lock) return;
                     result = ARIA2.status_fix(result.result);
                     $("#stoped-tasks-table tbody").empty().append(YAAW.tpl.other_task({"tasks": result}));
                     bind_event($("#stoped-tasks-table"))
@@ -349,6 +350,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
                     if (error.length == 0) {
                         main_alert("alert-info", "Paused", 1000);
+                        ARIA2.refresh();
                     } else {
                         main_alert("alert-error", error.join("<br />"), 3000);
                     }
@@ -370,6 +372,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
                     if (error.length == 0) {
                         main_alert("alert-info", "Started", 1000);
+                        ARIA2.refresh();
                     } else {
                         main_alert("alert-error", error.join("<br />"), 3000);
                     }
@@ -391,6 +394,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
                     if (error.length == 0) {
                         main_alert("alert-info", "Removed", 1000);
+                        ARIA2.refresh();
                     } else {
                         main_alert("alert-error", error.join("<br />"), 3000);
                     }
@@ -526,10 +530,12 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         },
 
         refresh: function() {
-            need_refresh = false;
-            ARIA2.tell_active();
-            ARIA2.tell_waiting();
-            ARIA2.tell_stoped();
+            if (!select_lock) {
+                need_refresh = false;
+                ARIA2.tell_active();
+                ARIA2.tell_waiting();
+                ARIA2.tell_stoped();
+            }
         },
 
         select_lock: function (bool) {
