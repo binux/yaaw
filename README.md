@@ -1,4 +1,4 @@
-yaaw
+YAAW
 ====
 
 Yet Another Aria2 Web Frontend in pure HTML/CSS/Javascirpt.
@@ -9,9 +9,9 @@ No HTTP server, backend or server-side program. All you need is just a browser.
 Usage
 -----
 1. run aria2 with RPC enabled
-> aria2c --enable-rpc --rpc-listen-all=true  --rpc-allow-origin-all -c -D
->
-> Warning: This options will not verify the identity of caller. KEEP THE ADDRESS SECRET.
+```aria2c --enable-rpc --rpc-listen-all=true  --rpc-allow-origin-all -c -D
+
+Warning: This options will not verify the identity of caller. KEEP THE ADDRESS SECRET.```
 
 2. visit index.html.
 

@@ -159,6 +159,11 @@ tr.task.selected {
 }
 
 /* add task modal */
+#add-task-modal .modal-body.hover {
+    padding: 13px;
+    border: 2px solid #666;
+}
+
 #add-task-uri {
     padding: 10px 19px;
     margin: 0 0 10px;
@@ -166,8 +171,20 @@ tr.task.selected {
 #uri-input {
     width: 370px; 
 }
-#torrent-upload-btn {
+
+#torrent-up-input {
+    position: absolute;
+    text-align: right;
+    height: 28px;
+    width: 106px;
+    -moz-opacity: 0;
+    filter: alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
 }
+#torrent-up-btn {
+}
+
 #add-task-alert {
     position: relative;
     top: 5px;

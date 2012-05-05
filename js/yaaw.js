@@ -1,31 +1,13 @@
 var YAAW = (function() {
     var selected_tasks = false;
     var on_gid = null;
+    var torrent_file = null, file_type = null;
     return {
         init: function() {
             this.tpl.init();
             this.setting.init();
             this.contextmenu.init();
-
-            $("[rel=tooltip]").tooltip({"placement": "bottom"});
-
-            $(".task").live("click", function() {
-                YAAW.tasks.toggle(this);
-                YAAW.tasks.check_select();
-            })
-
-            $("#refresh-btn").click(this.refresh_btn);
-            $("#select-all-btn").click(function() {
-                if (selected_tasks) {
-                    YAAW.tasks.unSelectAll();
-                } else {
-                    YAAW.tasks.selectAll();
-                }
-            });
-
-            $("#setting-modal").on("show", function() {
-                ARIA2.get_global_option();
-            });
+            this.event_init();
 
             ARIA2.init(this.setting.jsonrpc_path);
             if (YAAW.setting.add_task_option) {
@@ -38,24 +20,59 @@ var YAAW = (function() {
             ARIA2.get_version();
         },
 
-        add_task_uri_submit: function(_this) {
-            var uri = $("#uri-input").val();
-            var options = {};
-            $("#add-task-option input[name]").each(function(i, n) {
-                var name = n.getAttribute("name");
-                var value = (n.type == "checkbox" ? n.checked : n.value);
-                if (name && value)
-                    options[name] = String(value);
-            });
-            YAAW.setting.save_add_task_option(options);
-            ARIA2.add_task(uri, options);
-        },
+        event_init: function() {
+            $("[rel=tooltip]").tooltip({"placement": "bottom"});
 
-        refresh_btn: function() {
-            YAAW.tasks.unSelectAll();
-            $("#main-alert").hide();
-            ARIA2.refresh();
-            return false;
+            $(".task").live("click", function() {
+                YAAW.tasks.toggle(this);
+                YAAW.tasks.check_select();
+            })
+
+            $("#refresh-btn").click(function() {
+                YAAW.tasks.unSelectAll();
+                $("#main-alert").hide();
+                ARIA2.refresh();
+                return false;
+            });
+
+            $("#select-all-btn").click(function() {
+                if (selected_tasks) {
+                    YAAW.tasks.unSelectAll();
+                } else {
+                    YAAW.tasks.selectAll();
+                }
+            });
+
+            $("#setting-modal").on("show", function() {
+                ARIA2.get_global_option();
+            });
+
+            if (window.FileReader) {
+                var holder = $("#add-task-modal .modal-body").get(0);
+                holder.ondragover = function() {
+                    $(this).addClass("hover");
+                    return false;
+                }
+                holder.ondragend = function() {
+                    $(this).removeClass("hover");
+                    return false;
+                }
+                holder.ondrop = function(e) {
+                    $(this).removeClass("hover");
+
+                    var file = e.dataTransfer.files[0];
+                    YAAW.add_task.upload(file);
+                }
+
+                var tup = $("#torrent-up-input").get(0);
+                tup.onchange = function(e) {
+                    var file = e.target.files[0];
+                    YAAW.add_task.upload(file);
+                }
+            } else {
+                $("#torrent-up-input").remove();
+                $("#torrent-up-btn").attr("disabled", true);
+            }
         },
 
         tpl: {
@@ -66,6 +83,47 @@ var YAAW = (function() {
                 this.other_task_empty = Mustache.compile($("#other-task-empty").text());
                 this.aria2_global_setting = Mustache.compile($("#aria2-global-setting-tpl").text());
                 this.add_task_option = Mustache.compile($("#add-task-option-tpl").text());
+            },
+        },
+
+        add_task: {
+            submit: function(_this) {
+                var uri = $("#uri-input").val();
+                var options = {};
+                $("#add-task-option input[name]").each(function(i, n) {
+                    var name = n.getAttribute("name");
+                    var value = (n.type == "checkbox" ? n.checked : n.value);
+                    if (name && value)
+                        options[name] = String(value);
+                });
+                YAAW.setting.save_add_task_option(options);
+                if (uri) {
+                    ARIA2.add_task(uri, options);
+                } else if (torrent_file) {
+                    if (file_type.indexOf("metalink") != -1) {
+                        ARIA2.add_metalink(torrent_file, options);
+                    } else {
+                        ARIA2.add_torrent(torrent_file, options);
+                    }
+                }
+            },
+            
+            clean: function() {
+                $("#uri-input").attr("placeholder", "HTTP, FTP or Magnet");
+                $("#add-task-modal input.input-clear").val("");
+                $("#add-task-alert").hide();
+                torrent_file = null;
+                file_type = null;
+            },
+
+            upload: function(file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $("#uri-input").attr("placeholder", file.name);
+                    torrent_file = e.target.result.replace(/.*?base64,/, "");
+                    file_type = file.type;
+                }
+                reader.readAsDataURL(file);
             },
         },
 

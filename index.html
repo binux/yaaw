@@ -144,16 +144,16 @@
         <a href="###" onclick="$('#add-task-alert').hide();" class="close">×</a>
         <strong>Error:</strong> <span class="alert-msg"></span>
       </div>
-      <form id="add-task-uri" onsubmit="YAAW.add_task_uri_submit(this);return false;">
+      <form id="add-task-uri" onsubmit="YAAW.add_task.submit(this);return false;">
         <div class="input-append">
-          <input type="text" name="uri" id="uri-input" class="input-clear" placeholder="HTTP, FTP or Magnet" /><button type="button" id="torrent-upload-btn" class="btn">Upload Torrent</button>
+          <input type="text" name="uri" id="uri-input" class="input-clear" placeholder="HTTP, FTP or Magnet" /><span><input type="file" id="torrent-up-input" /><a id="torrent-up-btn" class="btn" rel="tooltip" title="File API is Not Supported.">Upload Torrent</a></span>
         </div>
       </form>
       <div id="add-task-option-wrap"></div>
     </div>
     <div class="modal-footer">
       <a href="###" onclick="$('#add-task-uri').submit();" id="add-task-submit" class="btn btn-primary">Add</a>
-      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+      <a href="###" onclick="YAAW.add_task.clean();" class="btn" data-dismiss="modal">Cancel</a>
     </div>
     </section>
 
@@ -407,6 +407,7 @@
     <script src="js/jquery.jsonrpc.js"></script>
     <script src="js/jquery.Storage.js"></script>
     <script src="js/mustache.js"></script>
+    <script src="js/base64.js"></script>
     <script src="js/aria2.js"></script>
     <script src="js/yaaw.js"></script>
   </body>

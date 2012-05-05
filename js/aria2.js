@@ -160,8 +160,49 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     //console.debug(result);
                     ARIA2.refresh();
                     $("#add-task-modal").modal('hide');
-                    $("#add-task-modal input.input-clear").val("");
-                    $("#add-task-alert").modal('hide');
+                    YAAW.add_task.clean();
+                }, 
+                function(result) {
+                    //console.debug(result);
+
+                    var error_msg = get_error(result);
+
+                    $("#add-task-alert .alert-msg").text(error_msg);
+                    $("#add-task-alert").show();
+                    console.warn("add task error: "+error_msg);
+                });
+        },
+
+        add_torrent: function(torrent, options) {
+            if (!torrent) return false;
+            if (!options) options = {};
+            ARIA2.request("addTorrent", [torrent, [], options],
+                function(result) {
+                    //console.debug(result);
+                    ARIA2.refresh();
+                    $("#add-task-modal").modal('hide');
+                    YAAW.add_task.clean();
+                }, 
+                function(result) {
+                    //console.debug(result);
+
+                    var error_msg = get_error(result);
+
+                    $("#add-task-alert .alert-msg").text(error_msg);
+                    $("#add-task-alert").show();
+                    console.warn("add task error: "+error_msg);
+                });
+        },
+
+        add_metalink: function(metalink, options) {
+            if (!metalink) return false;
+            if (!options) options = {};
+            ARIA2.request("addMetalink", [metalink, [], options],
+                function(result) {
+                    //console.debug(result);
+                    ARIA2.refresh();
+                    $("#add-task-modal").modal('hide');
+                    YAAW.add_task.clean();
                 }, 
                 function(result) {
                     //console.debug(result);
