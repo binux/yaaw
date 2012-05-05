@@ -83,6 +83,7 @@ td.empty-tasks {
     margin-bottom: 0;
 }
 #stoped-tasks-table {
+    border-top: 0;
     margin-top: -1px;
 }
 
@@ -90,6 +91,7 @@ td.empty-tasks {
 .tasks-table {
     margin-top: 10px;
 }
+
 tr.task.selected {
     background-color: #F9F9F9;
 }
@@ -102,11 +104,11 @@ tr.task.selected {
 }
 
 .task .task-name {
+    cursor: pointer;
     width: 630px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    cursor: pointer;
 }
 .task .task-name .select-box {
     vertical-align: -15%;

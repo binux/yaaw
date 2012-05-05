@@ -29,18 +29,17 @@ var YAAW = (function() {
 
             ARIA2.init(this.setting.jsonrpc_path);
             if (YAAW.setting.add_task_option) {
-                console.log(YAAW.setting.add_task_option);
                 $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option(YAAW.setting.add_task_option));
             } else {
                 ARIA2.init_add_task_option();
             }
-            ARIA2.get_version();
             ARIA2.refresh();
             ARIA2.auto_refresh(this.setting.refresh_interval);
+            ARIA2.get_version();
         },
 
         add_task_uri_submit: function(_this) {
-            var uri = $("#add-task-uri").val();
+            var uri = $("#uri-input").val();
             var options = {};
             $("#add-task-option input[name]").each(function(i, n) {
                 var name = n.getAttribute("name");

@@ -160,7 +160,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     //console.debug(result);
                     ARIA2.refresh();
                     $("#add-task-modal").modal('hide');
-                    $("#add-task-modal .input-clear").val("");
+                    $("#add-task-modal input.input-clear").val("");
                     $("#add-task-alert").modal('hide');
                 }, 
                 function(result) {
@@ -238,11 +238,11 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     }
 
                     result = ARIA2.status_fix(result.result);
-                    $("#waiting-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result}));
+                    $("#waiting-tasks-table tbody").empty().append(YAAW.tpl.other_task({"tasks": result}));
                     bind_event($("#waiting-tasks-table"))
 
                     if ($("#other-tasks .task").length == 0)
-                        $("#waiting-tasks-table").append($("#other-task-empty").text())
+                        $("#waiting-tasks-table tbody").append($("#other-task-empty").text())
                 }
             );
         },
@@ -260,12 +260,12 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     }
 
                     result = ARIA2.status_fix(result.result);
-                    $("#stoped-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result}));
+                    $("#stoped-tasks-table tbody").empty().append(YAAW.tpl.other_task({"tasks": result}));
                     bind_event($("#stoped-tasks-table"))
 
                     if ($("#waiting-tasks-table .empty-tasks").length > 0 &&
                         $("#stoped-tasks-table .task").length > 0) {
-                            $("#waiting-tasks-table").empty();
+                            $("#waiting-tasks-table tbody").empty();
                         }
 
                 }
