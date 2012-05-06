@@ -214,6 +214,9 @@
 }
 
 /* add task modal */
+#add-task-modal {
+    overflow-x: hidden;
+}
 #add-task-modal .modal-body.hover {
     padding: 13px;
     border: 2px solid #666;

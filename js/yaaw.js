@@ -59,9 +59,11 @@ var YAAW = (function() {
                 }
                 holder.ondrop = function(e) {
                     $(this).removeClass("hover");
+                    e.preventDefault();
 
                     var file = e.dataTransfer.files[0];
                     YAAW.add_task.upload(file);
+                    return false;
                 }
 
                 var tup = $("#torrent-up-input").get(0);
