@@ -1,0 +1,273 @@
+/* vim: set et sw=4 ts=4 sts=4 fdm=marker ff=unix fenc=utf8: */ 
+
+/* header */
+.main-head {
+    position: relative;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #C6C6C6;
+}
+
+#main-alert {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+#main-alert-inline {
+    display: inline-block;
+    text-align: left;
+    position: relative;
+    top: -10px;
+    z-index: 99;
+}
+
+#global-info {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+#global-version {
+    text-align: right;
+}
+
+/* main-control */
+#main-control {
+    margin-top: 10px;
+}
+
+#select-btn {
+    margin-right: 30px;
+}
+.select-box {
+    display: inline-block;
+    vertical-align: text-top;
+    border: 1px solid #C6C6C6;
+    border: 1px solid rgba(155, 155, 155, .57);
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+}
+
+#do-all-btn {
+    margin-left: 10px;
+}
+
+#info-btn {
+    margin-left: 10px;
+}
+
+#other-grp {
+}
+
+/* active-tasks */
+#active-tasks {
+    margin-top: 40px;
+}
+.empty-tasks {
+    text-align: center;
+    padding: 8px;
+}
+.section-header {
+    font-size: 16px;
+}
+.section-header i {
+    margin-right: 5px;
+    vertical-align: baseline;
+}
+
+/* other-tasks */
+#other-tasks {
+    margin-top: 40px;
+}
+#waiting-tasks-table {
+    margin-bottom: 0;
+}
+#stoped-tasks-table {
+    border-top: 0;
+}
+
+/* tasks */
+.tasks-table {
+    margin: 0;
+    margin-top: 10px;
+}
+
+.task.selected {
+    background-color: #F9F9F9;
+}
+.tasks-table li {
+    display: block;
+    position: relative;
+    margin-top: -1px;
+    border-top: 1px solid #DDD;
+    border-bottom: 1px solid #DDD;
+    line-height: 18px;
+    text-align: left;
+    vertical-align: top;
+}
+.tasks-table li:hover {
+    background-color: #f5f5f5;
+}
+
+.left-area {
+    padding: 8px;
+}
+.right-area {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 8px;
+}
+
+.task .task-name {
+    margin-right: 20px;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.task .task-name .select-box {
+    vertical-align: -15%;
+}
+.task:hover .select-box {
+    border-color: #666;
+}
+.task .task-name span {
+    margin-left: 3px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.task .task-info span {
+    margin-right: 8px;
+}
+
+.task .task-info,
+.task .progress-info {
+    margin-top: 4px;
+}
+.task .progress {
+    margin: 1px 0;
+}
+
+.task .download-speed,
+.task .upload-speed,
+.task .seeders {
+    margin-right: 8px;
+}
+
+#other-tasks .task-info {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+@media (min-width: 980px) {
+    #active-tasks .left-area {
+        padding-right: 286px;
+    }
+    #active-tasks .right-area {
+        width: 270px;
+    }
+
+    #other-tasks .left-area {
+        padding-right: 416px;
+    }
+    #other-tasks .right-area {
+        width: 400px;
+    }
+    #other-tasks .task-info {
+        width: 190px;
+    }
+    #other-tasks .progress {
+        width: 200px;
+    }
+}
+
+@media (max-width: 980px) {
+    #active-tasks .left-area {
+        padding-right: 186px;
+    }
+    #active-tasks .right-area {
+        width: 170px;
+    }
+
+    #other-tasks .left-area {
+        padding-right: 246px;
+    }
+    #other-tasks .right-area {
+        width: 230px;
+    }
+    #other-tasks .task-info {
+        width: 120px;
+    }
+    #other-tasks .progress {
+        width: 100px;
+    }
+}
+
+/* task-contextmenu */
+
+#task-contextmenu {
+    position: fixed;
+    z-index: 99;
+}
+
+/* add task modal */
+#add-task-modal .modal-body.hover {
+    padding: 13px;
+    border: 2px solid #666;
+}
+
+#add-task-uri {
+    padding: 10px 19px;
+    margin: 0 0 10px;
+}
+#uri-input {
+    width: 370px; 
+}
+
+#torrent-up-input {
+    position: absolute;
+    text-align: right;
+    height: 28px;
+    width: 106px;
+    -moz-opacity: 0;
+    filter: alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+}
+#torrent-up-btn {
+}
+
+#add-task-alert {
+    position: relative;
+    top: 5px;
+}
+#add-task-option .half {
+    float: left;
+    width: 240px;
+    margin-left: 10px;
+}
+#add-task-option .control-label {
+    width: 70px;
+}
+#add-task-option .controls {
+    margin-left: 90px;
+}
+
+/* aria2 global setting */
+#copyright {
+    margin-top: 10px;
+    float: left;
+}
+#aria2-gs-form .half {
+    float: left;
+    width: 240px;
+    margin-left: 10px;
+}
+#aria2-gs-form .half .control-label {
+    width: 110px;
+}
+#aria2-gs-form .half .controls {
+    margin-left: 130px;
+}
