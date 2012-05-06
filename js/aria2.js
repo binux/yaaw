@@ -299,7 +299,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
                     if (select_lock) return;
                     result = ARIA2.status_fix(result.result);
-                    $("#stoped-tasks-table tbody").empty().append(YAAW.tpl.other_task({"tasks": result}));
+                    $("#stoped-tasks-table tbody").empty().append(YAAW.tpl.other_task({"tasks": result.reverse()}));
                     bind_event($("#stoped-tasks-table"))
 
                     if ($("#waiting-tasks-table .empty-tasks").length > 0 &&
