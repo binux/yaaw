@@ -97,32 +97,27 @@
       <div class="section-header">
         <i class="icon-chevron-down"></i><b>Active Tasks</b>
       </div>
-      <table class="tasks-table table" id="active-tasks-table">
-        <tr class="task">
-          <td class="empty-tasks">
+      <ul class="tasks-table" id="active-tasks-table">
+        <li>
+          <div class="empty-tasks">
             <strong>No Active Tasks</strong>
-          </td>
-        </tr>
-      </table>
+          </div>
+        </li>
+      </ul>
       </section>
 
       <section id="other-tasks">
       <div class="section-header">
         <i class="icon-chevron-down"></i><b>Other Tasks</b>
       </div>
-      <table id="waiting-tasks-table" class="tasks-table table">
-        <tbody>
-          <tr class="task">
-            <td class="empty-tasks">
-              <strong>No Tasks</strong>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <table id="stoped-tasks-table" class="tasks-table table">
-        <tbody>
-        </tbody>
-      </table>
+      <ul id="waiting-tasks-table" class="tasks-table">
+        <li>
+          <div class="empty-tasks">
+            <strong>No Tasks</strong>
+          </div>
+        </li>
+      </ul>
+      <ul id="stoped-tasks-table" class="tasks-table"> </ul>
       </section>
     </div>
 
@@ -210,10 +205,9 @@
     </script>
 
     <script id="active-task-tpl" type="text/mustache-template">
-      <tbody>
       {{#tasks}}
-      <tr class="task" id="task-gid-{{gid}}" data-status="{{status}}" data-gid="{{gid}}">
-        <td class="left-area">
+      <li class="task" id="task-gid-{{gid}}" data-status="{{status}}" data-gid="{{gid}}">
+        <div class="left-area">
           <div class="task-name">
             <i class="select-box"></i>
             <span title="{{title}}">{{title}}</span>
@@ -224,8 +218,8 @@
             {{#uploadLength}}<span>(uploaded {{uploadLength}})</span>{{/uploadLength}}
             {{#etc}}<span>ETC: {{etc}}</span>{{/etc}}
           </div>
-        </td>
-        <td class="right-area">
+        </div>
+        <div class="right-area">
           <div class="progress progress-striped active">
             <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
           </div>
@@ -235,48 +229,47 @@
             {{#connections}}<span class="seeders"><i class="icon-signal" rel="tooltip" title="Connections"></i> {{connections}}</span>{{/connections}}
             {{#numSeeders}}<span class="seeders"><i class="icon-magnet" rel="tooltip" title="Seeders"></i> {{numSeeders}}</span>{{/numSeeders}}
           </div>
-        </td>
-      </tr>
+        </div>
+      </li>
       {{/tasks}}
       {{^tasks}}
-        <tr>
-          <td class="empty-tasks">
-            <strong>No Active Tasks</strong>
-          </td>
-        </tr>
+      <li>
+        <div class="empty-tasks">
+          <strong>No Active Tasks</strong>
+        </div>
+      </li>
       {{/tasks}}
-      </tbody>
     </script>
     
     <script id="other-task-tpl" type="text/mustache-template">
       {{#tasks}}
-        <tr class="task" id="task-gid-{{gid}}" data-status="{{status}}" data-gid="{{gid}}">
-          <td class="left-area">
-            <div class="task-name">
-              <i class="select-box"></i>
-              <span title="{{title}}">{{title}}</span>
-            </div>
-          </td>
-          <td class="right-area">
-            <div class="task-info pull-left">
-              <span class="task-status" rel="tooltip" title="{{status}}{{#error_msg}}: {{error_msg}}{{/error_msg}}"><i class="{{status_icon}}"></i></span>
-              <span>{{totalLength}}</span>
-              {{#uploadLength}}<span>(uploaded {{uploadLength}}){{/uploadLength}}
-            </div>
-            <div class="progress progress-striped pull-right">
-              <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
-            </div>
-          </td>
-        </tr>
+      <li class="task" id="task-gid-{{gid}}" data-status="{{status}}" data-gid="{{gid}}">
+        <div class="left-area">
+          <div class="task-name">
+            <i class="select-box"></i>
+            <span title="{{title}}">{{title}}</span>
+          </div>
+        </div>
+        <div class="right-area">
+          <div class="task-info pull-left">
+            <span class="task-status" rel="tooltip" title="{{status}}{{#error_msg}}: {{error_msg}}{{/error_msg}}"><i class="{{status_icon}}"></i></span>
+            <span>{{totalLength}}</span>
+            {{#uploadLength}}<span>(up {{uploadLength}}){{/uploadLength}}
+          </div>
+          <div class="progress progress-striped pull-right">
+            <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
+          </div>
+        </div>
+      </div>
       {{/tasks}}
     </script>
 
     <script id="other-task-empty" type="text/mustache-template">
-        <tr>
-          <td class="empty-tasks">
-            <strong>No Tasks</strong>
-          </td>
-        </tr>
+      <li>
+        <div class="empty-tasks">
+          <strong>No Tasks</strong>
+        </div>
+      </li>
     </script>
 
     <script id="add-task-option-tpl" type="text/mustache-template">

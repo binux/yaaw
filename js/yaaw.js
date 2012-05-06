@@ -134,7 +134,7 @@ var YAAW = (function() {
                   ARIA2.select_lock(false);
                   selected_tasks = false;
                   $("#select-btn .select-box").removeClass("icon-minus icon-ok");
-                } else if (selected.length < $(".tasks-table tr.task").length) {
+                } else if (selected.length < $(".tasks-table .task").length) {
                   ARIA2.select_lock(true);
                   selected_tasks = true;
                   $("#select-btn .select-box").removeClass("icon-ok").addClass("icon-minus");

@@ -276,11 +276,11 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     }
 
                     result = ARIA2.status_fix(result.result);
-                    $("#waiting-tasks-table tbody").empty().append(YAAW.tpl.other_task({"tasks": result}));
+                    $("#waiting-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result}));
                     bind_event($("#waiting-tasks-table"))
 
                     if ($("#other-tasks .task").length == 0)
-                        $("#waiting-tasks-table tbody").append($("#other-task-empty").text())
+                        $("#waiting-tasks-table").append($("#other-task-empty").text())
                 }
             );
         },
@@ -299,12 +299,12 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
                     if (select_lock) return;
                     result = ARIA2.status_fix(result.result);
-                    $("#stoped-tasks-table tbody").empty().append(YAAW.tpl.other_task({"tasks": result.reverse()}));
+                    $("#stoped-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result.reverse()}));
                     bind_event($("#stoped-tasks-table"))
 
                     if ($("#waiting-tasks-table .empty-tasks").length > 0 &&
                         $("#stoped-tasks-table .task").length > 0) {
-                            $("#waiting-tasks-table tbody").empty();
+                            $("#waiting-tasks-table").empty();
                         }
 
                 }
