@@ -84,6 +84,7 @@
 }
 #stoped-tasks-table {
     border-top: 0;
+    margin-top: 0;
 }
 
 /* tasks */
