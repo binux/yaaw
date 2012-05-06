@@ -35,7 +35,7 @@ Components
 
 License
 -------
-yaaw is licensed under GUN Lesser General Public License.
-You may get a copy of the GUN Lesser General Public License from http://www.gnu.org/licenses/lgpl.txt
+yaaw is licensed under GNU Lesser General Public License.
+You may get a copy of the GNU Lesser General Public License from http://www.gnu.org/licenses/lgpl.txt
 
 
