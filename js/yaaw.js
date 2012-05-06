@@ -351,7 +351,9 @@ var YAAW = (function() {
                     this.jsonrpc_path = _jsonrpc_path;
                     ARIA2.init(this.jsonrpc_path);
                     ARIA2.get_version();
-                    YAAW.refresh_btn();
+                    YAAW.tasks.unSelectAll();
+                    $("#main-alert").hide();
+                    ARIA2.refresh();
                     changed = true;
                 }
                 if (_refresh_interval != undefined && this.refresh_interval != _refresh_interval) {
