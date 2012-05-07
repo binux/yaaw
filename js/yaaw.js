@@ -94,14 +94,18 @@ var YAAW = (function() {
         add_task: {
             submit: function(_this) {
                 var uri = $("#uri-input").val();
-                var options = {};
+                var options = {}, options_save = {};
                 $("#add-task-option input[name]").each(function(i, n) {
                     var name = n.getAttribute("name");
                     var value = (n.type == "checkbox" ? n.checked : n.value);
-                    if (name && value)
+                    if (name && value) {
                         options[name] = String(value);
+                        if ($(n).hasClass("input-save")) {
+                            options_save[name] = String(value);
+                        }
+                    }
                 });
-                YAAW.setting.save_add_task_option(options);
+
                 if (uri) {
                     ARIA2.add_task(uri, options);
                 } else if (torrent_file) {
@@ -111,6 +115,7 @@ var YAAW = (function() {
                         ARIA2.add_torrent(torrent_file, options);
                     }
                 }
+                YAAW.setting.save_add_task_option(options_save);
             },
             
             clean: function() {
