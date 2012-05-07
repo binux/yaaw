@@ -57,17 +57,18 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         return title;
     }
     var format_text = ["B", "KB", "MB", "GB", "TB", ];
-    function format_size(size) {
+    function format_size(size, fixed) {
+        if (fixed == undefined) fixed = 2;
         size = parseInt(size);
         var i = 0;
-        while (size > 1024) {
+        while (size >= 1024) {
             size /= 1024;
             i++;
         }
         if (size==0) {
             return size;
         } else {
-            return size.toFixed(2)+" "+format_text[i];
+            return size.toFixed(fixed)+" "+format_text[i];
         }
     }
     var time_interval = [60, 60, 24];
@@ -464,6 +465,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                         main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
 
                     result = result.result;
+                    result["min-split-size"] = format_size(result["min-split-size"], 0);
                     $("#aria2-gsetting").empty().append(YAAW.tpl.aria2_global_setting(result));
                 }
             );

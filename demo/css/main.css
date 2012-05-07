@@ -247,6 +247,13 @@
     position: relative;
     top: 5px;
 }
+
+#add-task-option {
+    padding-left: 20px;
+}
+#add-task-option .input-xlarge {
+    width: 350px;
+}
 #add-task-option .half {
     float: left;
     width: 240px;
@@ -263,6 +270,9 @@
 #copyright {
     margin-top: 10px;
     float: left;
+}
+#aria2-gs-form .input-xlarge {
+    width: 320px;
 }
 #aria2-gs-form .half {
     float: left;

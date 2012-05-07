@@ -282,11 +282,12 @@
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label" for="ati-header">Header</label>
+          <label class="control-label" for="ati-dir">Dir</label>
           <div class="controls">
-            <input id="ati-header" class="input-xlarge" name="header" value="{{header}}"/>
+            <input id="ati-dir" class="input-xlarge input-clear" name="dir" />
           </div>
         </div>
+        <div class="clearfix"></div>
         <div class="control-group half">
           <div class="controls">
             <label class="checkbox">
@@ -328,6 +329,13 @@
             <input id="ati-st" class="input-small" name="seed-time" value="{{seed-time}}" />
           </div>
         </div>
+        <div class="clearfix"></div>
+        <div class="control-group">
+          <label class="control-label" for="ati-header">Header</label>
+          <div class="controls">
+            <input id="ati-header" class="input-xlarge" name="header" value="{{header}}" />
+          </div>
+        </div>
       </form>
     </script>
 
@@ -337,49 +345,25 @@
         <div class="control-group half">
           <label class="control-label" for="gsi-dl">Download Limit</label>
           <div class="controls">
-            <input id="gsi-dl" name="max-overall-download-limit" class="input-small" value="{{max-overall-download-limit}}"/>
+            <input id="gsi-dl" name="max-overall-download-limit" class="input-small" value="{{max-overall-download-limit}}" />
           </div>
         </div>
         <div class="control-group half">
           <label class="control-label" for="gsi-ul">Upload Limit</label>
           <div class="controls">
-            <input id="gsi-ul" name="max-overall-upload-limit" class="input-small" value="{{max-overall-upload-limit}}"/>
+            <input id="gsi-ul" name="max-overall-upload-limit" class="input-small" value="{{max-overall-upload-limit}}" />
           </div>
         </div>
         <div class="control-group half">
           <label class="control-label" for="gsi-cd">Concurrent Downs</label>
           <div class="controls">
-            <input id="gsi-cd" name="max-concurrent-downloads" class="input-small" value="{{max-concurrent-downloads}}"/>
-          </div>
-        </div>
-        <div class="control-group half">
-          <label class="control-label" for="gsi-cps">Conn per Server</label>
-          <div class="controls">
-            <input id="gsi-cps" name="max-connection-per-server" class="input-small" value="{{max-connection-per-server}}"/>
-          </div>
-        </div>
-        <div class="control-group half">
-          <label class="control-label" for="gsi-split">Split</label>
-          <div class="controls">
-            <input id="gsi-split" name="split" class="input-small" value="{{split}}"/>
+            <input id="gsi-cd" name="max-concurrent-downloads" class="input-small" value="{{max-concurrent-downloads}}" />
           </div>
         </div>
         <div class="control-group half">
           <label class="control-label" for="gsi-mss">Min Split Size</label>
           <div class="controls">
-            <input id="gsi-mss" name="min-split-size" class="input-small" value="{{min-split-size}}"/>
-          </div>
-        </div>
-        <div class="control-group half">
-          <label class="control-label" for="gsi-sr">Seed Ratio</label>
-          <div class="controls">
-            <input id="gsi-sr" name="seed-ratio" class="input-small" value="{{seed-ratio}}"/>
-          </div>
-        </div>
-        <div class="control-group half">
-          <label class="control-label" for="gsi-st">Seed Time</label>
-          <div class="controls">
-            <input id="gsi-st" name="seed-time" class="input-small" value="{{seed-time}}"/>
+            <input id="gsi-mss" name="min-split-size" class="input-small" value="{{min-split-size}}" />
           </div>
         </div>
         <div class="clearfix"></div>
@@ -387,7 +371,13 @@
         <div class="control-group">
           <label class="control-label" for="gsi-ua">User Agent</label>
           <div class="controls">
-            <input id="gsi-ua" name="user-agent" class="input-xlarge" value="{{user-agent}}"/>
+            <input id="gsi-ua" name="user-agent" class="input-xlarge" value="{{user-agent}}" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="gsi-dir">Base Dir</label>
+          <div class="controls">
+            <input id="gsi-dir" name="dir" class="input-xlarge" value="{{dir}}" disabled />
           </div>
         </div>
       </form>
@@ -400,16 +390,6 @@
     <script src="js/mustache.js"></script>
     <script src="js/aria2.js"></script>
     <script src="js/yaaw.js"></script>
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-8625344-7");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
   </body>
 </html>
 <!-- vim: set et sw=2 ts=2 sts=2 ff=unix fenc=utf8: -->
