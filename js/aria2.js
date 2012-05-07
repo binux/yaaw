@@ -1,3 +1,23 @@
+/* 
+ * Copyright (C) 2012 Binux <17175297.hk@gmail.com>
+ *
+ * This file is part of YAAW (https://github.com/binux/yaaw).
+ *
+ * YAAW is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * YAAW is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You may get a copy of the GNU Lesser General Public License
+ * from http://www.gnu.org/licenses/lgpl.txt
+ *
+ */
+
 if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     var jsonrpc_interface, interval_id;
     var active_tasks_snapshot="", tasks_cnt_snapshot="", select_lock=false, need_refresh=false;
