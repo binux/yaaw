@@ -61,7 +61,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         if (fixed == undefined) fixed = 2;
         size = parseInt(size);
         var i = 0;
-        while (size > 1024) {
+        while (size >= 1024) {
             size /= 1024;
             i++;
         }
