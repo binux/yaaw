@@ -8,7 +8,10 @@ var YAAW = (function() {
             this.setting.init();
             this.contextmenu.init();
             this.event_init();
+            this.aria2_init();
+        },
 
+        aria2_init: function() {
             ARIA2.init(this.setting.jsonrpc_path);
             if (YAAW.setting.add_task_option) {
                 $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option(YAAW.setting.add_task_option));
@@ -351,11 +354,9 @@ var YAAW = (function() {
                 var changed = false;
                 if (_jsonrpc_path != undefined && this.jsonrpc_path != _jsonrpc_path) {
                     this.jsonrpc_path = _jsonrpc_path;
-                    ARIA2.init(this.jsonrpc_path);
-                    ARIA2.get_version();
                     YAAW.tasks.unSelectAll();
                     $("#main-alert").hide();
-                    ARIA2.refresh();
+                    YAAW.aria2_init();
                     changed = true;
                 }
                 if (_refresh_interval != undefined && this.refresh_interval != _refresh_interval) {
@@ -363,9 +364,9 @@ var YAAW = (function() {
                     ARIA2.auto_refresh(this.refresh_interval);
                     changed = true;
                 }
-
-                if (changed) this.save();
-
+                if (changed) {
+                    this.save();
+                }
 
                 // submit aria2 global setting
                 var options = {};
