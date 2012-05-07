@@ -284,14 +284,14 @@
         <div class="control-group">
           <label class="control-label" for="ati-dir">Dir</label>
           <div class="controls">
-            <input id="ati-dir" class="input-xlarge input-clear" name="dir" />
+            <input id="ati-dir" class="input-xlarge" name="dir" />
           </div>
         </div>
         <div class="clearfix"></div>
         <div class="control-group half">
           <div class="controls">
             <label class="checkbox">
-              <input type="checkbox" name="pause" {{#pause}}checked{{/pause}} />
+              <input type="checkbox" name="pause" class="input-save" {{#pause}}checked{{/pause}} />
               Pause When Added
             </label>
           </div>
@@ -299,7 +299,7 @@
         <div class="control-group half">
           <div class="controls">
             <label class="checkbox">
-              <input type="checkbox" name="parameterized-uri" {{#parameterized-uri}}checked{{/parameterized-uri}} />
+              <input type="checkbox" name="parameterized-uri" class="input-save" {{#parameterized-uri}}checked{{/parameterized-uri}} />
               Parameterized URI
             </label>
           </div>
@@ -308,32 +308,32 @@
         <div class="control-group half">
           <label class="control-label" for="ati-split">Split</label>
           <div class="controls">
-            <input id="ati-split" class="input-small" name="split" value="{{split}}" />
+            <input id="ati-split" class="input-small input-save" name="split" value="{{split}}" />
           </div>
         </div>
         <div class="control-group half">
           <label class="control-label" for="ati-cps">Conn/Serv</label>
           <div class="controls">
-            <input id="ati-cps" class="input-small" name="max-connection-per-server" value="{{max-connection-per-server}}" />
+            <input id="ati-cps" class="input-small input-save" name="max-connection-per-server" value="{{max-connection-per-server}}" />
           </div>
         </div>
         <div class="control-group half">
           <label class="control-label" for="ati-sr">Seed Ratio</label>
           <div class="controls">
-            <input id="ati-sr" class="input-small" name="seed-ratio" value="{{seed-ratio}}" />
+            <input id="ati-sr" class="input-small input-save" name="seed-ratio" value="{{seed-ratio}}" />
           </div>
         </div>
         <div class="control-group half">
           <label class="control-label" for="ati-st">Seed Time</label>
           <div class="controls">
-            <input id="ati-st" class="input-small" name="seed-time" value="{{seed-time}}" />
+            <input id="ati-st" class="input-small input-save" name="seed-time" value="{{seed-time}}" />
           </div>
         </div>
         <div class="clearfix"></div>
         <div class="control-group">
           <label class="control-label" for="ati-header">Header</label>
           <div class="controls">
-            <input id="ati-header" class="input-xlarge" name="header" value="{{header}}" />
+            <input id="ati-header" class="input-xlarge input-save" name="header" value="{{header}}" />
           </div>
         </div>
       </form>
