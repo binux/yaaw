@@ -31,14 +31,6 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         else if (result.error && result.error.message)
             return result.error.message;
     }
-    var status_icon_map = {
-        active: "icon-download-alt",
-        waiting: "icon-time",
-        paused: "icon-pause",
-        error: "icon-remove",
-        complete: "icon-ok",
-        removed: "icon-trash",
-    };
 
     function default_error(result) {
         //console.debug(result);
@@ -72,86 +64,25 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         else if (result.files.length && result.files[0].uris.length && result.files[0].uris[0].uri)
             title = result.files[0].uris[0].uri;
 
-        if (result.files.length > 1)
-            title += " ("+result.files.length+ " files..)"
+        if (result.files.length > 1) {
+            var cnt = 0;
+            for (var i=0; i<result.files.length; i++) {
+                if (result.files[i].selected == "true")
+                    cnt += 1;
+            }
+            if (cnt > 1)
+                title += " ("+cnt+ " files..)"
+        }
         return title;
     }
-    var format_text = ["B", "KB", "MB", "GB", "TB", ];
-    function format_size(size, fixed) {
-        if (fixed == undefined) fixed = 2;
-        size = parseInt(size);
-        var i = 0;
-        while (size >= 1024) {
-            size /= 1024;
-            i++;
-        }
-        if (size==0) {
-            return size;
-        } else {
-            return size.toFixed(fixed)+" "+format_text[i];
-        }
-    }
-    var time_interval = [60, 60, 24];
-    var time_text = ["s", "m", "h"];
-    function format_time(time) {
-        if (time == Infinity) {
-            return "INF";
-        } else if (time == 0) {
-            return "0s";
-        }
-
-        time = Math.floor(time);
-        var i = 0;
-        var result = "";
-        while (time > 0 && i < 3) {
-            result = time % time_interval[i] + time_text[i] + result;
-            time = Math.floor(time/time_interval[i]);
-            i++;
-        }
-        if (time > 0) {
-            result = time + "d" + result;
-        }
-        return result;
-    }
-    var error_code_map = {
-        0: "",
-        1: "unknown error occurred.",
-        2: "time out occurred.",
-        3: "resource was not found.",
-        4: "resource was not found. See --max-file-not-found option.",
-        5: "resource was not found. See --lowest-speed-limit option.",
-        6: "network problem occurred.",
-        7: "unfinished download.",
-        8: "remote server did not support resume when resume was required to complete download.",
-        9: "there was not enough disk space available.",
-        10: "piece length was different from one in .aria2 control file. See --allow-piece-length-change option.",
-        11: "aria2 was downloading same file at that moment.",
-        12: "aria2 was downloading same info hash torrent at that moment.",
-        13: "file already existed. See --allow-overwrite option.",
-        14: "renaming file failed. See --auto-file-renaming option.",
-        15: "aria2 could not open existing file.",
-        16: "aria2 could not create new file or truncate existing file.",
-        17: "I/O error occurred.",
-        18: "aria2 could not create directory.",
-        19: "name resolution failed.",
-        20: "could not parse Metalink document.",
-        21: "FTP command failed.",
-        22: "HTTP response header was bad or unexpected.",
-        23: "too many redirections occurred.",
-        24: "HTTP authorization failed.",
-        25: "aria2 could not parse bencoded file(usually .torrent file).",
-        26: ".torrent file was corrupted or missing information that aria2 needed.",
-        27: "Magnet URI was bad.",
-        28: "bad/unrecognized option was given or unexpected option argument was given.",
-        29: "the remote server was unable to handle the request due to a temporary overloading or maintenance.",
-        30: "aria2 could not parse JSON-RPC request.",
-    };
 
     return {
         init: function(path) {
             jsonrpc_interface = path || "http://"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
             $.jsonRPC.setup({endPoint: jsonrpc_interface, namespace: 'aria2'});
         },
+
+        main_alert: main_alert,
 
         request: function(method, params, success, error) {
             if (error == undefined)
@@ -336,21 +267,17 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             for (var i=0; i<results.length; i++) {
                 var result = results[i];
 
-                result.status_icon = status_icon_map[result.status];
                 result.title = get_title(result);
                 if (result.totalLength == 0)
                     result.progress = 0;
                 else
                     result.progress = (result.completedLength * 1.0 / result.totalLength * 100).toFixed(2);
-                result.etc = format_time((result.totalLength - result.completedLength)/result.downloadSpeed)
+                result.etc = (result.totalLength - result.completedLength)/result.downloadSpeed;
 
-                result.error_msg = error_code_map[result.errorCode] || "";
-                result.completedLength = format_size(result.completedLength);
-                result.uploadLength = format_size(result.uploadLength);
-                result.totalLength = format_size(result.totalLength);
-                result.uploadSpeed = format_size(result.uploadSpeed);
-                result.downloadSpeed = format_size(result.downloadSpeed);
-
+                result.downloadSpeed = parseInt(result.downloadSpeed);
+                result.uploadSpeed = parseInt(result.uploadSpeed);
+                result.uploadLength = parseInt(result.uploadLength);
+                result.completedLength = parseInt(result.completedLength);
                 result.numSeeders = parseInt(result.numSeeders);
                 result.connections = parseInt(result.connections);
             }
@@ -485,7 +412,6 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                         main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
 
                     result = result.result;
-                    result["min-split-size"] = format_size(result["min-split-size"], 0);
                     $("#aria2-gsetting").empty().append(YAAW.tpl.aria2_global_setting(result));
                 }
             );
@@ -523,8 +449,6 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                     }
 
                     result = result.result;
-                    result.downloadSpeed = format_size(result.downloadSpeed) || "0 KB";
-                    result.uploadSpeed = format_size(result.uploadSpeed) || "0 KB";
                     var _tasks_cnt_snapshot = ""+result.numActive+","+result.numWaiting+","+result.numStopped;
 
                     if (_tasks_cnt_snapshot != tasks_cnt_snapshot) {
@@ -550,6 +474,39 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                 }
             );
         },
+
+        get_status: function(gid) {
+            ARIA2.request("tellStatus", [gid],
+                function(result) {
+                    if (!result.result) {
+                        main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+                    }
+
+                    result = result.result;
+                    for (var i=0; i<result.files.length; i++) {
+                        var file = result.files[i];
+                        file.title = file.path.replace(new RegExp("^"+result.dir+"/?"), "");
+                        file.selected = file.selected == "true" ? true : false;
+                    };
+                    $("#ib-status").empty().append(YAAW.tpl.ib_status(result));
+                    $("#ib-files").empty().append(YAAW.tpl.ib_files(result));
+                }
+            );
+        },
+
+        change_option: function(gid, options) {
+            ARIA2.request("changeOption", [gid, options],
+                function(result) {
+                    if (!result.result) {
+                        main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+                    } else {
+                        main_alert("alert-success", "Change Options OK!", 2000);
+                    }
+                }
+            );
+        },
+
+        /********************************************************/
 
         refresh: function() {
             if (!select_lock) {

@@ -199,9 +199,9 @@
     </section>
     
     <script id="global-speed-tpl" type="text/mustache-template">
-      <i class="icon-download"></i> <span>{{downloadSpeed}}</span>/s
+      <i class="icon-download"></i> <span>{{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}</span>/s
         / 
-      <i class="icon-upload"></i>  <span>{{uploadSpeed}}</span>/s
+      <i class="icon-upload"></i>  <span>{{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}</span>/s
     </script>
 
     <script id="active-task-tpl" type="text/mustache-template">
@@ -213,10 +213,10 @@
             <span title="{{title}}">{{title}}</span>
           </div>
           <div class="task-info">
-            <span class="task-status" rel="tooltip" title="{{status}}{{#error_msg}}: {{error_msg}}{{/error_msg}}"><i class="{{status_icon}}"></i></span>
-            <span>{{completedLength}} / {{totalLength}}</span>
-            {{#uploadLength}}<span>(uploaded {{uploadLength}})</span>{{/uploadLength}}
-            {{#etc}}<span>ETC: {{etc}}</span>{{/etc}}
+            <span class="task-status" rel="tooltip" title="{{status}} {{#_v.error_msg}}{{errorCode}}{{/_v.error_msg}}"><i class="{{#_v.status_icon}}{{status}}{{/_v.status_icon}}"></i></span>
+            <span>{{#_v.format_size}}{{completedLength}}{{/_v.format_size}} / {{#_v.format_size}}{{totalLength}}{{/_v.format_size}}</span>
+            {{#uploadLength}}<span>(uploaded {{#_v.format_size}}{{uploadLength}}{{/_v.format_size}})</span>{{/uploadLength}}
+            {{#etc}}<span>ETC: {{#_v.format_time}}{{etc}}{{/_v.format_time}}</span>{{/etc}}
           </div>
         </div>
         <div class="right-area">
@@ -224,8 +224,8 @@
             <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
           </div>
           <div class="progress-info">
-            {{#downloadSpeed}}<span class="download-speed"><i class="icon-download"></i> {{downloadSpeed}}/s</span>{{/downloadSpeed}}
-            {{#uploadSpeed}}<span class="upload-speed"><i class="icon-upload"></i> {{uploadSpeed}}/s</span>{{/uploadSpeed}}
+            {{#downloadSpeed}}<span class="download-speed"><i class="icon-download"></i> {{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}/s</span>{{/downloadSpeed}}
+            {{#uploadSpeed}}<span class="upload-speed"><i class="icon-upload"></i> {{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}/s</span>{{/uploadSpeed}}
             {{#connections}}<span class="seeders"><i class="icon-signal" rel="tooltip" title="Connections"></i> {{connections}}</span>{{/connections}}
             {{#numSeeders}}<span class="seeders"><i class="icon-magnet" rel="tooltip" title="Seeders"></i> {{numSeeders}}</span>{{/numSeeders}}
           </div>
@@ -252,16 +252,61 @@
         </div>
         <div class="right-area">
           <div class="task-info pull-left">
-            <span class="task-status" rel="tooltip" title="{{status}}{{#error_msg}}: {{error_msg}}{{/error_msg}}"><i class="{{status_icon}}"></i></span>
-            <span>{{totalLength}}</span>
-            {{#uploadLength}}<span>(up {{uploadLength}}){{/uploadLength}}
+            <span class="task-status" rel="tooltip" title="{{status}} {{#_v.error_msg}}{{errorCode}}{{/_v.error_msg}}"><i class="{{#_v.status_icon}}{{status}}{{/_v.status_icon}}"></i></span>
+            <span>{{#_v.format_size}}{{totalLength}}{{/_v.format_size}}</span>
+            {{#uploadLength}}<span>(up {{#_v.format_size}}{{uploadLength}}{{/_v.format_size}}){{/uploadLength}}
           </div>
           <div class="progress progress-striped pull-right">
             <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
           </div>
         </div>
-      </div>
+      </li>
       {{/tasks}}
+    </script>
+
+    <script id="info-box-tpl" type="text/mustache-template">
+      <div class="info-box" data-gid="{{gid}}">
+        <div class="tabbable tabs-left">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#ib-status" data-toggle="tab">Status</a></li>
+            <li><a href="#ib-files" data-toggle="tab">Files</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="ib-status"> </div>
+            <div class="tab-pane" id="ib-files"> </div>
+          </div>
+        </div>
+      </div>
+    </script>      
+
+    <script id="ib-status-tpl" type="text/mustache-template">
+      <ul>
+        <li><strong>Size: </strong>{{#_v.format_size}}{{totalLength}}{{/_v.format_size}} ({{numPieces}} @ {{#_v.format_size}}{{pieceLength}}{{/_v.format_size}})</li>
+        <li><strong>Status: </strong>{{status}} {{error_msg}}</li>
+        <li><strong>Dir: </strong>{{dir}}</li>
+        {{#bittorrent}}
+          {{#creationDate}}<li>Torrent Created At {{creationDate}}</li>{{/creationDate}}
+          {{#comment}}<li><strong>Comment: </strong>{{comment}}</li>{{/comment}}
+        {{/bittorrent}}
+        <li class="bitfield"><strong>Bitfield: </strong>{{#_v.bitfield}}{{bitfield}}{{/_v.bitfield}}</li>
+      </ul>
+    </script>
+
+    <script id="ib-files-tpl" type="text/mustache-template">
+      <div id="ib-file-btn">
+        <button id="ib-file-save" class="btn btn-primary">Save</button>
+        <button id="ib-file-select" class="btn">Select All</button>
+        <button id="ib-file-unselect" class="btn">Unselect All</button>
+      </div>
+      <ul>
+        {{#files}}
+        <li>
+          <i class="select-box{{#selected}} icon-ok{{/selected}}" data-index="{{index}}"></i>
+          <span class="ib-file-title">{{title}}</span>
+          <span class="ib-file-size"> {{#_v.format_size}}{{completedLength}}{{/_v.format_size}} / {{#_v.format_size}}{{length}}{{/_v.format_size}}</span>
+        </li>
+        {{/files}}
+      </ul>
     </script>
 
     <script id="other-task-empty" type="text/mustache-template">
@@ -363,7 +408,7 @@
         <div class="control-group half">
           <label class="control-label" for="gsi-mss">Min Split Size</label>
           <div class="controls">
-            <input id="gsi-mss" name="min-split-size" class="input-small" value="{{min-split-size}}" />
+            <input id="gsi-mss" name="min-split-size" class="input-small" value="{{#_v.format_size}}{{min-split-size}}{{/_v.format_size}}" />
           </div>
         </div>
         <div class="clearfix"></div>
