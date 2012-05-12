@@ -1,3 +1,23 @@
+/* 
+ * Copyright (C) 2012 Binux <17175297.hk@gmail.com>
+ *
+ * This file is part of YAAW (https://github.com/binux/yaaw).
+ *
+ * YAAW is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * YAAW is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You may get a copy of the GNU Lesser General Public License
+ * from http://www.gnu.org/licenses/lgpl.txt
+ *
+ */
+
 var YAAW = (function() {
     var selected_tasks = false;
     var on_gid = null;
@@ -21,21 +41,52 @@ var YAAW = (function() {
             ARIA2.refresh();
             ARIA2.auto_refresh(this.setting.refresh_interval);
             ARIA2.get_version();
+            ARIA2.global_stat();
         },
 
         event_init: function() {
             $("[rel=tooltip]").tooltip({"placement": "bottom"});
 
-            $(".task").live("click", function() {
-                YAAW.tasks.toggle(this);
+            $(".task .select-box").live("click", function() {
+                YAAW.tasks.toggle($(this).parents(".task"));
                 YAAW.tasks.check_select();
-            })
+            });
 
-            $("#refresh-btn").click(function() {
-                YAAW.tasks.unSelectAll();
-                $("#main-alert").hide();
-                ARIA2.refresh();
-                return false;
+            $(".task .task-name > span").live("click", function() {
+                var task = $(this).parents(".task");
+                if (task.hasClass("info-open")) {
+                    YAAW.tasks.info_close();
+                } else {
+                    YAAW.tasks.info_close();
+                    YAAW.tasks.info(task);
+                }
+            });
+
+            $("#ib-files li").live("click", function() {
+                $(this).find(".select-box").toggleClass("icon-ok");
+            });
+
+            $("#ib-file-save").live("click", function() {
+                var indexes = [];
+                $("#ib-files .select-box.icon-ok").each(function(i, n) {
+                    indexes.push(n.getAttribute("data-index"));
+                });
+                if (indexes.length == 0) {
+                    ARIA2.main_alert("alert-error", "At least one file should be selected. Or just stop the task.", 5000);
+                } else {
+                    var options = {
+                        "select-file": indexes.join(","),
+                    };
+                    ARIA2.change_option($(this).parents(".info-box").attr("data-gid"), options);
+                };
+            });
+
+            $("#ib-file-select").live("click", function() {
+                $("#ib-files .select-box").addClass("icon-ok");
+            });
+
+            $("#ib-file-unselect").live("click", function() {
+                $("#ib-files .select-box").removeClass("icon-ok");
             });
 
             $("#select-all-btn").click(function() {
@@ -44,6 +95,14 @@ var YAAW = (function() {
                 } else {
                     YAAW.tasks.selectAll();
                 }
+            });
+
+            $("#refresh-btn").click(function() {
+                YAAW.tasks.unSelectAll();
+                YAAW.tasks.info_close();
+                $("#main-alert").hide();
+                ARIA2.refresh();
+                return false;
             });
 
             $("#setting-modal").on("show", function() {
@@ -82,12 +141,125 @@ var YAAW = (function() {
 
         tpl: {
             init: function() {
-                this.global_speed = Mustache.compile($("#global-speed-tpl").text());
-                this.active_task = Mustache.compile($("#active-task-tpl").text());
-                this.other_task = Mustache.compile($("#other-task-tpl").text());
-                this.other_task_empty = Mustache.compile($("#other-task-empty").text());
-                this.aria2_global_setting = Mustache.compile($("#aria2-global-setting-tpl").text());
-                this.add_task_option = Mustache.compile($("#add-task-option-tpl").text());
+                var _this = this;
+                $("script[type='text/mustache-template']").each(function(i, n) {
+                    var key = n.getAttribute("id").replace(/-tpl$/, "").replace(/-/g, "_");
+                    _this[key] = function() {
+                        var tpl = Mustache.compile($(n).text());
+                        return function(view) {
+                            view._v = _this.view;
+                            return tpl(view);
+                        };
+                    }();
+                });
+            },
+
+            view: {
+                bitfield: function() {
+                    return function(text) {
+                        var len = text.length;
+                        var result = "";
+                        var graphic = "░▒▓█";
+                        for (var i=0; i<len; i++)
+                            result += graphic[Math.floor(parseInt(text[i], 16)/4)];
+                        return result;
+                    };
+                },
+
+                format_size: function() {
+                    var format_text = ["B", "KB", "MB", "GB", "TB", ];
+                    return function format_size(size) {
+                        size = parseInt(size);
+                        var i = 0;
+                        while (size >= 1024) {
+                            size /= 1024;
+                            i++;
+                        }
+                        if (size==0) {
+                            return "0 KB";
+                        } else {
+                            return size.toFixed(2)+" "+format_text[i];
+                        }
+                    };
+                },
+
+                format_time: function() {
+                    var time_interval = [60, 60, 24];
+                    var time_text = ["s", "m", "h"];
+                    return function format_time(time) {
+                        if (time == Infinity) {
+                            return "INF";
+                        } else if (time == 0) {
+                            return "0s";
+                        }
+
+                        time = Math.floor(time);
+                        var i = 0;
+                        var result = "";
+                        while (time > 0 && i < 3) {
+                            result = time % time_interval[i] + time_text[i] + result;
+                            time = Math.floor(time/time_interval[i]);
+                            i++;
+                        }
+                        if (time > 0) {
+                            result = time + "d" + result;
+                        }
+                        return result;
+                    };
+                },
+
+                error_msg: function() {
+                    var error_code_map = {
+                        0: "",
+                        1: "unknown error occurred.",
+                        2: "time out occurred.",
+                        3: "resource was not found.",
+                        4: "resource was not found. See --max-file-not-found option.",
+                        5: "resource was not found. See --lowest-speed-limit option.",
+                        6: "network problem occurred.",
+                        7: "unfinished download.",
+                        8: "remote server did not support resume when resume was required to complete download.",
+                        9: "there was not enough disk space available.",
+                        10: "piece length was different from one in .aria2 control file. See --allow-piece-length-change option.",
+                        11: "aria2 was downloading same file at that moment.",
+                        12: "aria2 was downloading same info hash torrent at that moment.",
+                        13: "file already existed. See --allow-overwrite option.",
+                        14: "renaming file failed. See --auto-file-renaming option.",
+                        15: "aria2 could not open existing file.",
+                        16: "aria2 could not create new file or truncate existing file.",
+                        17: "I/O error occurred.",
+                        18: "aria2 could not create directory.",
+                        19: "name resolution failed.",
+                        20: "could not parse Metalink document.",
+                        21: "FTP command failed.",
+                        22: "HTTP response header was bad or unexpected.",
+                        23: "too many redirections occurred.",
+                        24: "HTTP authorization failed.",
+                        25: "aria2 could not parse bencoded file(usually .torrent file).",
+                        26: ".torrent file was corrupted or missing information that aria2 needed.",
+                        27: "Magnet URI was bad.",
+                        28: "bad/unrecognized option was given or unexpected option argument was given.",
+                        29: "the remote server was unable to handle the request due to a temporary overloading or maintenance.",
+                        30: "aria2 could not parse JSON-RPC request.",
+                    };
+                    return function(text) {
+                        return error_code_map[text] || "";
+                    };
+                },
+
+                status_icon: function() {
+                    var status_icon_map = {
+                        active: "icon-download-alt",
+                        waiting: "icon-time",
+                        paused: "icon-pause",
+                        error: "icon-remove",
+                        complete: "icon-ok",
+                        removed: "icon-trash",
+                    };
+                    return function(text) {
+                        return status_icon_map[text] || "";
+                    };
+                },
             },
         },
 
@@ -141,17 +313,20 @@ var YAAW = (function() {
             check_select: function() {
                 var selected = $(".tasks-table .task.selected");
                 if (selected.length == 0) {
-                  ARIA2.select_lock(false);
                   selected_tasks = false;
                   $("#select-btn .select-box").removeClass("icon-minus icon-ok");
                 } else if (selected.length < $(".tasks-table .task").length) {
-                  ARIA2.select_lock(true);
                   selected_tasks = true;
                   $("#select-btn .select-box").removeClass("icon-ok").addClass("icon-minus");
                 } else {
-                  ARIA2.select_lock(true);
                   selected_tasks = true;
                   $("#select-btn .select-box").removeClass("icon-minus").addClass("icon-ok");
+                }
+
+                if (selected.length + $(".info-box").length == 0) {
+                  ARIA2.select_lock(false);
+                } else {
+                  ARIA2.select_lock(true);
                 }
 
                 if (selected_tasks) {
@@ -268,6 +443,24 @@ var YAAW = (function() {
                 });
                 if (remove_gids.length) ARIA2.remove(remove_gids);
                 if (gids.length) ARIA2.remove_result(gids);
+            },
+
+            info: function(task) {
+                task.addClass("info-open");
+                task.after(YAAW.tpl.info_box({gid: task.attr("data-gid")}));
+                ARIA2.get_status(task.attr("data-gid"));
+                ARIA2.select_lock(true);
+            },
+
+            info_close: function(task) {
+                $(".info-box").remove();
+                $(".info-open").removeClass("info-open");
+
+                if ($(".tasks-table .task.selected").length == 0) {
+                    ARIA2.select_lock(false);
+                } else {
+                    ARIA2.select_lock(true);
+                }
             },
         },
 

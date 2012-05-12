@@ -1,4 +1,26 @@
-/* vim: set et sw=4 ts=4 sts=4 fdm=marker ff=unix fenc=utf8: */ 
+/* 
+ * Copyright (C) 2012 Binux <17175297.hk@gmail.com>
+ *
+ * This file is part of YAAW (https://github.com/binux/yaaw).
+ *
+ * YAAW is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * YAAW is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You may get a copy of the GNU Lesser General Public License
+ * from http://www.gnu.org/licenses/lgpl.txt
+ *
+ */
+
+.select-box {
+    cursor: pointer;
+}
 
 /* header */
 .main-head {
@@ -96,7 +118,7 @@
 .task.selected {
     background-color: #F9F9F9;
 }
-.tasks-table li {
+.tasks-table > li {
     display: block;
     position: relative;
     margin-top: -1px;
@@ -106,11 +128,12 @@
     text-align: left;
     vertical-align: top;
 }
-.tasks-table li:hover {
+.tasks-table > li:hover {
     background-color: #f5f5f5;
 }
 
 .left-area {
+    position: relative;
     padding: 8px;
 }
 .right-area {
@@ -121,22 +144,23 @@
 }
 
 .task .task-name {
-    margin-right: 20px;
+    margin-right: 70px;
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.task .task-name span {
+    margin-left: 3px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .task .task-name .select-box {
     vertical-align: -15%;
 }
 .task:hover .select-box {
     border-color: #666;
-}
-.task .task-name span {
-    margin-left: 3px;
-    font-size: 18px;
-    font-weight: bold;
 }
 
 .task .task-info span {
@@ -164,14 +188,14 @@
 }
 @media (min-width: 980px) {
     #active-tasks .left-area {
-        padding-right: 286px;
+        margin-right: 286px;
     }
     #active-tasks .right-area {
         width: 270px;
     }
 
     #other-tasks .left-area {
-        padding-right: 416px;
+        margin-right: 416px;
     }
     #other-tasks .right-area {
         width: 400px;
@@ -186,14 +210,14 @@
 
 @media (max-width: 980px) {
     #active-tasks .left-area {
-        padding-right: 186px;
+        margin-right: 186px;
     }
     #active-tasks .right-area {
         width: 170px;
     }
 
     #other-tasks .left-area {
-        padding-right: 246px;
+        margin-right: 246px;
     }
     #other-tasks .right-area {
         width: 230px;
@@ -204,6 +228,55 @@
     #other-tasks .progress {
         width: 100px;
     }
+}
+
+/* task infobox */
+.info-open {
+    background-color: #F9F9F9;
+}
+.info-box {
+}
+.info-box .tab-content {
+    height: 300px;
+    overflow-y: auto;
+}
+.info-box .nav {
+    margin-top: -1px;
+    margin-bottom: 0;
+    height: 300px;
+}
+.bitfield {
+    word-break: break-all;
+}
+#ib-status,
+#ib-files {
+    position: relative;
+    margin: 18px 0;
+}
+#ib-files ul {
+    margin: 0;
+}
+#ib-files li {
+    display: block;
+    cursor: pointer;
+    line-height: 14px;
+    padding-bottom: 6px;
+    vertical-align: top;
+    border-bottom: 1px solid #FFF;
+}
+#ib-files .ib-file-title:hover {
+    border-bottom: 1px solid #666;
+}
+#ib-file-btn {
+    position: absolute;
+    top: 0;
+    right: 18px;
+}
+.ib-file-title {
+    margin-left: 5px;
+}
+.ib-file-size {
+    margin-left: 20px;
 }
 
 /* task-contextmenu */
@@ -285,3 +358,5 @@
 #aria2-gs-form .half .controls {
     margin-left: 130px;
 }
+
+/* vim: set et sw=4 ts=4 sts=4 fdm=marker ff=unix fenc=utf8: */ 
