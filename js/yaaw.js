@@ -161,7 +161,7 @@ var YAAW = (function() {
                         var result = "";
                         var graphic = "░▒▓█";
                         for (var i=0; i<len; i++)
-                            result += graphic[Math.floor(parseInt(text[i], 16)/4)];
+                            result += graphic[Math.floor(parseInt(text[i], 16)/4)] + "&#8203;";
                         return result;
                     };
                 },
@@ -179,6 +179,23 @@ var YAAW = (function() {
                             return "0 KB";
                         } else {
                             return size.toFixed(2)+" "+format_text[i];
+                        }
+                    };
+                },
+
+                format_size_0: function() {
+                    var format_text = ["B", "KB", "MB", "GB", "TB", ];
+                    return function format_size(size) {
+                        size = parseInt(size);
+                        var i = 0;
+                        while (size >= 1024) {
+                            size /= 1024;
+                            i++;
+                        }
+                        if (size==0) {
+                            return "0 KB";
+                        } else {
+                            return size.toFixed(0)+" "+format_text[i];
                         }
                     };
                 },

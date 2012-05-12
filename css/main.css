@@ -245,9 +245,6 @@
     margin-bottom: 0;
     height: 300px;
 }
-.bitfield {
-    word-break: break-all;
-}
 #ib-status,
 #ib-files {
     position: relative;
