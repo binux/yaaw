@@ -293,11 +293,33 @@
 }
 
 #add-task-uri {
+    text-align: center;
+    white-space: nowrap;
     padding: 10px 19px;
-    margin: 0 0 10px;
+    margin: 0;
+    overflow: hidden;
 }
 #uri-input {
     width: 370px; 
+}
+#uri-textarea {
+    width: 465px;
+    margin: 0;
+}
+
+#uri-more {
+    font-size: 7px;
+    text-align: center;
+    height: 10px;
+    margin: 0 20px 20px;
+    line-height: 10px;
+    color: #DDD;
+    background-color: whiteSmoke;
+    cursor: pointer;
+}
+#uri-more:hover {
+    background-color: #DDD;
+    color: #999;
 }
 
 #torrent-up-input {
@@ -326,14 +348,14 @@
 }
 #add-task-option .half {
     float: left;
-    width: 240px;
+    width: 230px;
     margin-left: 10px;
 }
 #add-task-option .control-label {
     width: 70px;
 }
 #add-task-option .controls {
-    margin-left: 90px;
+    margin-left: 85px;
 }
 
 /* aria2 global setting */

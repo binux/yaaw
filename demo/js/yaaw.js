@@ -62,6 +62,14 @@ var YAAW = (function() {
                 }
             });
 
+            $("#uri-more").click(function() {
+                $("#add-task-uri .input-append").toggle();
+                $("#uri-textarea").toggle();
+                $("#uri-more").text($("#uri-more").text().split("").reverse().join(""));
+                $("#uri-input").val("");
+                $("#uri-textarea").val("");
+            });
+
             $("#ib-files li").live("click", function() {
                 $(this).find(".select-box").toggleClass("icon-ok");
             });
@@ -282,7 +290,7 @@ var YAAW = (function() {
 
         add_task: {
             submit: function(_this) {
-                var uri = $("#uri-input").val();
+                var uri = $("#uri-input").val() || $("#uri-textarea").val().split("\n");
                 var options = {}, options_save = {};
                 $("#add-task-option input[name]").each(function(i, n) {
                     var name = n.getAttribute("name");
@@ -296,7 +304,7 @@ var YAAW = (function() {
                 });
 
                 if (uri) {
-                    ARIA2.add_task(uri, options);
+                    ARIA2.madd_task(uri, options);
                 } else if (torrent_file) {
                     if (file_type.indexOf("metalink") != -1) {
                         ARIA2.add_metalink(torrent_file, options);
@@ -309,7 +317,7 @@ var YAAW = (function() {
             
             clean: function() {
                 $("#uri-input").attr("placeholder", "HTTP, FTP or Magnet");
-                $("#add-task-modal input.input-clear").val("");
+                $("#add-task-modal .input-clear").val("");
                 $("#add-task-alert").hide();
                 torrent_file = null;
                 file_type = null;

@@ -122,6 +122,36 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
                 });
         },
 
+        madd_task: function(uris, options) {
+            if (!$.isArray(uris)) uris = [uris];
+            var params = [];
+            for (var i=0; i<uris.length; i++) {
+                params.push([[uris[i]], options]);
+            };
+            ARIA2.batch_request("addUri", params,
+                function(result) {
+                    //console.debug(result);
+
+                    var error = new Array();
+                    $.each(result, function(i, n) {
+                        var error_msg = get_error(n);
+                        if (error_msg) error.push(error_msg);
+                    });
+
+                    if (error.length == 0) {
+                        ARIA2.refresh();
+                        $("#add-task-modal").modal('hide');
+                        YAAW.add_task.clean();
+                    } else {
+                        var error_msg = error.join("<br />");
+                        $("#add-task-alert .alert-msg").html(error_msg);
+                        $("#add-task-alert").show();
+                        console.warn("add task error: "+error_msg);
+                    }
+                }
+            );
+        },
+
         add_torrent: function(torrent, options) {
             if (!torrent) return false;
             if (!options) options = {};
