@@ -1,4 +1,4 @@
 TODOS
 =====
-+ info box
++ task options modify
 + offline

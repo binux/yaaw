@@ -68,6 +68,7 @@ var YAAW = (function() {
                 $("#uri-more").text($("#uri-more").text().split("").reverse().join(""));
                 $("#uri-input").val("");
                 $("#uri-textarea").val("");
+                $("#ati-out").parents(".control-group").val("").toggle();
             });
 
             $("#ib-files li").live("click", function() {
