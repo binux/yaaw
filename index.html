@@ -30,28 +30,30 @@
           </div>
         </div>
 
-        <div class="btn-group pull-left" id="select-btn">
-          <button id="select-all-btn" class="btn" rel="tooltip" title="Select All">
-            <i class="select-box"></i>
-          </button>
-          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="###" onclick="YAAW.tasks.selectActive();">Select Active</a></li>
-            <li><a href="###" onclick="YAAW.tasks.selectWaiting();">Select Waiting</a></li>
-            <li><a href="###" onclick="YAAW.tasks.selectPaused();">Select Paused</a></li>
-            <li><a href="###" onclick="YAAW.tasks.selectStoped();">Select Stoped</a></li>
-          </ul>
+        <div class="pull-left">
+          <div class="btn-group btn-inline" id="select-btn">
+            <button id="select-all-btn" class="btn" rel="tooltip" title="Select All">
+              <i class="select-box"></i>
+            </button>
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="###" onclick="YAAW.tasks.selectActive();">Select Active</a></li>
+              <li><a href="###" onclick="YAAW.tasks.selectWaiting();">Select Waiting</a></li>
+              <li><a href="###" onclick="YAAW.tasks.selectPaused();">Select Paused</a></li>
+              <li><a href="###" onclick="YAAW.tasks.selectStoped();">Select Stoped</a></li>
+            </ul>
+          </div>
         </div>
 
         <div class="pull-left" id="not-selected-grp">
-          <div class="btn-group pull-left">
+          <div class="btn-group btn-inline">
             <a class="btn" id="add-task-btn" data-toggle="modal" href="#add-task-modal" rel="tooltip" title="Add Task">
               <i class="icon-plus"></i> Add
             </a>
           </div>
-          <div class="btn-group pull-left" id="do-all-btn">
+          <div class="btn-group btn-inline" id="do-all-btn">
             <a href="###" onclick="ARIA2.unpause_all();" class="btn" id="unpause-all" rel="tooltip" title="Start All">
               <i class="icon-forward"></i>
             </a>
@@ -65,7 +67,7 @@
         </div>
 
         <div class="pull-left hide" id="selected-grp">
-          <div class="btn-group pull-left">
+          <div class="btn-group btn-inline">
             <a href="###" onclick="YAAW.tasks.unpause();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="Start">
               <i class="icon-play"></i>
             </a>
@@ -82,7 +84,7 @@
         </div>
 
         <div class="pull-right" id="other-grp">
-          <div class="btn-group">
+          <div class="btn-group btn-inline">
             <a href="#" class="btn" id="refresh-btn" rel="tooltip" title="Refresh">
               <i class="icon-refresh"></i> Refresh
             </a>
