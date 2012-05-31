@@ -21,6 +21,10 @@
 .select-box {
     cursor: pointer;
 }
+.btn-inline {
+    /* fix for MAC/chrome */
+    display: inline;
+}
 
 /* header */
 .main-head {
@@ -71,7 +75,9 @@
 }
 
 #do-all-btn {
-    margin-left: 10px;
+    /* fix for MAC/chrome */
+    position: relative;
+    left: 10px;
 }
 
 #info-btn {
