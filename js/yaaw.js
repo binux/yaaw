@@ -131,7 +131,6 @@ var YAAW = (function() {
                 holder.ondrop = function(e) {
                     $(this).removeClass("hover");
                     e.preventDefault();
-
                     var file = e.dataTransfer.files[0];
                     YAAW.add_task.upload(file);
                     return false;
@@ -291,7 +290,12 @@ var YAAW = (function() {
 
         add_task: {
             submit: function(_this) {
-                var uri = $("#uri-input").val() || $("#uri-textarea").val().split("\n");
+                var uri = $("#uri-input").val();
+                if( uri == ""){
+                    uri = $("#uri-textarea").val();
+                    uri = (uri == "") ? uri : uri.split("\n");
+                }
+                // var uri = $("#uri-input").val() || $("#uri-textarea").val().split("\n");
                 var options = {}, options_save = {};
                 $("#add-task-option input[name]").each(function(i, n) {
                     var name = n.getAttribute("name");
