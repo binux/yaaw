@@ -22,6 +22,7 @@
         this._validateConfigParams(params);
         this.endPoint = params.endPoint;
         this.namespace = params.namespace;
+        this.auth = this.endPoint.match(/^(?:(?![^:@]+:[^:@\/]*@)[^:\/?#.]+:)?(?:\/\/)?(?:([^:@]*(?::[^:@]*)?)?@)?/)[1];
         return this;
       },
 
@@ -174,6 +175,12 @@
           data: data,
           cache: false,
           processData: false,
+          beforeSend: function (xhr) {
+              var authority = _that._requestAuth(options.url);
+              if (authority) { 
+                  xhr.setRequestHeader("Authorization", "Basic "+$.base64.encode(authority));
+              }
+          },
           error: function(json) {
             _that._requestError.call(_that, json, options.error);
           },
@@ -187,6 +194,10 @@
       _requestUrl: function(url) {
         url = url || this.endPoint;
         return url + '?tm=' + new Date().getTime()
+      },
+
+      _requestAuth: function(url) {
+        return url ? url.match(/^(?:(?![^:@]+:[^:@\/]*@)[^:\/?#.]+:)?(?:\/\/)?(?:([^:@]*(?::[^:@]*)?)?@)?/)[1] : this.auth;
       },
 
       // Creates an RPC suitable request object
