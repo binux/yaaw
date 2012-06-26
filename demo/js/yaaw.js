@@ -143,7 +143,7 @@ var YAAW = (function() {
                 }
             } else {
                 $("#torrent-up-input").remove();
-                $("#torrent-up-btn").attr("disabled", true);
+                $("#torrent-up-btn").addClass("disabled");
             }
         },
 
