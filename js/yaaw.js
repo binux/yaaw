@@ -118,7 +118,7 @@ var YAAW = (function() {
                 ARIA2.get_global_option();
             });
 
-            if (window.FileReader && location.host) {
+            if (window.FileReader) {
                 var holder = $("#add-task-modal .modal-body").get(0);
                 holder.ondragover = function() {
                     $(this).addClass("hover");
@@ -143,7 +143,7 @@ var YAAW = (function() {
                 }
             } else {
                 $("#torrent-up-input").remove();
-                $("#torrent-up-btn").attr("disabled", true);
+                $("#torrent-up-btn").addClass("disabled");
             }
         },
 
@@ -334,7 +334,11 @@ var YAAW = (function() {
                     $("#uri-input").attr("placeholder", file.name);
                     torrent_file = e.target.result.replace(/.*?base64,/, "");
                     file_type = file.type;
-                }
+                };
+                reader.onerror = function(e) {
+                    $("#torrent-up-input").remove();
+                    $("#torrent-up-btn").addClass("disabled");
+                };
                 reader.readAsDataURL(file);
             },
         },
