@@ -23,13 +23,7 @@
 }
 .btn-inline {
     /* fix for MAC/chrome */
-    display: inline;
-}
-.btn-inline:before {
-    display: none;
-}
-.btn-inline:after {
-    display: none;
+    display: inline !important;
 }
 
 /* header */
