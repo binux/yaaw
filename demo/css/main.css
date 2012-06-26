@@ -26,8 +26,9 @@
     display: inline !important;
 }
 .btn-inline:before, .btn-inline:after {
-    display: none !important;
+    /* fix for IE8 */
     content: none !important;
+    display: none !important;
 }
 
 /* header */
@@ -79,7 +80,7 @@
 }
 
 #do-all-btn {
-    /* fix for MAC/chrome */
+    /* fix for MAC/chrome firefox */
     position: relative;
     left: 10px;
 }
