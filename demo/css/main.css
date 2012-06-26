@@ -25,6 +25,10 @@
     /* fix for MAC/chrome */
     display: inline !important;
 }
+.btn-inline:before, .btn-inline:after {
+    display: none !important;
+    content: none !important;
+}
 
 /* header */
 .main-head {
