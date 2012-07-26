@@ -59,8 +59,8 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         var title = "Unknown";
         if (result.bittorrent && result.bittorrent.info && result.bittorrent.info.name)
             title = result.bittorrent.info.name;
-        else if (result.files[0].path.replace(new RegExp("^"+dir+"/?"), "").split("/")[0])
-            title = result.files[0].path.replace(new RegExp("^"+dir+"/?"), "").split("/")[0]
+        else if (result.files[0].path.replace(new RegExp("^"+dir.replace("\\", "[\\/]")+"/?"), "").split("/")[0])
+            title = result.files[0].path.replace(new RegExp("^"+dir.replace("\\", "[\\/]")+"/?"), "").split("/")[0]
         else if (result.files.length && result.files[0].uris.length && result.files[0].uris[0].uri)
             title = result.files[0].uris[0].uri;
 
