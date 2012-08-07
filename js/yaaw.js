@@ -148,7 +148,10 @@ var YAAW = (function() {
       }
 
       if (window.applicationCache) {
-        window.applicationCache.addEventListener("cached", function(){
+        var appcache = window.applicationCache;
+        if (appcache.status == appcache.IDLE)
+          $("#offline-cached").text("cached");
+        appcache.addEventListener("cached", function(){
           $("#offline-cached").text("cached");
         });
       }
