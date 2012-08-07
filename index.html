@@ -129,8 +129,11 @@
       <li><a href="###" onclick="YAAW.contextmenu.unpause();">Start</a></li>
       <li><a href="###" onclick="YAAW.contextmenu.pause();">Pause</a></li>
       <li><a href="###" onclick="YAAW.contextmenu.remove();">Remove</a></li>
-      <!--<li class="divider"></li>-->
-      <!--<li><a href="#">Info</a></li>-->
+      <li class="task-move divider"></li>
+      <li class="task-move"><a href="###" onclick="YAAW.contextmenu.movetop();">MoveTop</a></li>
+      <li class="task-move"><a href="###" onclick="YAAW.contextmenu.moveup();">MoveUp</a></li>
+      <li class="task-move"><a href="###" onclick="YAAW.contextmenu.movedown();">MoveDown</a></li>
+      <li class="task-move"><a href="###" onclick="YAAW.contextmenu.moveend();">MoveEnd</a></li>
     </ul>
 
     <section class="modal hide fade" id="add-task-modal">
@@ -384,7 +387,7 @@
         <div class="control-group">
           <label class="control-label" for="ati-header">Header</label>
           <div class="controls">
-            <input id="ati-header" class="input-xlarge input-save" name="header" value="{{header}}" />
+            <textarea id="ati-header" class="input-xlarge input-save" name="header" warp="off">{{header}}</textarea>
           </div>
         </div>
       </form>
