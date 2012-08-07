@@ -37,6 +37,9 @@
     padding-bottom: 3px;
     border-bottom: 1px solid #C6C6C6;
 }
+.main-head h1 {
+    display: inline-block;
+}
 
 #main-alert {
     position: absolute;

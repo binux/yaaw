@@ -1,0 +1,16 @@
+CACHE MANIFEST
+# By Binux
+
+CACHE:
+index.html
+css/main.css
+css/bootstrap.min.css
+css/bootstrap-responsive.min.css
+js/jquery-1.7.2.min.js
+js/bootstrap.min.js
+js/jquery.jsonrpc.js
+js/jquery.Storage.js
+js/jquery.base64.min.js
+js/mustache.js
+js/aria2.js
+js/yaaw.js

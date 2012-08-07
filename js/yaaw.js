@@ -145,6 +145,12 @@ var YAAW = (function() {
         $("#torrent-up-input").remove();
         $("#torrent-up-btn").addClass("disabled");
       }
+
+      if (window.applicationCache) {
+        window.applicationCache.addEventListener("cached", function(){
+          $("#offline-cached").text("cached");
+        });
+      }
     },
 
     tpl: {
