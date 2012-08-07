@@ -32,16 +32,17 @@ var YAAW = (function() {
     },
 
     aria2_init: function() {
-      ARIA2.init(this.setting.jsonrpc_path);
-      if (YAAW.setting.add_task_option) {
-        $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option(YAAW.setting.add_task_option));
-      } else {
-        ARIA2.init_add_task_option();
-      }
-      ARIA2.refresh();
-      ARIA2.auto_refresh(this.setting.refresh_interval);
-      ARIA2.get_version();
-      ARIA2.global_stat();
+      ARIA2.init(this.setting.jsonrpc_path, function() {
+        if (YAAW.setting.add_task_option) {
+          $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option(YAAW.setting.add_task_option));
+        } else {
+          ARIA2.init_add_task_option();
+        }
+        ARIA2.refresh();
+        ARIA2.auto_refresh(YAAW.setting.refresh_interval);
+        ARIA2.get_version();
+        ARIA2.global_stat();
+      });
     },
 
     event_init: function() {
@@ -510,11 +511,10 @@ var YAAW = (function() {
           $("#task-contextmenu").css("top", ev.clientY).css("left", ev.clientX).show();
           on_gid = ""+this.getAttribute("data-gid");
           var status = this.getAttribute("data-status");
-          console.log(status);
           if (status == "waiting" || status == "paused")
             $("#task-contextmenu .task-move").show();
           else
-            $("#task-contextmenu .task-move").hide();
+            $("#task-contextmenu .task-move").show();
           return false;
         }).live("mouseout", function(ev) {
           if ($.contains(this, ev.toElement) ||

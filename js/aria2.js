@@ -19,7 +19,8 @@
  */
 
 if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
-  var jsonrpc_interface, interval_id;
+  var jsonrpc_interface, jsonrpc_protocol, jsonrpc_ws, interval_id,
+      unique_id = 0, ws_callback = {};
   var active_tasks_snapshot="", tasks_cnt_snapshot="", select_lock=false, need_refresh=false;
   var auto_refresh=false;
 
@@ -77,20 +78,61 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
   }
 
   return {
-    init: function(path) {
+    init: function(path, onready) {
       jsonrpc_interface = path || "http://"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
-      $.jsonRPC.setup({endPoint: jsonrpc_interface, namespace: 'aria2'});
+      if (jsonrpc_interface.indexOf("http") == 0) {
+        jsonrpc_protocol = "http";
+        $.jsonRPC.setup({endPoint: jsonrpc_interface, namespace: 'aria2'});
+        ARIA2.request = ARIA2.request_http;
+        ARIA2.batch_request = ARIA2.batch_request_http;
+        if (onready) onready();
+      } else if (jsonrpc_interface.indexOf("ws") == 0 && WebSocket) {
+        jsonrpc_protocol = "ws"
+        jsonrpc_ws = new WebSocket(jsonrpc_interface);
+        jsonrpc_ws.onmessage = function(event) {
+          //console.debug(event);
+          var data = JSON.parse(event.data);
+          if ($.isArray(data) && data.length) {
+            var id = data[0].id;
+            if (ws_callback[id]) {
+              ws_callback[id].success(data);
+              delete ws_callback[id];
+            }
+          } else {
+            if (ws_callback[data.id]) {
+              if (data.error)
+                ws_callback[data.id].error(data);
+              else
+                ws_callback[data.id].success(data);
+              delete ws_callback[data.id];
+            };
+          };
+        };
+        jsonrpc_ws.onerror = function(event) {
+          console.warn("error", event);
+          main_alert("alert-error", "websocket error. you may need reflush this page to restart.");
+          ws_callback = {};
+        };
+        jsonrpc_ws.onopen = function() {
+          ARIA2.request = ARIA2.request_ws;
+          ARIA2.batch_request = ARIA2.batch_request_ws;
+          if (onready) onready();
+        };
+      } else {
+        main_alert("alert-error", "Unknow protocol");
+      };
     },
 
-    main_alert: main_alert,
+    request: function(){},
+    batch_request: function(){},
 
-    request: function(method, params, success, error) {
+    request_http: function(method, params, success, error) {
       if (error == undefined)
         error = default_error;
       $.jsonRPC.request(method, {params:params, success:success, error:error});
     },
 
-    batch_request: function(method, params, success, error) {
+    batch_request_http: function(method, params, success, error) {
       if (error == undefined)
         error = default_error;
       var commands = new Array();
@@ -100,6 +142,49 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       });
       $.jsonRPC.batchRequest(commands, {success:success, error:error});
     },
+
+    _request_data: function(method, params, id) {
+      var dataObj = {
+        jsonrpc: '2.0',
+        method: 'aria2.'+method,
+        id: id
+      }
+      if(typeof(params) !== 'undefined') {
+        dataObj.params = params;
+      }
+      return dataObj;
+    },
+
+    _get_unique_id: function() {
+      ++unique_id;
+      return unique_id;
+    },
+
+    request_ws: function(method, params, success, error) {
+      var id = ARIA2._get_unique_id();
+      ws_callback[id] = {
+        'success': success || function(){},
+        'error': error || default_error,
+      };
+      jsonrpc_ws.send(JSON.stringify(ARIA2._request_data(method, params, id)));
+    },
+
+    batch_request_ws: function(method, params, success, error) {
+      var data = [];
+      var id = ARIA2._get_unique_id();
+      ws_callback[id] = {
+        'success': success || function(){},
+        'error': error || default_error,
+      };
+      for (var i=0,l=params.length; i<l; i++) {
+        var n = params[i];
+        if (!$.isArray(n)) n = [n];
+        data.push(ARIA2._request_data(method, n, id))
+      };
+      jsonrpc_ws.send(JSON.stringify(data));
+    },
+
+    main_alert: main_alert,
 
     add_task: function(uri, options) {
       if (!uri) return false;
@@ -502,7 +587,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           $("#global-speed").empty().append(YAAW.tpl.global_speed(result));
           var title = "⥥"+YAAW.tpl.view.format_size_0()(result.downloadSpeed);
           if (result.uploadSpeed > 0)
-            title += "/⥣"+YAAW.tpl.view.format_size_0()(result.uploadSpeed);
+            title += " ⥣"+YAAW.tpl.view.format_size_0()(result.uploadSpeed);
           title += " - Yet Another Aria2 Web Frontend";
           document.title = title;
         }
