@@ -96,7 +96,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         jsonrpc_ws = new WebSocket(jsonrpc_interface);
         jsonrpc_ws.onmessage = function(event) {
           var data = JSON.parse(event.data);
-          console.debug(data);
+          //console.debug(data);
           if ($.isArray(data) && data.length) {
             var id = data[0].id;
             if (ws_callback[id]) {
@@ -534,6 +534,26 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           } else {
             main_alert("alert-error", error.join("<br />"), 3000);
           }
+        }
+      );
+    },
+
+    get_options: function(gid) {
+      ARIA2.request("getOption", [gid],
+        function(result) {
+          console.debug(result);
+
+          $("#ib-options").empty().append(YAAW.tpl.ib_options(result.result));
+        }
+      );
+    },
+
+    change_options: function(gid, options) {
+      ARIA2.request("changeOption", [gid, options],
+        function(result) {
+          //console.debug(result);
+
+          main_alert("alert-info", "option updated", 1000);
         }
       );
     },

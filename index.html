@@ -281,10 +281,12 @@
           <ul class="nav nav-tabs">
             <li class="active"><a href="#ib-status" data-toggle="tab">Status</a></li>
             <li><a href="#ib-files" data-toggle="tab">Files</a></li>
+            <li><a id="ib-options-a" href="#ib-options" data-toggle="tab">Options</a></li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="ib-status"> </div>
             <div class="tab-pane" id="ib-files"> </div>
+            <div class="tab-pane" id="ib-options"> </div>
           </div>
         </div>
       </div>
@@ -318,6 +320,20 @@
         </li>
         {{/files}}
       </ul>
+    </script>
+
+    <script id="ib-options-tpl" type="text/mustache-template">
+      <div id="ib-options-btn">
+        <button id="ib-options-save" class="btn btn-primary">Save</button>
+      </div>
+      <form id="ib-options-form" class="form-horizontal" onsubmit="false">
+      <ul>
+        <li><span>Download Limit:</span><input name="max-download-limit" value="{{max-download-limit}}" /></li>
+        <li><span>Upload Limit:</span><input name="max-upload-limit" value="{{max-upload-limit}}" /></li>
+        <li><span>Split:</span><input name="split" value="{{split}}" /></li>
+        <li><span>Conn per Serv:</span><input name="max-connection-per-server" value="{{max-connection-per-server}}" /></li>
+        <li><span>Split Size:</span><input name="min-split-size" value="{{min-split-size}}" /></li>
+      </form>
     </script>
 
     <script id="other-task-empty" type="text/mustache-template">

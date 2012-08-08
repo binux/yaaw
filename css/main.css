@@ -260,11 +260,13 @@
     height: 300px;
 }
 #ib-status,
-#ib-files {
+#ib-files,
+#ib-options {
     position: relative;
     margin: 18px 0;
 }
-#ib-files ul {
+#ib-files ul,
+#ib-options ul {
     margin: 0;
 }
 #ib-files li {
@@ -278,7 +280,8 @@
 #ib-files .ib-file-title:hover {
     border-bottom: 1px solid #666;
 }
-#ib-file-btn {
+#ib-file-btn,
+#ib-options-btn {
     position: absolute;
     top: 0;
     right: 18px;
@@ -288,6 +291,22 @@
 }
 .ib-file-size {
     margin-left: 20px;
+}
+#ib-options li {
+    display: block;
+    float: left;
+    padding-bottom: 6px;
+    margin-right: 100px;
+}
+#ib-options li span {
+    display: block;
+    text-align: right;
+    padding-right: 1em;
+    width: 140px;
+    line-height: 24px;
+}
+#ib-options li > * {
+    float: left;
 }
 
 /* task-contextmenu */

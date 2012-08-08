@@ -99,6 +99,18 @@ var YAAW = (function() {
         $("#ib-files .select-box").removeClass("icon-ok");
       });
 
+      $("#ib-options-a").live("click", function() {
+        ARIA2.get_options($(".info-box").attr("data-gid"));
+      });
+
+      $("#ib-options-save").live("click", function() {
+        var options = {};
+        $.each($("#ib-options-form input"), function(n, e) {
+          options[e.name] = e.value;
+        });
+        ARIA2.change_options($(".info-box").attr("data-gid"), options);
+      });
+
       $("#select-all-btn").click(function() {
         if (selected_tasks) {
           YAAW.tasks.unSelectAll();
@@ -497,6 +509,9 @@ var YAAW = (function() {
       info: function(task) {
         task.addClass("info-open");
         task.after(YAAW.tpl.info_box({gid: task.attr("data-gid")}));
+        if (task.parents("#stoped-tasks-table").length) {
+          $("#ib-options-a").hide();
+        }
         ARIA2.get_status(task.attr("data-gid"));
         ARIA2.select_lock(true);
       },
