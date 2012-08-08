@@ -189,6 +189,7 @@ var YAAW = (function() {
         format_size: function() {
           var format_text = ["B", "KB", "MB", "GB", "TB", ];
           return function format_size(size) {
+            if (size === '') return '';
             size = parseInt(size);
             var i = 0;
             while (size >= 1024) {
@@ -206,6 +207,7 @@ var YAAW = (function() {
         format_size_0: function() {
           var format_text = ["B", "KB", "MB", "GB", "TB", ];
           return function format_size(size) {
+            if (size === '') return '';
             size = parseInt(size);
             var i = 0;
             while (size >= 1024) {
@@ -302,12 +304,7 @@ var YAAW = (function() {
 
     add_task: {
       submit: function(_this) {
-        var uri = $("#uri-input").val();
-        if( uri == ""){
-          uri = $("#uri-textarea").val();
-          uri = (uri == "") ? uri : uri.split("\n");
-        }
-        // var uri = $("#uri-input").val() || $("#uri-textarea").val().split("\n");
+        var uri = $("#uri-input").val() || $("#uri-textarea").val() && $("#uri-textarea").val().split("\n") ;
         var options = {}, options_save = {};
         $("#add-task-option input[name]").each(function(i, n) {
           var name = n.getAttribute("name");
@@ -322,14 +319,15 @@ var YAAW = (function() {
 
         if (uri) {
           ARIA2.madd_task(uri, options);
+          YAAW.setting.save_add_task_option(options_save);
         } else if (torrent_file) {
           if (file_type.indexOf("metalink") != -1) {
             ARIA2.add_metalink(torrent_file, options);
           } else {
             ARIA2.add_torrent(torrent_file, options);
           }
+          YAAW.setting.save_add_task_option(options_save);
         }
-        YAAW.setting.save_add_task_option(options_save);
       },
       
       clean: function() {
@@ -469,12 +467,17 @@ var YAAW = (function() {
 
       unpause: function() {
         var gids = new Array();
+        var stoped_gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
-          if (n.getAttribute("data-status") == "paused") {
+          var status = n.getAttribute("data-status");
+          if (status == "paused") {
             gids.push(n.getAttribute("data-gid"));
+          } else if ("removed/error".indexOf(status) != -1) {
+            stoped_gids.push(n.getAttribute("data-gid"));
           }
         });
         if (gids.length) ARIA2.unpause(gids);
+        if (stoped_gids.length) ARIA2.restart_task(stoped_gids);
       },
 
       remove: function() {
@@ -515,11 +518,19 @@ var YAAW = (function() {
         $(".task").live("contextmenu", function(ev) {
           $("#task-contextmenu").css("top", ev.clientY).css("left", ev.clientX).show();
           on_gid = ""+this.getAttribute("data-gid");
+
           var status = this.getAttribute("data-status");
           if (status == "waiting" || status == "paused")
             $("#task-contextmenu .task-move").show();
           else
-            $("#task-contextmenu .task-move").show();
+            $("#task-contextmenu .task-move").hide();
+          if (status == "removed" || status == "completed" || status == "error") {
+            $(".task-restart").show();
+            $(".task-start").hide();
+          } else {
+            $(".task-restart").hide();
+            $(".task-start").show();
+          }
           return false;
         }).live("mouseout", function(ev) {
           if ($.contains(this, ev.toElement) ||
@@ -544,6 +555,11 @@ var YAAW = (function() {
           }
         });
 
+      },
+
+      restart: function() {
+        if (on_gid) ARIA2.restart_task(on_gid);
+        on_gid = null;
       },
 
       pause: function() {

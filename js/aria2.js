@@ -79,6 +79,10 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
   return {
     init: function(path, onready) {
+      main_alert("alert-info", "connecting...");
+      $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option({}));
+      $("#aria2-gsetting").empty().append(YAAW.tpl.aria2_global_setting({}));
+
       jsonrpc_interface = path || "http://"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
       if (jsonrpc_interface.indexOf("http") == 0) {
         jsonrpc_protocol = "http";
@@ -86,12 +90,13 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         ARIA2.request = ARIA2.request_http;
         ARIA2.batch_request = ARIA2.batch_request_http;
         if (onready) onready();
+        main_alert("alert-info", "connecting...", 1);
       } else if (jsonrpc_interface.indexOf("ws") == 0 && WebSocket) {
         jsonrpc_protocol = "ws"
         jsonrpc_ws = new WebSocket(jsonrpc_interface);
         jsonrpc_ws.onmessage = function(event) {
-          //console.debug(event);
           var data = JSON.parse(event.data);
+          console.debug(data);
           if ($.isArray(data) && data.length) {
             var id = data[0].id;
             if (ws_callback[id]) {
@@ -117,6 +122,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.request = ARIA2.request_ws;
           ARIA2.batch_request = ARIA2.batch_request_ws;
           if (onready) onready();
+          main_alert("alert-info", "connecting...", 1);
         };
       } else {
         main_alert("alert-error", "Unknow protocol");
@@ -188,8 +194,9 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
     add_task: function(uri, options) {
       if (!uri) return false;
+      if (!$.isArray(uri)) uri = [uri];
       if (!options) options = {};
-      ARIA2.request("addUri", [[uri], options],
+      ARIA2.request("addUri", [uri, options],
         function(result) {
           //console.debug(result);
           ARIA2.refresh();
@@ -279,6 +286,30 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         });
     },
 
+    restart_task: function(gids) {
+      var uris = [];
+      $.each(gids, function(n, gid) {
+        var result = $("#task-gid-"+gid).data("raw");
+        $.each(result.files, function(n, e) {
+          if (e.uris.length)
+            uris.push(e.uris[0].uri);
+        });
+      });
+
+      if (uris.length == 0) {
+        main_alert("alert-error", "No files found! (BitTorrent tasks can't restart.)", 2000);
+      } else if (uris.length == 1) {
+        $("#add-task-modal").modal("show");
+        $("#uri-input").val(uris[0]);
+      } else {
+        $("#add-task-modal").modal("show");
+        $("#add-task-uri .input-append").hide();
+        $("#uri-textarea").val(uris.join("\n")).show();
+        $("#uri-more").text($("#uri-more").text().split("").reverse().join(""));
+        $("#ati-out").parents(".control-group").val("").hide();
+      }
+    },
+
     tell_active: function(keys) {
       if (select_lock) return;
       ARIA2.request("tellActive", keys,
@@ -303,6 +334,9 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         
           result = ARIA2.status_fix(result.result);
           $("#active-tasks-table").empty().append(YAAW.tpl.active_task({"tasks": result}));
+          $.each(result, function(n, e) {
+            $("#task-gid-"+e.gid).data("raw", e);
+          });
           bind_event($("#active-tasks-table"))
         }
       );
@@ -344,6 +378,9 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
           result = ARIA2.status_fix(result.result);
           $("#waiting-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result}));
+          $.each(result, function(n, e) {
+            $("#task-gid-"+e.gid).data("raw", e);
+          });
           bind_event($("#waiting-tasks-table"))
 
           if ($("#other-tasks .task").length == 0)
@@ -367,6 +404,9 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           if (select_lock) return;
           result = ARIA2.status_fix(result.result);
           $("#stoped-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result.reverse()}));
+          $.each(result, function(n, e) {
+            $("#task-gid-"+e.gid).data("raw", e);
+          });
           bind_event($("#stoped-tasks-table"))
 
           if ($("#waiting-tasks-table .empty-tasks").length > 0 &&

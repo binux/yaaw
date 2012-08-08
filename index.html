@@ -127,7 +127,8 @@
     </div>
 
     <ul id="task-contextmenu" class="dropdown-menu">
-      <li><a href="###" onclick="YAAW.contextmenu.unpause();">Start</a></li>
+      <li class="task-restart"><a href="###" onclick="YAAW.contextmenu.restart();">ReStart</a></li>
+      <li class="task-start"><a href="###" onclick="YAAW.contextmenu.unpause();">Start</a></li>
       <li><a href="###" onclick="YAAW.contextmenu.pause();">Pause</a></li>
       <li><a href="###" onclick="YAAW.contextmenu.remove();">Remove</a></li>
       <li class="task-move divider"></li>
@@ -253,7 +254,7 @@
     
     <script id="other-task-tpl" type="text/mustache-template">
       {{#tasks}}
-      <li class="task" id="task-gid-{{gid}}" data-status="{{status}}" data-gid="{{gid}}">
+      <li class="task" id="task-gid-{{gid}}" data-status="{{status}}" data-gid="{{gid}}" data-infohash="{{infoHash}}">
         <div class="left-area">
           <div class="task-name">
             <i class="select-box"></i>
