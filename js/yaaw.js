@@ -318,7 +318,7 @@ var YAAW = (function() {
       submit: function(_this) {
         var uri = $("#uri-input").val() || $("#uri-textarea").val() && $("#uri-textarea").val().split("\n") ;
         var options = {}, options_save = {};
-        $("#add-task-option input[name]").each(function(i, n) {
+        $("#add-task-option input[name], #add-task-option textarea[name]").each(function(i, n) {
           var name = n.getAttribute("name");
           var value = (n.type == "checkbox" ? n.checked : n.value);
           if (name && value) {
