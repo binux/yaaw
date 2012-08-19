@@ -544,6 +544,8 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           console.debug(result);
 
           $("#ib-options").empty().append(YAAW.tpl.ib_options(result.result));
+          if ($("#task-gid-"+gid).attr("data-status") == "active")
+            $("#ib-options-form *[name]:not(.active-allowed)").attr("disabled", true);
         }
       );
     },

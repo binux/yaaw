@@ -103,9 +103,14 @@ var YAAW = (function() {
         ARIA2.get_options($(".info-box").attr("data-gid"));
       });
 
+      var active_task_allowed_options = ["max-download-limit", "max-upload-limit"];
       $("#ib-options-save").live("click", function() {
         var options = {};
+        var gid = $(this).parents(".info-box").attr("data-gid")
+        var status = $("#task-gid-"+gid).attr("data-status");
         $.each($("#ib-options-form input"), function(n, e) {
+          if (status == "active" && active_task_allowed_options.indexOf(e.name) == -1)
+            return;
           options[e.name] = e.value;
         });
         ARIA2.change_options($(".info-box").attr("data-gid"), options);
