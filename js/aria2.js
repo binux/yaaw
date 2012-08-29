@@ -90,7 +90,9 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         ARIA2.request = ARIA2.request_http;
         ARIA2.batch_request = ARIA2.batch_request_http;
         if (onready) onready();
-        main_alert("alert-info", "connecting...", 1);
+        if ($("#main-alert .alert-msg").html() == "connecting...") {
+          $("#main-alert").fadeOut();
+        }
       } else if (jsonrpc_interface.indexOf("ws") == 0 && WebSocket) {
         jsonrpc_protocol = "ws"
         jsonrpc_ws = new WebSocket(jsonrpc_interface);
@@ -122,7 +124,9 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.request = ARIA2.request_ws;
           ARIA2.batch_request = ARIA2.batch_request_ws;
           if (onready) onready();
-          main_alert("alert-info", "connecting...", 1);
+          if ($("#main-alert .alert-msg").html() == "connecting...") {
+            $("#main-alert").fadeOut();
+          }
         };
       } else {
         main_alert("alert-error", "Unknow protocol");
