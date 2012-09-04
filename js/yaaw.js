@@ -578,7 +578,7 @@ var YAAW = (function() {
       },
 
       restart: function() {
-        if (on_gid) ARIA2.restart_task(on_gid);
+        if (on_gid) ARIA2.restart_task([on_gid, ]);
         on_gid = null;
       },
 
