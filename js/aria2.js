@@ -44,11 +44,18 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
   }
 
   function main_alert(_class, msg, timeout) {
+    var msg_id = (new Date()).getTime();
     $("#main-alert .alert").attr("class", "alert "+_class);
     $("#main-alert .alert-msg").html(msg);
-    $("#main-alert").show();
-    if (timeout)
-      window.setTimeout(function() { $("#main-alert").fadeOut(); }, timeout);
+    $("#main-alert").data("msg_id", msg_id).show();
+    if (timeout) {
+      window.setTimeout(function() { 
+        if($("#main-alert").data("msg_id") == msg_id) {
+          $("#main-alert").fadeOut();
+        }
+      }, timeout);
+    }
+    return msg_id;
   }
 
   function bind_event(dom) {
@@ -79,7 +86,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
   return {
     init: function(path, onready) {
-      main_alert("alert-info", "connecting...");
+      var connect_msg_id = main_alert("alert-info", "connecting...");
       $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option({}));
       $("#aria2-gsetting").empty().append(YAAW.tpl.aria2_global_setting({}));
 
@@ -90,7 +97,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         ARIA2.request = ARIA2.request_http;
         ARIA2.batch_request = ARIA2.batch_request_http;
         if (onready) onready();
-        if ($("#main-alert .alert-msg").html() == "connecting...") {
+        if ($("#main-alert").data("msg_id") == connect_msg_id) {
           $("#main-alert").fadeOut();
         }
       } else if (jsonrpc_interface.indexOf("ws") == 0 && WebSocket) {
@@ -124,7 +131,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.request = ARIA2.request_ws;
           ARIA2.batch_request = ARIA2.batch_request_ws;
           if (onready) onready();
-          if ($("#main-alert .alert-msg").html() == "connecting...") {
+          if ($("#main-alert").data("msg_id") == connect_msg_id) {
             $("#main-alert").fadeOut();
           }
         };
