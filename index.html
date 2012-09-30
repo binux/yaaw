@@ -170,7 +170,7 @@
         </div>
         <textarea id="uri-textarea" rows=5 class="input-clear hide" placeholder="HTTP, FTP or Magnet"></textarea>
       </form>
-      <div id="uri-more">▚▞</div>
+      <div id="uri-more"><span class="or-and">&or;&or;&or;&or;&or;&or;</span><span class="or-and" style="display:none;">&and;&and;&and;&and;&and;&and;</span></div>
       <div id="add-task-option-wrap"></div>
     </div>
     <div class="modal-footer">
@@ -190,7 +190,9 @@
           <div class="control-group">
             <label class="control-label" for="rpc-path">JSON-RPC Path</label>
             <div class="controls">
-              <input type="text" class="input-xlarge" id="rpc-path">
+              <div class="input-append btn-group rpc-path-wrap">
+                <input type="text" class="input-xlarge pull-left" id="rpc-path"><a class="add-on btn dropdown-toggle" href="#" disabled><b class="caret"></b></a>
+              </div>
             </div>
           </div>
           <div class="control-group">
