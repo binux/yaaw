@@ -90,7 +90,18 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option({}));
       $("#aria2-gsetting").empty().append(YAAW.tpl.aria2_global_setting({}));
 
-      jsonrpc_interface = path || "http://"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
+      if (location.hash.length)
+      {
+        jsonrpc_interface = location.hash.substring(1);
+        if (jsonrpc_interface.indexOf("/jsonrpc") == -1)
+        {
+ 	         jsonrpc_interface += "/jsonrpc";
+ 	      }
+      }
+      else
+      {
+        jsonrpc_interface = path || "http://"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
+      }
       if (jsonrpc_interface.indexOf("http") == 0) {
         jsonrpc_protocol = "http";
         $.jsonRPC.setup({endPoint: jsonrpc_interface, namespace: 'aria2'});
