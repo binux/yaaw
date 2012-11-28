@@ -628,6 +628,17 @@ var YAAW = (function() {
         if (this.add_task_option) {
           this.add_task_option = JSON.parse(this.add_task_option);
         }
+        // overwrite settings with hash
+        if (location.hash && location.hash.length) {
+          var args = location.hash.substring(1).split('&'), kwargs = {};
+          $.each(args, function(i, n) {
+            n = n.split('=', 2);
+            kwargs[n[0]] = n[1];
+          });
+
+          if (kwargs['path']) this.jsonrpc_path = kwargs['path'];
+          this.kwargs = kwargs;
+        }
 
         var _this = this;
         $('#setting-modal').on('hidden', function () {
