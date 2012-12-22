@@ -23,9 +23,9 @@
     <title>Yet Another Aria2 Web Frontend</title>
     <meta name="author" content="Binux" />
     
-    <link href="css/main.css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -187,11 +187,11 @@
     <div class="modal-body">
       <form id="setting-form" class="form-horizontal" onsubmit="YAAW.setting.submit();return false;">
         <fieldset>
-          <div class="control-group">
+          <div class="control-group rpc-path-group">
             <label class="control-label" for="rpc-path">JSON-RPC Path</label>
             <div class="controls">
               <div class="input-append btn-group rpc-path-wrap">
-                <input type="text" class="input-xlarge pull-left" id="rpc-path"><a class="add-on btn dropdown-toggle" href="#" disabled><b class="caret"></b></a>
+                <input type="text" class="input-xlarge" id="rpc-path"><a class="add-on btn dropdown-toggle" href="#" disabled><b class="caret"></b></a>
               </div>
             </div>
           </div>
@@ -285,9 +285,12 @@
             <span>{{#_v.format_size}}{{totalLength}}{{/_v.format_size}}</span>
             {{#uploadLength}}<span>(up {{#_v.format_size}}{{uploadLength}}{{/_v.format_size}}){{/uploadLength}}
           </div>
-          <div class="progress progress-striped pull-right">
-            <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
+          <div class="pull-right">
+            <div class="progress progress-striped">
+              <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
+            </div>
           </div>
+          <div class="clearfix"></div>
         </div>
       </li>
       {{/tasks}}
