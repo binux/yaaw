@@ -198,6 +198,13 @@
     white-space: nowrap;
 }
 
+@media (max-height: 600px) {
+    .modal.fade.in {
+        position: absolute;
+        top: 260px;
+    }
+}
+
 @media (max-width: 480px) {
     .modal.fade.in {
         top: 60px;
