@@ -58,10 +58,10 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="###" onclick="YAAW.tasks.selectActive();">选中下载</a></li>
-              <li><a href="###" onclick="YAAW.tasks.selectWaiting();">选中等待</a></li>
-              <li><a href="###" onclick="YAAW.tasks.selectPaused();">选中暂停</a></li>
-              <li><a href="###" onclick="YAAW.tasks.selectStoped();">选中停止</a></li>
+              <li><a href="###" onclick="YAAW.tasks.selectActive();">Select Active</a></li>
+              <li><a href="###" onclick="YAAW.tasks.selectWaiting();">Select Waiting</a></li>
+              <li><a href="###" onclick="YAAW.tasks.selectPaused();">Select Paused</a></li>
+              <li><a href="###" onclick="YAAW.tasks.selectStoped();">Select Stoped</a></li>
             </ul>
           </div>
         </div>
@@ -198,19 +198,19 @@
           <div class="control-group">
             <label class="control-label">自动刷新</label>
             <div class="controls">
-              <label class="radio inline" style="width:40px">
+              <label class="radio inline">
                 <input type="radio" name="refresh_interval" value="5000"> 每5秒
               </label>
-              <label class="radio inline" style="width:40px">
+              <label class="radio inline">
                 <input type="radio" name="refresh_interval" value="10000" checked> 每10秒
               </label>
-              <label class="radio inline" style="width:40px">
+              <label class="radio inline">
                 <input type="radio" name="refresh_interval" value="30000"> 每30秒
               </label>
-              <label class="radio inline" style="width:46px">
+              <label class="radio inline">
                 <input type="radio" name="refresh_interval" value="300000"> 每5分钟
               </label>
-              <label class="radio inline" style="width:40px">
+              <label class="radio inline">
                 <input type="radio" name="refresh_interval" value="0"> 关闭
               </label>
             </div>
