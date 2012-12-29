@@ -213,6 +213,10 @@
         max-height: none;
     }
 
+    #main-alert {
+        top: 25px;
+    }
+
     #offline-cached {
         display: none;
     }
