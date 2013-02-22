@@ -439,7 +439,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           result.progress = 0;
         else
           result.progress = (result.completedLength * 1.0 / result.totalLength * 100).toFixed(2);
-        result.etc = (result.totalLength - result.completedLength)/result.downloadSpeed;
+        result.eta = (result.totalLength - result.completedLength)/result.downloadSpeed;
 
         result.downloadSpeed = parseInt(result.downloadSpeed);
         result.uploadSpeed = parseInt(result.uploadSpeed);
