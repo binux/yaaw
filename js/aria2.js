@@ -690,7 +690,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           result = result.result;
           for (var i=0; i<result.files.length; i++) {
             var file = result.files[i];
-            file.title = file.path.replace(new RegExp("^"+result.dir+"/?"), "");
+            file.title = file.path.replace(new RegExp("^"+result.dir.replace(/\\/g, "[\\/]")+"/?"), "");
             file.selected = file.selected == "true" ? true : false;
           };
           $("#ib-status").empty().append(YAAW.tpl.ib_status(result));
