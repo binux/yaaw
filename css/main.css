@@ -84,6 +84,7 @@
     /* fix for MAC/chrome firefox */
     position: relative;
     left: 10px;
+    margin-left: 0;
 }
 
 #info-btn {
