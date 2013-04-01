@@ -437,15 +437,19 @@
 
 #torrent-up-input {
     position: absolute;
+    top: 0;
+    left: 0;
     text-align: right;
-    height: 28px;
-    width: 106px;
+    height: 100%;
+    width: 100%;
     -moz-opacity: 0;
     filter: alpha(opacity: 0);
     opacity: 0;
     z-index: 2;
+    cursor: pointer;
 }
 #torrent-up-btn {
+    position: relative;
 }
 
 #add-task-alert {

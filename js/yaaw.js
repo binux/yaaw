@@ -161,7 +161,7 @@ var YAAW = (function() {
         }
       } else {
         $("#torrent-up-input").remove();
-        $("#torrent-up-btn").addClass("disabled");
+        $("#torrent-up-btn").addClass("disabled").tooltip({title: "File API is Not Supported."});
       }
 
       if (window.applicationCache) {
