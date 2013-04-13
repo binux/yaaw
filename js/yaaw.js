@@ -553,9 +553,11 @@ var YAAW = (function() {
           }
           return false;
         }).live("mouseout", function(ev) {
-          if ($.contains(this, ev.toElement) ||
-            $("#task-contextmenu").get(0) == ev.toElement ||
-            $.contains($("#task-contextmenu").get(0), ev.toElement)) {
+          // toElement is not available in Firefox, use relatedTarget instead.
+          var enteredElement = ev.toElement || ev.relatedTarget;
+          if ($.contains(this, enteredElement) ||
+            $("#task-contextmenu").get(0) == ev.enteredElement ||
+            $.contains($("#task-contextmenu").get(0), ev.enteredElement)) {
             return;
           }
           on_gid = null;
