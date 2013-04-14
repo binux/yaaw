@@ -556,8 +556,8 @@ var YAAW = (function() {
           // toElement is not available in Firefox, use relatedTarget instead.
           var enteredElement = ev.toElement || ev.relatedTarget;
           if ($.contains(this, enteredElement) ||
-            $("#task-contextmenu").get(0) == ev.enteredElement ||
-            $.contains($("#task-contextmenu").get(0), ev.enteredElement)) {
+            $("#task-contextmenu").get(0) == enteredElement ||
+            $.contains($("#task-contextmenu").get(0), enteredElement)) {
             return;
           }
           on_gid = null;
