@@ -3,29 +3,29 @@ YAAW
 
 Yet Another Aria2 Web Frontend in pure HTML/CSS/Javascirpt.
 
-No HTTP server, backend or server-side program. All you need is just a browser.
+没有HTTP服务器，后端或服务器端程序。所有你需要的只是一个浏览器。
 
 <br />
 
-Usage
+用法
 -----
-1. Run aria2 with RPC enabled
+1. 启用RPC运行aria2
 > aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all
 >
-> Warning: This options will not verify the identity of caller. KEEP THE ADDRESS SECRET.
+> 警告：此选项将不能确认来电者的身份。保持的地址秘密。
 
 2. Visit **index.html**.
 
-3. Change "JSON-RPC Path" setting if "Internal server error" occurred.
+3. “JSON-RPC路径”设置更改，如果发生“内部服务器错误”。
 
-Tips
+提示
 ----
-* All your settings on web is temporary. **Settings will be lost after aria2 restarted.**
-* Tasks(including which is not finished) will be lost after aria2 restarted. Using `--save-session=SOME/WHERE` and reload with `--continue=true --input-file=SOME/WHERE` to continue.
-* Using `$HOME/.aria2/aria2.conf` to save your options.
-* For more infomations about aria2, visit [Aria2 Manual](http://aria2.sourceforge.net/manual/en/html/)
+*您的网络设置是暂时的。 **设置会丢失aria2后重新启动。**
+*任务（包括还没有完成）将丢失aria2后重新启动。使用` - 保存会话=一些/`和` - 继续重载=真 - 输入文件=一些/`继续。
+*使用`$ HOME/.aria2/aria2.conf`保存选项。
+*欲了解更多关于aria2的Nessus网站，请访问 [Aria2 Manual](http://aria2.sourceforge.net/manual/en/html/)
 
-Components
+组件
 ----------
 + [Bootstrap](http://twitter.github.com/bootstrap/)
 + [mustache.js](https://github.com/janl/mustache.js)
@@ -33,7 +33,7 @@ Components
 + [jQuery Storage](http://archive.plugins.jquery.com/project/html5Storage)
 + [JSON RPC 2.0 jQuery Plugin](https://github.com/datagraph/jquery-jsonrpc)
 
-License
+许可证
 -------
-yaaw is licensed under GNU Lesser General Public License.
-You may get a copy of the GNU Lesser General Public License from http://www.gnu.org/licenses/lgpl.txt
+yaaw GNU通用公共许可证下授权。
+你可能会得到一个GNU通用公共许可证的副本 http://www.gnu.org/licenses/lgpl.txt
