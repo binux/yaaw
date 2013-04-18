@@ -21,7 +21,7 @@ Yet Another Aria2 Web Frontend in pure HTML/CSS/Javascirpt.
 提示
 ----
 *您的网络设置是暂时的。 **设置会丢失aria2后重新启动。**
-*任务（包括还没有完成）将丢失aria2后重新启动。使用` - 保存会话=一些/`和` - 继续重载=真 - 输入文件=一些/`继续。
+*任务（包括还没有完成）将丢失aria2后重新启动。使用`--save-session=xxx.gz`和`--continue=true --input-file=xxx.gz`继续。
 *使用`$ HOME/.aria2/aria2.conf`保存选项。
 *欲了解更多关于aria2的Nessus网站，请访问 [Aria2 Manual](http://aria2.sourceforge.net/manual/en/html/)
 
