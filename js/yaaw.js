@@ -31,6 +31,7 @@ var YAAW = (function() {
       this.contextmenu.init();
       this.event_init();
       this.aria2_init();
+      this.tasks.init_sortable();
     },
 
     aria2_init: function() {
@@ -405,7 +406,7 @@ var YAAW = (function() {
           YAAW.setting.save_add_task_option(options_save);
         }
       },
-      
+
       clean: function() {
         $("#uri-input").attr("placeholder", "HTTP, FTP or Magnet");
         $("#add-task-modal .input-clear").val("");
@@ -430,6 +431,16 @@ var YAAW = (function() {
     },
 
     tasks: {
+      init_sortable: function() {
+        // Only make waiting table sortable to avoid start/pause task by mistake.
+        $("#waiting-tasks-table").sortable();
+        $("#waiting-tasks-table").on("sortstop", function(event, ui) {
+          var curPos = ui.item.prevAll(".task").length;
+          ARIA2.change_pos(ui.item.attr("data-gid"), curPos - ui.item.data("sort"), "POS_CUR");
+          ui.item.data("sort", curPos);
+        });
+      },
+
       check_select: function() {
         var selected = $(".tasks-table .task.selected");
         if (selected.length == 0) {
@@ -469,7 +480,7 @@ var YAAW = (function() {
       toggle: function(task) {
         $(task).toggleClass("selected").find(".select-box").toggleClass("icon-ok");
       },
-      
+
       unSelectAll: function(notupdate) {
         var _this = this;
         $(".tasks-table .task.selected").each(function(i, n) {

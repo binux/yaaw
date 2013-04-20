@@ -10,6 +10,7 @@ img/favicon.ico
 img/glyphicons-halflings-white.png
 img/glyphicons-halflings.png
 js/jquery-1.7.2.min.js
+js/jquery-ui-1.10.2.custom.min.js
 js/bootstrap.min.js
 js/jquery.jsonrpc.js
 js/jquery.Storage.js
