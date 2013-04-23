@@ -52,7 +52,7 @@
 
         <div class="pull-left">
           <div class="btn-group btn-inline" id="select-btn">
-            <button id="select-all-btn" class="btn" rel="tooltip" title="Select All">
+            <button id="select-all-btn" class="btn" rel="tooltip" title="全选">
               <i class="select-box"></i>
             </button>
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -70,7 +70,7 @@
         <div class="pull-left" id="not-selected-grp">
           <div class="btn-group btn-inline">
             <a class="btn" id="add-task-btn" data-toggle="modal" href="#add-task-modal" rel="tooltip" title="添加任务">
-              <i class="icon-plus"></i> Add
+              <i class="icon-plus"></i>添加
             </a>
           </div>
           <div class="btn-group btn-inline" id="do-all-btn">
@@ -158,12 +158,12 @@
     <section class="modal hide fade" id="add-task-modal">
     <div class="modal-header">
       <button class="close" data-dismiss="modal">×</button>
-      <h3>Add Task</h3>
+      <h3>添加任务</h3>
     </div>
     <div class="modal-body">
       <div id="add-task-alert" class="alert alert-error hide">
         <a href="###" onclick="$('#add-task-alert').hide();" class="close">×</a>
-        <strong>Error:</strong> <span class="alert-msg"></span>
+        <strong>错误:</strong> <span class="alert-msg"></span>
       </div>
       <form id="add-task-uri" onsubmit="YAAW.add_task.submit(this);return false;">
         <div class="input-append">
@@ -245,7 +245,7 @@
           <div class="task-info">
             <span class="task-status" rel="tooltip" title="{{status}} {{#_v.error_msg}}{{errorCode}}{{/_v.error_msg}}"><i class="{{#_v.status_icon}}{{status}}{{/_v.status_icon}}"></i></span>
             <span>{{#_v.format_size}}{{completedLength}}{{/_v.format_size}} / {{#_v.format_size}}{{totalLength}}{{/_v.format_size}}</span>
-            {{#uploadLength}}<span>(uploaded {{#_v.format_size}}{{uploadLength}}{{/_v.format_size}})</span>{{/uploadLength}}
+            {{#uploadLength}}<span>(上传量 {{#_v.format_size}}{{uploadLength}}{{/_v.format_size}})</span>{{/uploadLength}}
             {{#eta}}<span>ETA: {{#_v.format_time}}{{eta}}{{/_v.format_time}}</span>{{/eta}}
           </div>
         </div>
@@ -256,8 +256,8 @@
           <div class="progress-info">
             {{#downloadSpeed}}<span class="download-speed"><i class="icon-download"></i> {{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}/s</span>{{/downloadSpeed}}
             {{#uploadSpeed}}<span class="upload-speed"><i class="icon-upload"></i> {{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}/s</span>{{/uploadSpeed}}
-            {{#connections}}<span class="seeders"><i class="icon-signal" rel="tooltip" title="Connections"></i> {{connections}}</span>{{/connections}}
-            {{#numSeeders}}<span class="seeders"><i class="icon-magnet" rel="tooltip" title="Seeders"></i> {{numSeeders}}</span>{{/numSeeders}}
+            {{#connections}}<span class="seeders"><i class="icon-signal" rel="tooltip" title="连接"></i> {{connections}}</span>{{/connections}}
+            {{#numSeeders}}<span class="seeders"><i class="icon-magnet" rel="tooltip" title="播种机"></i> {{numSeeders}}</span>{{/numSeeders}}
           </div>
         </div>
       </li>
@@ -302,7 +302,7 @@
         <div class="tabbable tabs-left">
           <ul class="nav nav-tabs">
             <li class="active"><a href="#ib-status" data-toggle="tab">状态</a></li>
-            <li><a href="#ib-files" data-toggle="tab">Files</a></li>
+            <li><a href="#ib-files" data-toggle="tab">文档</a></li>
             <li><a id="ib-options-a" href="#ib-options" data-toggle="tab">选项</a></li>
           </ul>
           <div class="tab-content">
@@ -316,14 +316,14 @@
 
     <script id="ib-status-tpl" type="text/mustache-template">
       <ul>
-        <li><strong>Size: </strong>{{#_v.format_size}}{{totalLength}}{{/_v.format_size}} ({{numPieces}} @ {{#_v.format_size}}{{pieceLength}}{{/_v.format_size}})</li>
-        <li><strong>Status: </strong>{{status}} {{error_msg}}</li>
-        <li><strong>Dir: </strong>{{dir}}</li>
+        <li><strong>大小: </strong>{{#_v.format_size}}{{totalLength}}{{/_v.format_size}} ({{numPieces}} @ {{#_v.format_size}}{{pieceLength}}{{/_v.format_size}})</li>
+        <li><strong>状态: </strong>{{status}} {{error_msg}}</li>
+        <li><strong>目录: </strong>{{dir}}</li>
         {{#bittorrent}}
-          {{#creationDate}}<li>Torrent Created At {{creationDate}}</li>{{/creationDate}}
-          {{#comment}}<li><strong>Comment: </strong>{{comment}}</li>{{/comment}}
+          {{#creationDate}}<li>创建种子 {{creationDate}}</li>{{/creationDate}}
+          {{#comment}}<li><strong>评论: </strong>{{comment}}</li>{{/comment}}
         {{/bittorrent}}
-        <li class="bitfield"><strong>Bitfield: </strong>{{#_v.bitfield}}{{bitfield}}{{/_v.bitfield}}</li>
+        <li class="bitfield"><strong>进度: </strong>{{#_v.bitfield}}{{bitfield}}{{/_v.bitfield}}</li>
       </ul>
     </script>
 
@@ -412,7 +412,7 @@
           </div>
         </div>
         <div class="control-group half">
-          <label class="control-label" for="ati-sr">做种比label>
+          <label class="control-label" for="ati-sr">做种比</label>
           <div class="controls">
             <input id="ati-sr" class="input-small input-save" name="seed-ratio" value="{{seed-ratio}}" />
           </div>
@@ -425,7 +425,7 @@
         </div>
         <div class="clearfix"></div>
         <div class="control-group">
-          <label class="control-label" for="ati-header">头</label>
+          <label class="control-label" for="ati-header">header</label>
           <div class="controls">
             <textarea id="ati-header" class="input-xlarge input-save" name="header" warp="off">{{header}}</textarea>
           </div>
