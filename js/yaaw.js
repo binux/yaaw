@@ -82,7 +82,7 @@ var YAAW = (function() {
           indexes.push(n.getAttribute("data-index"));
         });
         if (indexes.length == 0) {
-          ARIA2.main_alert("alert-error", "At least one file should be selected. Or just stop the task.", 5000);
+          ARIA2.main_alert("alert-error", "应选择至少一个文件.或者只是停止任务.", 5000);
         } else {
           var options = {
             "select-file": indexes.join(","),
@@ -161,7 +161,7 @@ var YAAW = (function() {
         }
       } else {
         $("#torrent-up-input").remove();
-        $("#torrent-up-btn").addClass("disabled").tooltip({title: "File API is Not Supported."});
+        $("#torrent-up-btn").addClass("disabled").tooltip({title: "文件API不支持."});
       }
 
       if (window.applicationCache) {
@@ -267,36 +267,36 @@ var YAAW = (function() {
         error_msg: function() {
           var error_code_map = {
             0: "",
-            1: "unknown error occurred.",
-            2: "time out occurred.",
-            3: "resource was not found.",
-            4: "resource was not found. See --max-file-not-found option.",
-            5: "resource was not found. See --lowest-speed-limit option.",
-            6: "network problem occurred.",
-            7: "unfinished download.",
-            8: "remote server did not support resume when resume was required to complete download.",
-            9: "there was not enough disk space available.",
-            10: "piece length was different from one in .aria2 control file. See --allow-piece-length-change option.",
+            1: "发生未知错误.",
+            2: "发生超时.",
+            3: "未找到资源.",
+            4: "资源没有被发现. 检查 --max-file-not-found 选项.",
+            5: "未找到资源. 检查 --lowest-speed-limit 选项.",
+            6: "出现网络问题.",
+            7: "未完成的下载.",
+            8: "远程服务器不支持恢复简历时需要完成下载.",
+            9: "有没有足够的可用磁盘空间.",
+            10: "文件长度不同 .aria2控制文件. 检查 --allow-piece-length-change 选项.",
             11: "aria2 was downloading same file at that moment.",
             12: "aria2 was downloading same info hash torrent at that moment.",
-            13: "file already existed. See --allow-overwrite option.",
-            14: "renaming file failed. See --auto-file-renaming option.",
+            13: "文件已经存在. 检查 --allow-overwrite 选项.",
+            14: "重命名文件失败. 检查 --auto-file-renaming 选项.",
             15: "aria2 could not open existing file.",
             16: "aria2 could not create new file or truncate existing file.",
-            17: "I/O error occurred.",
-            18: "aria2 could not create directory.",
-            19: "name resolution failed.",
-            20: "could not parse Metalink document.",
-            21: "FTP command failed.",
-            22: "HTTP response header was bad or unexpected.",
-            23: "too many redirections occurred.",
-            24: "HTTP authorization failed.",
-            25: "aria2 could not parse bencoded file(usually .torrent file).",
-            26: ".torrent file was corrupted or missing information that aria2 needed.",
+            17: "I/O发生错误.",
+            18: "aria2 无法创建目录.",
+            19: "名称解析失败.",
+            20: "无法解析的Metalink文件.",
+            21: "FTP 命令失败.",
+            22: "HTTP 响应头是坏的.",
+            23: "发生的重定向太多.",
+            24: "HTTP 授权失败.",
+            25: "aria2不能解析文件(.torrent file).",
+            26: ".torrent 文件被损坏或丢失的信息.",
             27: "Magnet URI was bad.",
             28: "bad/unrecognized option was given or unexpected option argument was given.",
-            29: "the remote server was unable to handle the request due to a temporary overloading or maintenance.",
-            30: "aria2 could not parse JSON-RPC request.",
+            29: "远程服务器无法处理请求，因暂时超载或维护.",
+            30: "aria2无法解析JSON-RPC请求.",
           };
           return function(text) {
             return error_code_map[text] || "";
