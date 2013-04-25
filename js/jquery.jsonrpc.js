@@ -242,7 +242,7 @@
       _response: function(json) {
         if (typeof(json) === 'undefined' || json === "") {
           return {
-            error: 'Internal server error',
+            error: '内部服务器错误',
             version: '2.0'
           };
         }
@@ -261,7 +261,7 @@
           }
           catch (e) {
             return {
-              error: 'Internal server error: ' + e,
+              error: '内部服务器错误: ' + e,
               version: '2.0'
             }
           }
