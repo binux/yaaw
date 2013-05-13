@@ -328,12 +328,12 @@
     </script>
 
     <script id="ib-files-tpl" type="text/mustache-template">
-      <div id="ib-file-btn">
-        <button id="ib-file-save" class="btn btn-primary">Save</button>
-        <button id="ib-file-select" class="btn">Select All</button>
-        <button id="ib-file-unselect" class="btn">Unselect All</button>
-      </div>
       <ul>
+        <li id="ib-file-btn">
+          <button id="ib-file-save" class="btn btn-primary">Save</button>
+          <button id="ib-file-select" class="btn">Select All</button>
+          <button id="ib-file-unselect" class="btn">Unselect All</button>
+        </li>
         {{#files}}
         <li>
           <i class="select-box{{#selected}} icon-ok{{/selected}}" data-index="{{index}}"></i>
@@ -345,11 +345,11 @@
     </script>
 
     <script id="ib-options-tpl" type="text/mustache-template">
-      <div id="ib-options-btn">
-        <button id="ib-options-save" class="btn btn-primary">Save</button>
-      </div>
       <form id="ib-options-form" class="form-horizontal" onsubmit="false">
       <ul>
+        <li id="ib-options-btn">
+          <button id="ib-options-save" class="btn btn-primary">Save</button>
+        </li>
         <li><span>Download Limit:</span><input name="max-download-limit" class="active-allowed" value="{{max-download-limit}}" /></li>
         <li><span>Upload Limit:</span><input name="max-upload-limit" class="active-allowed" value="{{max-upload-limit}}" /></li>
         <li><span>Split:</span><input name="split" value="{{split}}" /></li>
