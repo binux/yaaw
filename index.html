@@ -42,7 +42,7 @@
         </div>
       </header>
 
-      <div class="clearfix" id="main-control">
+      <div class="clearfix hide" id="main-control">
         <div id="main-alert" class="hide">
           <div id="main-alert-inline" class="alert">
             <a href="###" onclick="$('#main-alert').hide();" class="close">×</a>
@@ -51,7 +51,7 @@
         </div>
 
         <div class="pull-left">
-          <div class="btn-group btn-inline" id="select-btn">
+          <div class="btn-group" id="select-btn">
             <button id="select-all-btn" class="btn" rel="tooltip" title="Select All">
               <i class="select-box"></i>
             </button>
@@ -68,12 +68,12 @@
         </div>
 
         <div class="pull-left" id="not-selected-grp">
-          <div class="btn-group btn-inline">
+          <div class="pull-left btn-group">
             <a class="btn" id="add-task-btn" data-toggle="modal" href="#add-task-modal" rel="tooltip" title="Add Task">
               <i class="icon-plus"></i> Add
             </a>
           </div>
-          <div class="btn-group btn-inline" id="do-all-btn">
+          <div class="pull-left btn-group" id="do-all-btn">
             <a href="###" onclick="ARIA2.unpause_all();" class="btn" id="unpause-all" rel="tooltip" title="Start All">
               <i class="icon-forward"></i>
             </a>
@@ -87,7 +87,7 @@
         </div>
 
         <div class="pull-left hide" id="selected-grp">
-          <div class="btn-group btn-inline">
+          <div class="btn-group">
             <a href="###" onclick="YAAW.tasks.unpause();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="Start">
               <i class="icon-play"></i>
             </a>
@@ -104,7 +104,7 @@
         </div>
 
         <div class="pull-right" id="other-grp">
-          <div class="btn-group btn-inline">
+          <div class="btn-group">
             <a href="#" class="btn" id="refresh-btn" rel="tooltip" title="Refresh">
               <i class="icon-refresh"></i> Refresh
             </a>
@@ -200,16 +200,16 @@
             <label class="control-label">Auto Refresh</label>
             <div class="controls">
               <label class="radio inline">
-                <input type="radio" name="refresh_interval" value="5000"> 5s
+                <input type="radio" name="refresh_interval" value="1000"> 1s
               </label>
               <label class="radio inline">
-                <input type="radio" name="refresh_interval" value="10000" checked> 10s
+                <input type="radio" name="refresh_interval" value="5000" checked> 5s
               </label>
               <label class="radio inline">
-                <input type="radio" name="refresh_interval" value="30000"> 30s
+                <input type="radio" name="refresh_interval" value="10000"> 10s
               </label>
               <label class="radio inline">
-                <input type="radio" name="refresh_interval" value="300000"> 5min
+                <input type="radio" name="refresh_interval" value="60000"> 1min
               </label>
               <label class="radio inline">
                 <input type="radio" name="refresh_interval" value="0"> off 

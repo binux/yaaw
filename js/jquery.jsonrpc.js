@@ -193,6 +193,7 @@
       // Determines the appropriate request URL to call for a request
       _requestUrl: function(url) {
         url = url || this.endPoint;
+        url = url.replace(/^((?![^:@]+:[^:@\/]*@)[^:\/?#.]+:)?(\/\/)?(?:(?:[^:@]*(?::[^:@]*)?)?@)?(.*)/, '$1$2$3'); // auth string not allowed in url for firefox
         return url + '?tm=' + new Date().getTime()
       },
 

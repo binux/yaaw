@@ -81,10 +81,8 @@
 }
 
 #do-all-btn {
-    /* fix for MAC/chrome firefox */
     position: relative;
-    left: 10px;
-    margin-left: 0;
+    margin-left: 10px;
 }
 
 #info-btn {
@@ -227,7 +225,6 @@
     }
     #not-selected-grp {
         float: right;
-        margin-right: 5px;
     }
     #selected-grp {
         float: right;
@@ -416,6 +413,7 @@
 }
 #uri-textarea {
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
     width: 100%;
     margin: 0;
 }
@@ -507,6 +505,7 @@
   width: 100%;
   height: 28px;
   box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 #aria2-gs-form {
     margin-right: 30px;
