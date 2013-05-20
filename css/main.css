@@ -352,13 +352,12 @@
 }
 #ib-file-btn,
 #ib-options-btn {
-    position: absolute;
-    top: 0;
-    right: 18px;
+    float: right !important;
+    tmargin: 0 0 5px 5px;
 }
 @media (max-width: 980px) {
     #ib-file-btn, #ib-options-btn {
-        position: static;
+        float: none !important;
         margin-bottom: 5px;
     }
 }
