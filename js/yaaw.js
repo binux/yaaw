@@ -24,6 +24,8 @@ var YAAW = (function() {
   var torrent_file = null, file_type = null;
   return {
     init: function() {
+      $('#main-control').show();
+
       this.tpl.init();
       this.setting.init();
       this.contextmenu.init();
