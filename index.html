@@ -328,11 +328,11 @@
     </script>
 
     <script id="ib-files-tpl" type="text/mustache-template">
-      <div id="ib-file-btn">
+      <li id="ib-file-btn">
         <button id="ib-file-save" class="btn btn-primary">保存</button>
         <button id="ib-file-select" class="btn">全选</button>
         <button id="ib-file-unselect" class="btn">反选</button>
-      </div>
+      </li>
       <ul>
         {{#files}}
         <li>
@@ -345,9 +345,9 @@
     </script>
 
     <script id="ib-options-tpl" type="text/mustache-template">
-      <div id="ib-options-btn">
+      <li id="ib-options-btn">
         <button id="ib-options-save" class="btn btn-primary">保存</button>
-      </div>
+      </li>
       <form id="ib-options-form" class="form-horizontal" onsubmit="false">
       <ul>
         <li><span>下载限制:</span><input name="max-download-limit" class="active-allowed" value="{{max-download-limit}}" /></li>
