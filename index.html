@@ -42,7 +42,7 @@
         </div>
       </header>
 
-      <div class="clearfix" id="main-control">
+      <div class="clearfix hide" id="main-control">
         <div id="main-alert" class="hide">
           <div id="main-alert-inline" class="alert">
             <a href="###" onclick="$('#main-alert').hide();" class="close">×</a>
@@ -51,7 +51,7 @@
         </div>
 
         <div class="pull-left">
-          <div class="btn-group btn-inline" id="select-btn">
+          <div class="btn-group" id="select-btn">
             <button id="select-all-btn" class="btn" rel="tooltip" title="全选">
               <i class="select-box"></i>
             </button>
@@ -68,7 +68,7 @@
         </div>
 
         <div class="pull-left" id="not-selected-grp">
-          <div class="btn-group btn-inline">
+          <div class="pull-left btn-grou">
             <a class="btn" id="add-task-btn" data-toggle="modal" href="#add-task-modal" rel="tooltip" title="添加任务">
               <i class="icon-plus"></i>添加
             </a>
@@ -87,7 +87,7 @@
         </div>
 
         <div class="pull-left hide" id="selected-grp">
-          <div class="btn-group btn-inline">
+          <div class="btn-group">
             <a href="###" onclick="YAAW.tasks.unpause();YAAW.tasks.unSelectAll();" class="btn" rel="tooltip" title="开始">
               <i class="icon-play"></i>
             </a>
@@ -200,16 +200,16 @@
             <label class="control-label">自动刷新</label>
             <div class="controls">
               <label class="radio inline">
-                <input type="radio" name="refresh_interval" value="5000"> 5s
+                <input type="radio" name="refresh_interval" value="1000"> 1s
               </label>
               <label class="radio inline">
-                <input type="radio" name="refresh_interval" value="10000" checked> 10s
+                <input type="radio" name="refresh_interval" value="5000" checked> 5s
               </label>
               <label class="radio inline">
-                <input type="radio" name="refresh_interval" value="30000"> 30s
+                <input type="radio" name="refresh_interval" value="10000"> 10s
               </label>
               <label class="radio inline">
-                <input type="radio" name="refresh_interval" value="300000"> 5min
+                <input type="radio" name="refresh_interval" value="60000"> 1min
               </label>
               <label class="radio inline">
                 <input type="radio" name="refresh_interval" value="0"> off 
