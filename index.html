@@ -411,6 +411,24 @@
             <input id="ati-cps" class="input-small input-save" name="max-connection-per-server" value="{{max-connection-per-server}}" />
           </div>
         </div>
+        <div class="clearfix"></div>
+        <div class="control-group half">
+          <div class="controls">
+            <label class="checkbox">
+              <input type="checkbox" name="check-integrity" class="input-save" {{#check-integrity}}checked{{/check-integrity}} />
+              Check Integrity
+            </label>
+          </div>
+        </div>
+        <div class="control-group half">
+          <div class="controls">
+            <label class="checkbox">
+              <input type="checkbox" name="bt-seed-unverified" class="input-save" {{#bt-seed-unverified}}checked{{/bt-seed-unverified}} />
+              BT Seed Unverified
+            </label>
+          </div>
+        </div>
+        <div class="clearfix"></div>
         <div class="control-group half">
           <label class="control-label" for="ati-sr">Seed Ratio</label>
           <div class="controls">
