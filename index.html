@@ -368,7 +368,8 @@
 
     <script id="add-task-option-tpl" type="text/mustache-template">
       <hr />
-      <form id="add-task-option" class="form-horizontal" onsubmit="false">
+      <form id="add-task-option" class="form-horizontal" onsubmit="$('#add-task-uri').submit();return false">
+	  <input type="submit" style="position:fixed;top:0;visibility:hidden"/>
         <div class="control-group">
           <label class="control-label" for="ati-out">File Name</label>
           <div class="controls">
