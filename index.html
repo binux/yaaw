@@ -305,11 +305,13 @@
             <li class="active"><a href="#ib-status" data-toggle="tab">Status</a></li>
             <li><a href="#ib-files" data-toggle="tab">Files</a></li>
             <li><a id="ib-options-a" href="#ib-options" data-toggle="tab">Options</a></li>
+            <li><a id="ib-peers-a" class="hide" style="display:none;" href="#ib-peers" data-toggle="tab">Peers</a></li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="ib-status"> </div>
             <div class="tab-pane" id="ib-files"> </div>
             <div class="tab-pane" id="ib-options"> </div>
+            <div class="tab-pane hide" style="display:none;" id="ib-peers"> </div>
           </div>
         </div>
       </div>
@@ -357,6 +359,12 @@
         <li><span>Conn per Serv:</span><input name="max-connection-per-server" value="{{max-connection-per-server}}" /></li>
         <li><span>Split Size:</span><input name="min-split-size" value="{{min-split-size}}" /></li>
       </form>
+    </script>
+
+    <script id="ib-peers-tpl" type="text/mustache-template">
+      {{#.}}
+      <li><span class="ip_port">{{ip}}:{{port}}</span> <b>{{#_v.bitfield_to_percent}}{{bitfield}}{{/_v.bitfield_to_percent}}%</b> <i class="icon-download"></i>{{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}/s <i class="icon-upload"></i>{{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}/s</li>
+      {{/.}}
     </script>
 
     <script id="other-task-empty" type="text/mustache-template">

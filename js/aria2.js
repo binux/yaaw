@@ -558,7 +558,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     get_options: function(gid) {
       ARIA2.request("getOption", [gid],
         function(result) {
-          console.debug(result);
+          //console.debug(result);
 
           $("#ib-options").empty().append(YAAW.tpl.ib_options(result.result));
           if ($("#task-gid-"+gid).attr("data-status") == "active")
@@ -573,6 +573,16 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           //console.debug(result);
 
           main_alert("alert-info", "option updated", 1000);
+        }
+      );
+    },
+
+    get_peers: function(gid) {
+      ARIA2.request("getPeers", [gid],
+        function(result) {
+          console.debug(result);
+
+          $("#ib-peers").empty().append(YAAW.tpl.ib_peers(result.result));
         }
       );
     },
@@ -700,6 +710,10 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           };
           $("#ib-status").empty().append(YAAW.tpl.ib_status(result));
           $("#ib-files").empty().append(YAAW.tpl.ib_files(result));
+          if (result.bittorrent) {
+            $("#ib-peers").show();
+            $("#ib-peers-a").show();
+          }
         }
       );
     },

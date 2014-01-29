@@ -105,6 +105,10 @@ var YAAW = (function() {
         ARIA2.get_options($(".info-box").attr("data-gid"));
       });
 
+      $("#ib-peers-a").live("click", function() {
+        ARIA2.get_peers($(".info-box").attr("data-gid"));
+      });
+
       var active_task_allowed_options = ["max-download-limit", "max-upload-limit"];
       $("#ib-options-save").live("click", function() {
         var options = {};
@@ -195,13 +199,48 @@ var YAAW = (function() {
 
       view: {
         bitfield: function() {
+          var graphic = "░▒▓█";
           return function(text) {
             var len = text.length;
             var result = "";
-            var graphic = "░▒▓█";
             for (var i=0; i<len; i++)
               result += graphic[Math.floor(parseInt(text[i], 16)/4)] + "&#8203;";
             return result;
+          };
+        },
+
+        bitfield_to_10: function() {
+          var graphic = "░▒▓█";
+          return function(text) {
+            var len = text.length;
+            var part_len = Math.ceil(len/10);
+            var result = "";
+            for (var i=0; i<10; i++) {
+              p = 0;
+              for (var j=0; j<part_len; j++) {
+                if (i*part_len+j >= len)
+                  p += 16;
+                else
+                  p += parseInt(text[i*part_len+j], 16);
+              }
+              result += graphic[Math.floor(p/part_len/4)] + "&#8203;";
+            }
+            return result;
+          };
+        },
+
+        bitfield_to_percent: function() {
+          return function(text) {
+            var len = text.length - 1;
+            var p, one = 0;
+            for (var i=0; i<len; i++) {
+              p = parseInt(text[i], 16);
+              for (var j=0; j<4; j++) {
+                one += (p & 1);
+                p >>= 1;
+              }
+            }
+            return Math.floor(one/(4*len)*100).toString();
           };
         },
 

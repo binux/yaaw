@@ -328,7 +328,8 @@
 }
 #ib-status,
 #ib-files,
-#ib-options {
+#ib-options,
+#ib-peers {
     position: relative;
     margin: 18px 0;
 }
@@ -379,6 +380,10 @@
 }
 #ib-options li > * {
     float: left;
+}
+#ib-peers .ip_port {
+    display: inline-block;
+    width: 250px;
 }
 
 /* task-contextmenu */
