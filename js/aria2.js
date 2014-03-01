@@ -711,7 +711,6 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           $("#ib-status").empty().append(YAAW.tpl.ib_status(result));
           $("#ib-files").empty().append(YAAW.tpl.ib_files(result));
           if (result.bittorrent) {
-            $("#ib-peers").show();
             $("#ib-peers-a").show();
           }
         }
