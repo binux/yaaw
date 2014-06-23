@@ -611,8 +611,18 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       ARIA2.request("getPeers", [gid],
         function(result) {
           console.debug(result);
-
-          $("#ib-peers").empty().append(YAAW.tpl.ib_peers(result.result));
+          var re_result = new Array();
+          for (var i = 0; i < result.result.length; i++) {
+            re_result[i]={
+              'downloadSpeed': result.result[i].downloadSpeed,
+              'bitfield' : result.result[i].bitfield,
+              'ip': result.result[i].ip,
+              'uploadSpeed' : result.result[i].uploadSpeed,
+              'port': result.result[i].port,
+              'peerId':unescape(result.result[i].peerId)
+            }
+          };
+          $("#ib-peers").empty().append(YAAW.tpl.ib_peers(re_result));
         }
       );
     },

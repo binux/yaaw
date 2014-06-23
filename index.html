@@ -363,7 +363,7 @@
 
     <script id="ib-peers-tpl" type="text/mustache-template">
       {{#.}}
-      <li><span class="ip_port">{{ip}}:{{port}}</span> <b>{{#_v.bitfield_to_percent}}{{bitfield}}{{/_v.bitfield_to_percent}}%</b> <i class="icon-download"></i>{{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}/s <i class="icon-upload"></i>{{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}/s</li>
+      <li><span class="ip_port">{{ip}}:{{port}}</span><span class="ip_port">{{peerId}}</span> <b>{{#_v.bitfield_to_percent}}{{bitfield}}{{/_v.bitfield_to_percent}}%</b> <i class="icon-download"></i>{{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}/s <i class="icon-upload"></i>{{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}/s</li>
       {{/.}}
     </script>
 
