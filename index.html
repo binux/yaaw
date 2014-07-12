@@ -363,7 +363,7 @@
 
     <script id="ib-peers-tpl" type="text/mustache-template">
       {{#.}}
-      <li><span class="ip_port">{{ip}}:{{port}}</span> <b>{{#_v.bitfield_to_percent}}{{bitfield}}{{/_v.bitfield_to_percent}}%</b> <i class="icon-download"></i>{{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}/s <i class="icon-upload"></i>{{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}/s</li>
+      <li><span class="ip_port">{{ip}}:{{port}} - <span class="peerid">{{#_v.format_peerid}}{{peerId}}{{/_v.format_peerid}}</span></span> <b>{{#_v.bitfield_to_percent}}{{bitfield}}{{/_v.bitfield_to_percent}}%</b> <i class="icon-download"></i>{{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}/s <i class="icon-upload"></i>{{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}/s</li>
       {{/.}}
     </script>
 
@@ -493,6 +493,7 @@
     <script src="js/jquery.Storage.js"></script>
     <script src="js/jquery.base64.min.js"></script>
     <script src="js/mustache.js"></script>
+    <script src="js/peerid.js"></script>
     <script src="js/aria2.js"></script>
     <script src="js/yaaw.js"></script>
   </body>

@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#2014-3-29 13:00
+#2014-7-12 16:31
 
 CACHE:
 index.html
@@ -15,5 +15,6 @@ js/jquery.jsonrpc.js
 js/jquery.Storage.js
 js/jquery.base64.min.js
 js/mustache.js
+js/peerid.js
 js/aria2.js
 js/yaaw.js

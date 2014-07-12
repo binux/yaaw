@@ -305,6 +305,24 @@ var YAAW = (function() {
           };
         },
 
+        format_peerid: function() {
+          return function format_peerid(peerid) {
+            try {
+              var ret = window.format_peerid(peerid);
+              if (ret.client == 'unknown') throw 'unknown';
+              return ret.client+(ret.version ? '-'+ret.version : '');
+            } catch(e) {
+              if (peerid == '%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00')
+                return 'unknown';
+              var ret = unescape(peerid).split('-');
+              for (var i=0; i<ret.length; i++) {
+                if (ret[i].trim().length) return ret[i];
+              }
+              return 'unknown';
+            }
+          }
+        },
+
         error_msg: function() {
           var error_code_map = {
             0: "",
