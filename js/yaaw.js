@@ -305,6 +305,28 @@ var YAAW = (function() {
           };
         },
 
+        format_date: function() {
+          return function(u) {
+            var d, t, _pad;
+            _pad = function(n) {
+              return (n < 10 ? "0" : "") + n;
+            };
+            d = new Date(isNaN(parseInt(u, 10)) ? 0 : parseInt(u, 10) * 1e3);
+            return [
+              [
+                _pad(d.getFullYear()),
+                _pad(d.getMonth() + 1),
+                _pad(d.getDate())
+              ].join("-"),
+              [
+                _pad(d.getHours()),
+                _pad(d.getMinutes()),
+                _pad(d.getSeconds())
+              ].join(":")
+            ].join(" ");
+          };
+        },
+
         format_peerid: function() {
           return function format_peerid(peerid) {
             try {
