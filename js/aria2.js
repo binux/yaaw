@@ -334,27 +334,20 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     },
 
     restart_task: function(gids) {
-      var uris = [];
       $.each(gids, function(n, gid) {
         var result = $("#task-gid-"+gid).data("raw");
+        var uris = [];
         $.each(result.files, function(n, e) {
           if (e.uris.length)
             uris.push(e.uris[0].uri);
         });
+        if (uris.length > 0) {
+          ARIA2.request("getOption", [gid], function(result) {
+            var options = result.result;
+            ARIA2.madd_task(uris, options);
+          });
+        }
       });
-
-      if (uris.length == 0) {
-        main_alert("alert-error", "No files found! (BitTorrent tasks can't restart.)", 2000);
-      } else if (uris.length == 1) {
-        $("#add-task-modal").modal("show");
-        $("#uri-input").val(uris[0]);
-      } else {
-        $("#add-task-modal").modal("show");
-        $("#add-task-uri .input-append").hide();
-        $("#uri-textarea").val(uris.join("\n")).show();
-        $("#uri-more").text($("#uri-more").text().split("").reverse().join(""));
-        $("#ati-out").parents(".control-group").val("").hide();
-      }
     },
 
     tell_active: function(keys) {
