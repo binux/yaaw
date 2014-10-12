@@ -102,7 +102,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       $("#add-task-option-wrap").empty().append(YAAW.tpl.add_task_option({}));
       $("#aria2-gsetting").empty().append(YAAW.tpl.aria2_global_setting({}));
 
-      jsonrpc_interface = path || "http://"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
+      jsonrpc_interface = path || location.protocol+"//"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
       var auth_str = request_auth(jsonrpc_interface);
       if (auth_str && auth_str.indexOf('token:') == 0) {
         rpc_secret = auth_str;
