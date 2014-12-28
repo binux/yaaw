@@ -327,15 +327,17 @@
     height: 300px;
 }
 #ib-status,
-#ib-files,
 #ib-options,
 #ib-peers {
     position: relative;
     margin: 18px 0;
 }
+#ib-files .file-list {
+    margin-left: -25px;
+}
 #ib-files ul,
 #ib-options ul {
-    margin: 0;
+    margin-top: 5px;
 }
 #ib-files li {
     display: block;

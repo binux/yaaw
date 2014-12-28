@@ -74,13 +74,17 @@ var YAAW = (function() {
         $("#ati-out").parents(".control-group").val("").toggle();
       });
 
-      $("#ib-files li").live("click", function() {
-        $(this).find(".select-box").toggleClass("icon-ok");
+      $("#ib-files .ib-file-title, #ib-files .select-box").live("click", function() {
+        if ($(this).parent().find(".select-box:first").hasClass("icon-ok")) {
+          $(this).parent().find(".select-box").removeClass("icon-ok");
+        } else {
+          $(this).parent().find(".select-box").addClass("icon-ok");
+        }
       });
 
       $("#ib-file-save").live("click", function() {
         var indexes = [];
-        $("#ib-files .select-box.icon-ok").each(function(i, n) {
+        $("#ib-files .select-box.icon-ok[data-index]").each(function(i, n) {
           indexes.push(n.getAttribute("data-index"));
         });
         if (indexes.length == 0) {
@@ -91,14 +95,6 @@ var YAAW = (function() {
           };
           ARIA2.change_option($(this).parents(".info-box").attr("data-gid"), options);
         };
-      });
-
-      $("#ib-file-select").live("click", function() {
-        $("#ib-files .select-box").addClass("icon-ok");
-      });
-
-      $("#ib-file-unselect").live("click", function() {
-        $("#ib-files .select-box").removeClass("icon-ok");
       });
 
       $("#ib-options-a").live("click", function() {
@@ -195,6 +191,49 @@ var YAAW = (function() {
             };
           }();
         });
+      },
+
+      files_tree: function(files) {
+        var file_dict = {}, f;
+        for (var i = 0; i < files.length; i++) {
+          var at = files[i].title.split('/');
+          f = file_dict;
+          for (var j = 0; j < at.length; j++) {
+            f[at[j]] = f[at[j]] || {};
+            f = f[at[j]];
+          }
+          f['_file'] = files[i];
+        }
+
+        function render(f) {
+          var content = '<ul>';
+
+          for (var k in f) {
+            if (f[k]['_file'] !== undefined) {
+              continue;
+            }
+
+            content += '<li>';
+            content += '<i class="select-box icon-ok"></i>';
+            content += '<span class="ib-file-title">'+$('<div>').text(k).html()+'</span>';
+            content += render(f[k]);
+            content += '</li>';
+          }
+
+          for (k in f) {
+            if (f[k]['_file'] === undefined) {
+              continue;
+            }
+
+            f[k]['_file']['relative_title'] = k;
+            content += YAAW.tpl.file(f[k]['_file']);
+          }
+          content += '</ul>';
+          return content;
+        }
+        
+        //console.log(file_dict);
+        return render(file_dict);
       },
 
       view: {

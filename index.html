@@ -309,7 +309,13 @@
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="ib-status"> </div>
-            <div class="tab-pane" id="ib-files"> </div>
+            <div class="tab-pane" id="ib-files">
+              <div id="ib-file-btn">
+                <button id="ib-file-save" class="btn btn-primary">Save</button>
+              </div>
+              <div class="file-list">
+              </div>
+            </div>
             <div class="tab-pane" id="ib-options"> </div>
             <div class="tab-pane" id="ib-peers"> </div>
           </div>
@@ -330,21 +336,12 @@
       </ul>
     </script>
 
-    <script id="ib-files-tpl" type="text/mustache-template">
-      <ul>
-        <li id="ib-file-btn">
-          <button id="ib-file-save" class="btn btn-primary">Save</button>
-          <button id="ib-file-select" class="btn">Select All</button>
-          <button id="ib-file-unselect" class="btn">Unselect All</button>
-        </li>
-        {{#files}}
+    <script id="file-tpl" type="text/mustache-template">
         <li>
           <i class="select-box{{#selected}} icon-ok{{/selected}}" data-index="{{index}}"></i>
-          <span class="ib-file-title">{{title}}</span>
+          <span class="ib-file-title">{{relative_title}}</span>
           <span class="ib-file-size"> {{#_v.format_size}}{{completedLength}}{{/_v.format_size}} / {{#_v.format_size}}{{length}}{{/_v.format_size}}</span>
         </li>
-        {{/files}}
-      </ul>
     </script>
 
     <script id="ib-options-tpl" type="text/mustache-template">

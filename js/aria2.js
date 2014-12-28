@@ -732,7 +732,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             file.selected = file.selected == "true" ? true : false;
           };
           $("#ib-status").empty().append(YAAW.tpl.ib_status(result));
-          $("#ib-files").empty().append(YAAW.tpl.ib_files(result));
+          $("#ib-files .file-list").empty().append(YAAW.tpl.files_tree(result.files));
           if (result.bittorrent) {
             $("#ib-peers-a").show();
           }
