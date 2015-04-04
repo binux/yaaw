@@ -52,11 +52,17 @@ var YAAW = (function() {
       $("#add-task-submit").live("click", function() {
    		YAAW.add_task.submit();return false;
       });
-      $("#add-task-clear").live("click", function() {
-   		YAAW.add_task.clean();
+      $("#add-task-uri").submit(function() {
+   		YAAW.add_task.submit();return false;
       });
       $("#saveSettings").live("click", function() {
    		YAAW.setting.submit();return false;
+      });
+      $("#setting-form").submit(function() {
+   		YAAW.setting.submit();return false;
+      });
+      $("#add-task-clear").live("click", function() {
+   		YAAW.add_task.clean();
       });
       $("#btnRemove").live("click", function() {
    		YAAW.tasks.remove();YAAW.tasks.unSelectAll();
