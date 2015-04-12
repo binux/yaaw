@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2012 Binux <17175297.hk@gmail.com>
+ * Copyright (C) 2015 Binux <roy@binux.me>
  *
  * This file is part of YAAW (https://github.com/binux/yaaw).
  *
@@ -42,6 +42,7 @@ var YAAW = (function() {
         }
         ARIA2.refresh();
         ARIA2.auto_refresh(YAAW.setting.refresh_interval);
+        ARIA2.finish_notification = YAAW.setting.finish_notification;
         ARIA2.get_version();
         ARIA2.global_stat();
       });
@@ -809,6 +810,7 @@ var YAAW = (function() {
       init: function() {
         this.jsonrpc_path = $.Storage.get("jsonrpc_path") || location.protocol+"//"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
         this.refresh_interval = Number($.Storage.get("refresh_interval") || 10000);
+        this.finish_notification = Number($.Storage.get("finish_notification") || 1);
         this.add_task_option = $.Storage.get("add_task_option");
         this.jsonrpc_history = JSON.parse($.Storage.get("jsonrpc_history") || "[]");
         if (this.add_task_option) {
@@ -848,11 +850,13 @@ var YAAW = (function() {
           $.Storage.set("jsonrpc_history", JSON.stringify(this.jsonrpc_history));
         }
         $.Storage.set("refresh_interval", String(this.refresh_interval));
+        $.Storage.set("finish_notification", String(this.finish_notification));
       },
 
       update: function() {
         $("#setting-form #rpc-path").val(this.jsonrpc_path);
         $("#setting-form input:radio[name=refresh_interval][value="+this.refresh_interval+"]").attr("checked", true);
+        $("#setting-form input:radio[name=finish_notification][value="+this.finish_notification+"]").attr("checked", true);
         if (this.jsonrpc_history.length) {
           var content = '<ul class="dropdown-menu">';
           $.each(this.jsonrpc_history, function(n, e) {
@@ -870,18 +874,24 @@ var YAAW = (function() {
         _this = $("#setting-form");
         var _jsonrpc_path = _this.find("#rpc-path").val();
         var _refresh_interval = Number(_this.find("input:radio[name=refresh_interval]:checked").val());
+        var _finish_notification = Number(_this.find("input:radio[name=finish_notification]:checked").val());
 
         var changed = false;
-        if (_jsonrpc_path != undefined && this.jsonrpc_path != _jsonrpc_path) {
+        if (_jsonrpc_path !== undefined && this.jsonrpc_path != _jsonrpc_path) {
           this.jsonrpc_path = _jsonrpc_path;
           YAAW.tasks.unSelectAll();
           $("#main-alert").hide();
           YAAW.aria2_init();
           changed = true;
         }
-        if (_refresh_interval != undefined && this.refresh_interval != _refresh_interval) {
+        if (_refresh_interval !== undefined && this.refresh_interval != _refresh_interval) {
           this.refresh_interval = _refresh_interval;
           ARIA2.auto_refresh(this.refresh_interval);
+          changed = true;
+        }
+        if (_finish_notification !== undefined && this.finish_notification != _finish_notification) {
+          this.finish_notification = _finish_notification;
+          ARIA2.finish_notification = _finish_notification;
           changed = true;
         }
         if (changed) {
@@ -899,6 +909,21 @@ var YAAW = (function() {
         ARIA2.change_global_option(options);
         $("#setting-modal").modal('hide');
       },
+    },
+
+    notification: function(title, content) {
+      if (!Notification) {
+        return false;
+      }
+
+      if (Notification.permission !== "granted")
+        Notification.requestPermission();
+
+      var notification = new Notification(title, {
+        body: content,
+      });
+
+      return notification;
     },
   }
 })();
