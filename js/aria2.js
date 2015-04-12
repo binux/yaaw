@@ -21,7 +21,7 @@
 if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
   var jsonrpc_interface, jsonrpc_protocol, jsonrpc_ws, interval_id, rpc_secret = null,
       unique_id = 0, ws_callback = {};
-  var active_tasks_snapshot="", tasks_cnt_snapshot="", select_lock=false, need_refresh=false;
+  var active_tasks_snapshot="", finished_tasks_list=undefined, tasks_cnt_snapshot="", select_lock=false, need_refresh=false;
   var auto_refresh=false;
 
   function get_error(result) {
@@ -436,13 +436,34 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       ARIA2.request("tellStopped", params,
         function(result) {
           //console.debug(result);
+          if (select_lock) return;
 
           if (!result.result) {
             main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
           }
 
-          if (select_lock) return;
           result = ARIA2.status_fix(result.result);
+
+          if (finished_tasks_list === undefined) {
+            finished_tasks_list = new Array();
+            $.each(result, function(i, e) {
+              if (e.status != "complete")
+                return;
+              finished_tasks_list.push(e.gid);
+            });
+          } else {
+            $.each(result, function(i, e) {
+              if (e.status != "complete")
+                return;
+              if (finished_tasks_list.indexOf(e.gid) != -1)
+                return;
+              if (ARIA2.finish_notification) {
+                YAAW.notification("Aria2 Task Finished", e.title);
+              }
+              finished_tasks_list.push(e.gid);
+            });
+          }
+
           $("#stoped-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result.reverse()}));
           $.each(result, function(n, e) {
             $("#task-gid-"+e.gid).data("raw", e);
@@ -790,5 +811,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       }, interval);
       auto_refresh = true;
     },
+
+    finish_notification: 1,
   }
 })();
