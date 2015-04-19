@@ -49,84 +49,84 @@ var YAAW = (function() {
     },
 
     event_init: function() {
-    
+
       $("#add-task-submit").live("click", function() {
-   		YAAW.add_task.submit();return false;
+        YAAW.add_task.submit();return false;
       });
       $("#add-task-uri").submit(function() {
-   		YAAW.add_task.submit();return false;
+        YAAW.add_task.submit();return false;
       });
       $("#saveSettings").live("click", function() {
-   		YAAW.setting.submit();return false;
+        YAAW.setting.submit();return false;
       });
       $("#setting-form").submit(function() {
-   		YAAW.setting.submit();return false;
+        YAAW.setting.submit();return false;
       });
       $("#add-task-clear").live("click", function() {
-   		YAAW.add_task.clean();
+        YAAW.add_task.clean();
       });
       $("#btnRemove").live("click", function() {
-   		YAAW.tasks.remove();YAAW.tasks.unSelectAll();
+        YAAW.tasks.remove();YAAW.tasks.unSelectAll();
       });
       $("#btnPause").live("click", function() {
-   		YAAW.tasks.pause();YAAW.tasks.unSelectAll();
+        YAAW.tasks.pause();YAAW.tasks.unSelectAll();
       });
       $("#btnUnPause").live("click", function() {
-   		YAAW.tasks.unpause();YAAW.tasks.unSelectAll();
+        YAAW.tasks.unpause();YAAW.tasks.unSelectAll();
       });
       $("#btnClearAlert").live("click", function() {
-   		$('#main-alert').hide();
+        $('#main-alert').hide();
       });
       $("#btnSeleceActive").live("click", function() {
-   		YAAW.tasks.selectActive();
+        YAAW.tasks.selectActive();
       });
       $("#btnSelectWaiting").live("click", function() {
-   		YAAW.tasks.selectWaiting();
+        YAAW.tasks.selectWaiting();
       });
       $("#btnSelectPaused").live("click", function() {
-   		YAAW.tasks.selectPaused();
+        YAAW.tasks.selectPaused();
       });
       $("#btnSelectStoped").live("click", function() {
-   		YAAW.tasks.selectStoped();
+        YAAW.tasks.selectStoped();
       });
       $("#btnStartAll").live("click", function() {
-		ARIA2.unpause_all();
+        ARIA2.unpause_all();
       });
       $("#btnPauseAll").live("click", function() {
-		ARIA2.pause_all();
+        ARIA2.pause_all();
       });
       $("#btnRemoveFinished").live("click", function() {
-   		ARIA2.purge_download_result();
+        ARIA2.purge_download_result();
       });
       $("#closeAlert").live("click", function() {
-   		$('#add-task-alert').hide();
+        $('#add-task-alert').hide();
       });
       $("#menuMoveTop").live("click", function() {
-   		YAAW.contextmenu.movetop();
+        YAAW.contextmenu.movetop();
       });
       $("#menuMoveUp").live("click", function() {
-   		YAAW.contextmenu.moveup();
+        YAAW.contextmenu.moveup();
       });
       $("#menuMoveDown").live("click", function() {
-   		YAAW.contextmenu.movedown();
+        YAAW.contextmenu.movedown();
       });
       $("#menuMoveEnd").live("click", function() {
-   		YAAW.contextmenu.moveEnd();
+        YAAW.contextmenu.moveEnd();
       });
       $("#menuRestart").live("click", function() {
-		YAAW.contextmenu.restart();
+        YAAW.contextmenu.restart();
       });
       $("#menuStart").live("click", function() {
-   		YAAW.contextmenu.unpause();
+        YAAW.contextmenu.unpause();
       });
       $("#menuPause").live("click", function() {
-   		YAAW.contextmenu.pause();
+        YAAW.contextmenu.pause();
       });
       $("#menuRemove").live("click", function() {
-   		YAAW.contextmenu.remove();
+        YAAW.contextmenu.remove();
       });
-      
-      
+
+
       $("[rel=tooltip]").tooltip({"placement": "bottom"});
 
       $(".task .select-box").live("click", function() {
@@ -310,7 +310,7 @@ var YAAW = (function() {
           content += '</ul>';
           return content;
         }
-        
+
         //console.log(file_dict);
         return render(file_dict);
       },
@@ -322,7 +322,7 @@ var YAAW = (function() {
             var len = text.length;
             var result = "";
             for (var i=0; i<len; i++)
-              result += graphic[Math.floor(parseInt(text[i], 16)/4)] + "&#8203;";
+            result += graphic[Math.floor(parseInt(text[i], 16)/4)] + "&#8203;";
             return result;
           };
         },
@@ -523,7 +523,7 @@ var YAAW = (function() {
           YAAW.setting.save_add_task_option(options_save);
         }
       },
-      
+
       clean: function() {
         $("#uri-input").attr("placeholder", "HTTP, FTP or Magnet");
         $("#add-task-modal .input-clear").val("");
@@ -587,7 +587,7 @@ var YAAW = (function() {
       toggle: function(task) {
         $(task).toggleClass("selected").find(".select-box").toggleClass("icon-ok");
       },
-      
+
       unSelectAll: function(notupdate) {
         var _this = this;
         $(".tasks-table .task.selected").each(function(i, n) {
@@ -653,7 +653,7 @@ var YAAW = (function() {
         var gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
           if (n.getAttribute("data-status") == "active" ||
-            n.getAttribute("data-status") == "waiting")
+              n.getAttribute("data-status") == "waiting")
             gids.push(n.getAttribute("data-gid"));
         });
         if (gids.length) ARIA2.pause(this.getSelectedGids());
@@ -741,8 +741,8 @@ var YAAW = (function() {
           // toElement is not available in Firefox, use relatedTarget instead.
           var enteredElement = ev.toElement || ev.relatedTarget;
           if ($.contains(this, enteredElement) ||
-            $("#task-contextmenu").get(0) == enteredElement ||
-            $.contains($("#task-contextmenu").get(0), enteredElement)) {
+              $("#task-contextmenu").get(0) == enteredElement ||
+                $.contains($("#task-contextmenu").get(0), enteredElement)) {
             return;
           }
           on_gid = null;
