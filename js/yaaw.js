@@ -72,7 +72,7 @@ var YAAW = (function() {
    		YAAW.tasks.pause();YAAW.tasks.unSelectAll();
       });
       $("#btnUnPause").live("click", function() {
-   		YYAAW.tasks.unpause();YAAW.tasks.unSelectAll();
+   		YAAW.tasks.unpause();YAAW.tasks.unSelectAll();
       });
       $("#btnClearAlert").live("click", function() {
    		$('#main-alert').hide();
