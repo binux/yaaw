@@ -68,8 +68,8 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     if (result.bittorrent && result.bittorrent.info && result.bittorrent.info.name)
       title = result.bittorrent.info.name;
     else if (result.files[0].path.replace(
-      new RegExp("^"+dir.replace(/\\/g, "[\\/]")+"/?"), "").split("/").length) {
-      title = result.files[0].path.replace(new RegExp("^"+dir.replace(/\\/g, "[\\/]")+"/?"), "").split("/");
+      new RegExp("^"+dir.replace(/\\/g, "/").replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')+"/?"), "").split("/").length) {
+      title = result.files[0].path.replace(new RegExp("^"+dir.replace(/\\/g, "/").replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')+"/?"), "").split("/");
       if (result.bittorrent)
         title = title[0];
       else
