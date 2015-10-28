@@ -1,6 +1,6 @@
 YAAW
 ====
-汉化版地址：http://ghostry.github.io/yaaw
+汉化版地址：http://yaaw.ghostry.cn/
 
 Yet Another Aria2 Web Frontend in pure HTML/CSS/Javascirpt.
 
