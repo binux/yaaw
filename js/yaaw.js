@@ -868,6 +868,9 @@ var YAAW = (function() {
           });
           $(".rpc-path-wrap .dropdown-toggle").removeAttr("disabled").dropdown();
         }
+        if (this.finish_notification && Notification.permission !== "granted") {
+          Notification.requestPermission();
+        }
       },
 
       submit: function() {
@@ -896,6 +899,9 @@ var YAAW = (function() {
         }
         if (changed) {
           this.save();
+        }
+        if (this.finish_notification && Notification.permission !== "granted") {
+          Notification.requestPermission();
         }
 
         // submit aria2 global setting
