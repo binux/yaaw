@@ -10,9 +10,12 @@ No HTTP server, backend or server-side program. All you need is just a browser.
 Usage
 -----
 1. Run aria2 with RPC enabled
-> aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all
+> `aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all`
+> with 'JSON-RPC PATH' like `http://hostname:port/jsonrpc`
 >
-> Warning: This options will not verify the identity of caller. KEEP THE ADDRESS SECRET.
+> Recommend: Set `--rpc-secret=<secret>` if you are using aria2 1.18.4(or higher) with 'JSON-RPC PATH' like `http://token:secret@hostname:port/jsonrpc`
+>
+> Set `--rpc-user=<username>` `--rpc-passwd=<passwd>` if you are using aria2 1.15.2(or higher) with 'JSON-RPC PATH' like `http://username:passwd@hostname:port/jsonrpc`
 
 2. Visit **index.html**.
 
@@ -24,6 +27,8 @@ Tips
 * Tasks(including which is not finished) will be lost after aria2 restarted. Using `--save-session=SOME/WHERE` and reload with `--continue=true --input-file=SOME/WHERE` to continue.
 * Using `$HOME/.aria2/aria2.conf` to save your options.
 * For more infomations about aria2, visit [Aria2 Manual](http://aria2.sourceforge.net/manual/en/html/)
+* YAAW also support websocket! Set JSON-RPC PATH with `ws://hostname:port/jsonrpc`.
+* Pre-spicify or save JSON-PRC PATH as bookmark with `http://binux.github.io/yaaw/demo/#path=http://hostname:port/jsonrpc`
 
 Components
 ----------
