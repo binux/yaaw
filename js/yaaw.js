@@ -86,8 +86,8 @@ var YAAW = (function() {
       $("#btnSelectPaused").live("click", function() {
         YAAW.tasks.selectPaused();
       });
-      $("#btnSelectStoped").live("click", function() {
-        YAAW.tasks.selectStoped();
+      $("#btnSelectStopped").live("click", function() {
+        YAAW.tasks.selectStopped();
       });
       $("#btnStartAll").live("click", function() {
         ARIA2.unpause_all();
@@ -632,10 +632,10 @@ var YAAW = (function() {
         this.check_select();
       },
 
-      selectStoped: function() {
+      selectStopped: function() {
         var _this = this;
         this.unSelectAll(true);
-        $("#stoped-tasks-table .task").each(function(i, n) {
+        $("#stopped-tasks-table .task").each(function(i, n) {
           _this.select(n);
         });
         this.check_select();
@@ -661,17 +661,17 @@ var YAAW = (function() {
 
       unpause: function() {
         var gids = new Array();
-        var stoped_gids = new Array();
+        var stopped_gids = new Array();
         $(".tasks-table .task.selected").each(function(i, n) {
           var status = n.getAttribute("data-status");
           if (status == "paused") {
             gids.push(n.getAttribute("data-gid"));
           } else if ("removed/error".indexOf(status) != -1) {
-            stoped_gids.push(n.getAttribute("data-gid"));
+            stopped_gids.push(n.getAttribute("data-gid"));
           }
         });
         if (gids.length) ARIA2.unpause(gids);
-        if (stoped_gids.length) ARIA2.restart_task(stoped_gids);
+        if (stopped_gids.length) ARIA2.restart_task(stopped_gids);
       },
 
       remove: function() {
@@ -691,7 +691,7 @@ var YAAW = (function() {
       info: function(task) {
         task.addClass("info-open");
         task.after(YAAW.tpl.info_box({gid: task.attr("data-gid")}));
-        if (task.parents("#stoped-tasks-table").length) {
+        if (task.parents("#stopped-tasks-table").length) {
           $("#ib-options-a").hide();
         }
         ARIA2.get_status(task.attr("data-gid"));
