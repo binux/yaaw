@@ -429,7 +429,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       );
     },
 
-    tell_stoped: function(keys) {
+    tell_stopped: function(keys) {
       if (select_lock) return;
       var params = [0, 1000];
       if (keys) params.push(keys);
@@ -464,14 +464,14 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             });
           }
 
-          $("#stoped-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result.reverse()}));
+          $("#stopped-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result.reverse()}));
           $.each(result, function(n, e) {
             $("#task-gid-"+e.gid).data("raw", e);
           });
-          bind_event($("#stoped-tasks-table"))
+          bind_event($("#stopped-tasks-table"))
 
           if ($("#waiting-tasks-table .empty-tasks").length > 0 &&
-            $("#stoped-tasks-table .task").length > 0) {
+            $("#stopped-tasks-table .task").length > 0) {
               $("#waiting-tasks-table").empty();
             }
 
@@ -591,7 +591,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
           if (error.length == 0) {
             main_alert("alert-info", "Removed", 1000);
-            ARIA2.tell_stoped();
+            ARIA2.tell_stopped();
           } else {
             main_alert("alert-error", error.join("<br />"), 3000);
           }
@@ -780,7 +780,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         need_refresh = false;
         ARIA2.tell_active();
         ARIA2.tell_waiting();
-        ARIA2.tell_stoped();
+        ARIA2.tell_stopped();
       }
     },
 
