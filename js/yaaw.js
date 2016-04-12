@@ -729,7 +729,7 @@ var YAAW = (function() {
             $("#task-contextmenu .task-move").show();
           else
             $("#task-contextmenu .task-move").hide();
-          if (status == "removed" || status == "completed" || status == "error") {
+          if (status == "removed" || status == "complete" || status == "error") {
             $(".task-restart").show();
             $(".task-start").hide();
           } else {
@@ -780,7 +780,14 @@ var YAAW = (function() {
       },
 
       remove: function() {
-        if (on_gid) ARIA2.remove(on_gid);
+        if (on_gid) {
+          var status = $("#task-gid-"+on_gid).attr("data-status");
+          if (status == "removed" || status == "complete" || status == "error") {
+            ARIA2.remove_result(on_gid);
+          } else {
+            ARIA2.remove(on_gid);
+          }
+        }
         on_gid = null;
       },
 
