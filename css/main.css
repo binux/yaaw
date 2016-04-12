@@ -161,6 +161,7 @@
     white-space: nowrap;
 }
 .task .task-name span {
+    word-break: break-all;
     margin-left: 3px;
     font-size: 18px;
     font-weight: bold;
@@ -204,7 +205,7 @@
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 550px) {
     .modal.fade.in {
         top: 60px;
     }
@@ -252,6 +253,9 @@
         width: auto;
     }
 
+    #other-tasks .left-area {
+        margin-right: 0;
+    }
     #other-tasks .right-area {
         position: relative;
         padding-top: 0;
@@ -268,7 +272,7 @@
         margin-left: 110px;
     }
 }
-@media (min-width: 480px) and (max-width: 980px) {
+@media (min-width: 551px) and (max-width: 980px) {
     #active-tasks .left-area {
         margin-right: 186px;
     }
