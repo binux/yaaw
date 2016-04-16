@@ -77,7 +77,7 @@ var YAAW = (function() {
       $("#btnClearAlert").live("click", function() {
         $('#main-alert').hide();
       });
-      $("#btnSeleceActive").live("click", function() {
+      $("#btnSelectActive").live("click", function() {
         YAAW.tasks.selectActive();
       });
       $("#btnSelectWaiting").live("click", function() {
