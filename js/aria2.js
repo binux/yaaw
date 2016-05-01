@@ -754,6 +754,8 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           };
           $("#ib-status").empty().append(YAAW.tpl.ib_status(result));
           $("#ib-files .file-list").empty().append(YAAW.tpl.files_tree(result.files));
+          if ($("#task-gid-"+gid).attr("data-status") == "active")
+            $("#ib-file-save").hide();
           if (result.bittorrent) {
             $("#ib-peers-a").show();
           }
