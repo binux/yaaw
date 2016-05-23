@@ -180,6 +180,37 @@ var YAAW = (function() {
         ARIA2.get_options($(".info-box").attr("data-gid"));
       });
 
+      $("#ib-uris .select-box:not(.icon-plus)").live("click", function() {
+        $(this).toggleClass("icon-ok icon-remove");
+      });
+      $("#ib-uris .select-box.icon-plus").live("click", function() {
+        $(this).parent().remove();
+      });
+
+      $("#ib-uri-add").live("click", function() {
+        var $this = $(this);
+        var uri = $this.prev().val();
+        if (!uri.startsWith('http')) {
+          return;
+        }
+
+        $this.parent().prev().children("ul").append(YAAW.tpl.ib_uri_new({uri: uri}));
+      });
+
+      $("#ib-uri-save").live("click", function() {
+        var delUris = [];
+        $("#ib-uris .select-box.icon-remove").each(function(i, n) {
+          delUris.push($(n).parent().data("uri"))
+        });
+
+        var addUris = [];
+        $("#ib-uris .select-box.icon-plus").each(function(i, n) {
+          addUris.push($(n).parent().data("uri"))
+        });
+
+        ARIA2.change_uri($(this).parents(".info-box").data("gid"), 1, delUris, addUris);
+      })
+
       $("#ib-peers-a").live("click", function() {
         ARIA2.get_peers($(".info-box").attr("data-gid"));
       });

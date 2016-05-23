@@ -316,7 +316,8 @@
             <li class="active"><a href="#ib-status" data-toggle="tab">Status</a></li>
             <li><a href="#ib-files" data-toggle="tab">Files</a></li>
             <li><a id="ib-options-a" href="#ib-options" data-toggle="tab">Options</a></li>
-            <li><a id="ib-peers-a" class="hide" style="display:none;" href="#ib-peers" data-toggle="tab">Peers</a></li>
+            <li class="hide"><a id="ib-uris-a" href="#ib-uris" data-toggle="tab">Uris</a></li>
+            <li class="hide"><a id="ib-peers-a" href="#ib-peers" data-toggle="tab">Peers</a></li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="ib-status"> </div>
@@ -328,6 +329,15 @@
               </div>
             </div>
             <div class="tab-pane" id="ib-options"> </div>
+            <div class="tab-pane" id="ib-uris">
+              <div class="uri-list">
+              </div>
+              <div id="ib-uri-btn">
+                <input class="span8" type="text">
+                <button id="ib-uri-add" class="btn" type="button">Add</button>
+                <button id="ib-uri-save" class="btn btn-primary" type="button">Save</button>
+              </div>
+            </div>
             <div class="tab-pane" id="ib-peers"> </div>
           </div>
         </div>
@@ -367,6 +377,26 @@
         <li><span>Conn per Serv:</span><input name="max-connection-per-server" value="{{max-connection-per-server}}" /></li>
         <li><span>Split Size:</span><input name="min-split-size" value="{{min-split-size}}" /></li>
       </form>
+    </script>
+
+    <script id="ib-uris-tpl" type="text/mustache-template">
+      <ul>
+      {{#.}}
+        <li data-uri="{{uri}}">
+          <span class="select-box icon-ok"></span>
+          <span class="uri"><a href="{{uri}}">{{uri}}</a></span>
+        </li>
+      {{/.}} 
+      </ul>
+    </script>
+
+    <script id="ib-uri-new-tpl" type="text/mustache-template">
+      {{#.}}
+        <li data-uri="{{uri}}">
+          <span class="select-box icon-plus"></span>
+          <span class="uri"><a href="{{uri}}">{{uri}}</a></span>
+        </li>
+      {{/.}} 
     </script>
 
     <script id="ib-peers-tpl" type="text/mustache-template">

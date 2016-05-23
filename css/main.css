@@ -340,6 +340,7 @@
     margin-left: -25px;
 }
 #ib-files ul,
+#ib-uris ul,
 #ib-options ul {
     margin-top: 5px;
 }
@@ -386,6 +387,33 @@
 }
 #ib-options li > * {
     float: left;
+}
+
+#ib-uris {
+    margin-bottom: 50px;
+}
+.uri-list ul {
+    margin-left: 0;
+    list-style-type: none;
+}
+.uri-list li {
+    line-height: 16px;
+    padding-bottom: 6px;
+    vertical-align: top;
+    border-bottom: 1px solid #FFF;
+}
+.uri-list li > span {
+    display: block;
+}
+.uri-list li > .select-box {
+    float: left;
+}
+.uri-list li > .uri {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 #ib-peers .ip_port {
     display: inline-block;

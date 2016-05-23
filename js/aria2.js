@@ -500,6 +500,14 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       return results;
     },
 
+    change_uri: function(gid, fileIndex, delUris, addUris) {
+      ARIA2.request("changeUri", [gid, fileIndex, delUris, addUris],
+        function(result) {
+          ARIA2.get_status(gid);
+        }
+      );
+    },
+
     change_pos: function(gid, pos, how) {
       ARIA2.request("changePosition", [gid, pos, how],
         function(result) {
@@ -757,7 +765,10 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           if ($("#task-gid-"+gid).attr("data-status") == "active")
             $("#ib-file-save").hide();
           if (result.bittorrent) {
-            $("#ib-peers-a").show();
+            $("#ib-peers-a").parent().show();
+          } else {
+            $("#ib-uris-a").parent().show();
+            $("#ib-uris .uri-list").empty().append(YAAW.tpl.ib_uris(result.files[0].uris));
           }
         }
       );
