@@ -59,7 +59,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
   }
 
   function bind_event(dom) {
-    dom.find("[rel=tooltip]").tooltip({"placement": "bottom"});
+    dom.find("[rel=tooltip]").tooltip({"placement": "bottom", trigger : 'hover'});
   }
 
   function get_title(result) {
