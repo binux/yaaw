@@ -39,7 +39,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     var error_msg = get_error(result);
 
     $("#main-alert .alert").attr("class", "alert alert-error");
-    $("#main-alert .alert-msg").html("<strong>Error: </strong>"+error_msg);
+    $("#main-alert .alert-msg").html("<strong>错误: </strong>"+error_msg);
     $("#main-alert").show();
   }
 
@@ -142,7 +142,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         };
         jsonrpc_ws.onerror = function(event) {
           console.warn("error", event);
-          main_alert("alert-error", "websocket error. you may need reflush this page to restart.");
+          main_alert("alert-error", "Websocket 错误，你可能需要重新载入此页面以重启。");
           ws_callback = {};
         };
         jsonrpc_ws.onopen = function() {
@@ -154,7 +154,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           }
         };
       } else {
-        main_alert("alert-error", "Unknow protocol");
+        main_alert("alert-error", "未知的协议");
       };
     },
 
@@ -257,7 +257,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
           $("#add-task-alert .alert-msg").text(error_msg);
           $("#add-task-alert").show();
-          console.warn("add task error: "+error_msg);
+          console.warn("add task 错误: "+error_msg);
         });
     },
 
@@ -285,7 +285,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             var error_msg = error.join("<br />");
             $("#add-task-alert .alert-msg").html(error_msg);
             $("#add-task-alert").show();
-            console.warn("add task error: "+error_msg);
+            console.warn("add task 错误: "+error_msg);
           }
         }
       );
@@ -308,7 +308,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
           $("#add-task-alert .alert-msg").text(error_msg);
           $("#add-task-alert").show();
-          console.warn("add task error: "+error_msg);
+          console.warn("add task 错误: "+error_msg);
         });
     },
 
@@ -329,7 +329,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
           $("#add-task-alert .alert-msg").text(error_msg);
           $("#add-task-alert").show();
-          console.warn("add task error: "+error_msg);
+          console.warn("add task 错误: "+error_msg);
         });
     },
 
@@ -358,7 +358,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
           if (select_lock) return;
           if (!result.result) {
-            main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+            main_alert("alert-error", "<strong>错误: </strong>rpc result error.", 5000);
           }
 
           var snapshot = new Array();
@@ -388,7 +388,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           //console.debug(result);
 
           if (!result.result) {
-            main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+            main_alert("alert-error", "<strong>错误: </strong>rpc result error.", 5000);
           }
 
           var snapshot = new Array();
@@ -413,7 +413,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         function(result) {
           if (select_lock) return;
           if (!result.result) {
-            main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+            main_alert("alert-error", "<strong>错误: </strong>rpc result error.", 5000);
           }
 
           result = ARIA2.status_fix(result.result);
@@ -439,7 +439,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           if (select_lock) return;
 
           if (!result.result) {
-            main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+            main_alert("alert-error", "<strong>错误: </strong>rpc result error.", 5000);
           }
 
           result = ARIA2.status_fix(result.result);
@@ -458,7 +458,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
               if (finished_tasks_list.indexOf(e.gid) != -1)
                 return;
               if (ARIA2.finish_notification) {
-                YAAW.notification("Aria2 Task Finished", e.title);
+                YAAW.notification("Aria2 任务完成", e.title);
               }
               finished_tasks_list.push(e.gid);
             });
@@ -505,7 +505,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         function(result) {
           //console.debug(result);
 
-          main_alert("alert-info", "Moved", 1000);
+          main_alert("alert-info", "已移动", 1000);
           ARIA2.refresh();
         }
       );
@@ -524,7 +524,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           });
 
           if (error.length == 0) {
-            main_alert("alert-info", "Paused", 1000);
+            main_alert("alert-info", "已暂停", 1000);
             ARIA2.refresh();
           } else {
             main_alert("alert-error", error.join("<br />"), 3000);
@@ -546,7 +546,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           });
 
           if (error.length == 0) {
-            main_alert("alert-info", "Started", 1000);
+            main_alert("alert-info", "已开始", 1000);
             ARIA2.refresh();
           } else {
             main_alert("alert-error", error.join("<br />"), 3000);
@@ -568,7 +568,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           });
 
           if (error.length == 0) {
-            main_alert("alert-info", "Removed", 1000);
+            main_alert("alert-info", "已移除", 1000);
             ARIA2.refresh();
           } else {
             main_alert("alert-error", error.join("<br />"), 3000);
@@ -590,7 +590,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           });
 
           if (error.length == 0) {
-            main_alert("alert-info", "Removed", 1000);
+            main_alert("alert-info", "已移除", 1000);
             ARIA2.tell_stopped();
           } else {
             main_alert("alert-error", error.join("<br />"), 3000);
@@ -616,7 +616,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         function(result) {
           //console.debug(result);
 
-          main_alert("alert-info", "option updated", 1000);
+          main_alert("alert-info", "选项已更新", 1000);
         }
       );
     },
@@ -637,7 +637,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           //console.debug(result);
 
           ARIA2.refresh();
-          main_alert("alert-info", "Paused all tasks. Please wait for action such as contacting BitTorrent tracker.", 2000);
+          main_alert("alert-info", "已经暂停所有任务，请等待特殊完成任务（如连接种子服务器）。", 2000);
         }
       );
     },
@@ -648,7 +648,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           //console.debug(result);
 
           ARIA2.refresh();
-          main_alert("alert-info", "Unpaused all tasks.", 2000);
+          main_alert("alert-info", "回复所有任务", 2000);
         }
       );
     },
@@ -659,7 +659,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           //console.debug(result);
 
           ARIA2.refresh();
-          main_alert("alert-info", "Removed all completed/error/removed downloads tasks.", 2000);
+          main_alert("alert-info", "移除所有已完成任务", 2000);
         }
       );
     },
@@ -668,7 +668,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       ARIA2.request("getGlobalOption", [],
         function(result) {
           if (!result.result)
-            main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+            main_alert("alert-error", "<strong>错误: </strong>rpc result error.", 5000);
 
           result = result.result;
           $("#aria2-gsetting").empty().append(YAAW.tpl.aria2_global_setting(result));
@@ -680,7 +680,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       ARIA2.request("getGlobalOption", [],
         function(result) {
           if (!result.result)
-            main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+            main_alert("alert-error", "<strong>错误: </strong>rpc result error.", 5000);
 
           result = result.result;
           result["parameterized-uri"] = (result["parameterized-uri"] == "true" ? true : false)
@@ -693,7 +693,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       ARIA2.request("changeGlobalOption", [options],
         function(result) {
           if (!result.result)
-            main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+            main_alert("alert-error", "<strong>错误: </strong>rpc result error.", 5000);
           else
             main_alert("alert-success", "Saved", 2000);
         }
@@ -704,7 +704,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       ARIA2.request("getGlobalStat", [],
         function(result) {
           if (!result.result) {
-            main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+            main_alert("alert-error", "<strong>错误: </strong>rpc result error.", 5000);
           }
 
           result = result.result;
@@ -721,7 +721,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           var title = "↓"+YAAW.tpl.view.format_size_0()(result.downloadSpeed);
           if (result.uploadSpeed > 0)
             title += " ↑"+YAAW.tpl.view.format_size_0()(result.uploadSpeed);
-          title += " - Yet Another Aria2 Web Frontend";
+          title += " - YAAW";
           document.title = title;
         }
       );
@@ -731,7 +731,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       ARIA2.request("getVersion", [],
         function(result) {
           if (!result.result) {
-            main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+            main_alert("alert-error", "<strong>错误: </strong>rpc result error.", 5000);
           }
 
           $("#global-version").text("Aria2 "+result.result.version || "");
@@ -743,7 +743,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       ARIA2.request("tellStatus", [gid],
         function(result) {
           if (!result.result) {
-            main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+            main_alert("alert-error", "<strong>错误: </strong>rpc result error.", 5000);
           }
 
           result = result.result;
@@ -767,9 +767,9 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       ARIA2.request("changeOption", [gid, options],
         function(result) {
           if (!result.result) {
-            main_alert("alert-error", "<strong>Error: </strong>rpc result error.", 5000);
+            main_alert("alert-error", "<strong>错误: </strong>rpc result error.", 5000);
           } else {
-            main_alert("alert-success", "Change Options OK!", 2000);
+            main_alert("alert-success", "选项更改成功", 2000);
           }
         }
       );
@@ -801,7 +801,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         ARIA2.global_stat();
         if (select_lock) {
           if (need_refresh) {
-            main_alert("", "Task list have changed since last update. Click 'Refresh' button to update task list.");
+            main_alert("", "任务列表已改变，请刷新！");
           }
         } else {
           if (need_refresh) {

@@ -242,17 +242,17 @@ var YAAW = (function() {
         }
       } else {
         $("#torrent-up-input").remove();
-        $("#torrent-up-btn").addClass("disabled").tooltip({title: "File API is Not Supported."});
+        $("#torrent-up-btn").addClass("disabled").tooltip({title: "文件 API 不受支持。"});
       }
 
       if (window.applicationCache) {
         var appcache = window.applicationCache;
         $(document).ready(function() {
           if (appcache.status == appcache.IDLE)
-            $("#offline-cached").text("cached");
+            $("#offline-cached").text("已缓存");
         });
         appcache.addEventListener("cached", function(){
-          $("#offline-cached").text("cached");
+          $("#offline-cached").text("已缓存");
         });
       }
     },
@@ -525,7 +525,7 @@ var YAAW = (function() {
       },
 
       clean: function() {
-        $("#uri-input").attr("placeholder", "HTTP, FTP or Magnet");
+        $("#uri-input").attr("placeholder", "请输入 HTTP, FTP or Magnet 链接");
         $("#add-task-modal .input-clear").val("");
         $("#add-task-alert").hide();
         torrent_file = null;
