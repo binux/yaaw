@@ -38,6 +38,13 @@ Components
 + [jQuery Storage](http://archive.plugins.jquery.com/project/html5Storage)
 + [JSON RPC 2.0 jQuery Plugin](https://github.com/datagraph/jquery-jsonrpc)
 
+Languages
+-----------
++ index.html --- English by default
++ index_zh-CN.html --- Chinese ***supported by [xiaozhuai](https://github.com/xiaozhuai/yaaw)***
+
+You can simply rename index_{region}.html to index.html to apply language
+
 License
 -------
 yaaw is licensed under GNU Lesser General Public License.
