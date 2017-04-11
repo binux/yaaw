@@ -95,6 +95,9 @@ var YAAW = (function() {
       $("#btnPauseAll").live("click", function() {
         ARIA2.pause_all();
       });
+      $("#btnSort").live("click", function() {
+        YAAW.tasks.sort();
+      });
       $("#btnRemoveFinished").live("click", function() {
         ARIA2.purge_download_result();
       });
@@ -708,6 +711,29 @@ var YAAW = (function() {
           ARIA2.select_lock(true);
         }
       },
+
+      sort: function() {
+        var p = $.when(1) // empty promise
+
+        $("#waiting-tasks-table .task").map(function(i, n) {
+          // Fetch gid and name
+          var gid = n.getAttribute("data-gid");
+          var name = $('.task-name span', n).text();
+          return {gid: gid, name: name};
+        }).sort(function(a, b) {
+          // Sort
+          if (a.name == b.name)
+            return 0;
+          return a.name > b.name ? 1 : -1;
+        }).each(function(i, n) {
+          // console.debug("#" + i + " -> " + n.name)
+          // Move tasks
+          // Todo: add sleep to calls, to slow it down
+          p = p.then(function () {
+            return ARIA2.change_pos(n.gid, i, 'POS_SET');
+          });
+        });
+      }
     },
 
     contextmenu: {
