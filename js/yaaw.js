@@ -111,7 +111,7 @@ var YAAW = (function() {
         YAAW.contextmenu.movedown();
       });
       $("#menuMoveEnd").live("click", function() {
-        YAAW.contextmenu.moveEnd();
+        YAAW.contextmenu.moveend();
       });
       $("#menuRestart").live("click", function() {
         YAAW.contextmenu.restart();
