@@ -752,6 +752,9 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             file.title = file.path.replace(new RegExp("^"+result.dir.replace(/\\/g, "[\\/]")+"/?"), "");
             file.selected = file.selected == "true" ? true : false;
           };
+          if (result.bittorrent) {
+			    	result.bittorrent.creationDate = (new Date(result.bittorrent.creationDate * 1000)).toLocaleString();
+			    }
           $("#ib-status").empty().append(YAAW.tpl.ib_status(result));
           $("#ib-files .file-list").empty().append(YAAW.tpl.files_tree(result.files));
           if ($("#task-gid-"+gid).attr("data-status") == "active")
