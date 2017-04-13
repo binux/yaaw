@@ -419,6 +419,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           result = ARIA2.status_fix(result.result);
           $("#waiting-tasks-table").empty().append(YAAW.tpl.other_task({"tasks": result}));
           $.each(result, function(n, e) {
+            $("#task-gid-"+e.gid).data("sort", n);
             $("#task-gid-"+e.gid).data("raw", e);
           });
           bind_event($("#waiting-tasks-table"))
