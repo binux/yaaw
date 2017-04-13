@@ -815,7 +815,17 @@ var YAAW = (function() {
 
     setting: {
       init: function() {
-        this.jsonrpc_path = $.Storage.get("jsonrpc_path") || location.protocol+"//"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
+        var url_rpc = (function(val) {
+          var result = null,
+          tmp = [];
+          var items = location.search.substr(1).split("&");
+          for (var index = 0; index < items.length; index++) {
+            tmp = items[index].split("=");
+            if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
+          }
+          return result;
+        })("rpc");
+        this.jsonrpc_path = url_rpc || $.Storage.get("jsonrpc_path") || location.protocol+"//"+(location.host.split(":")[0]||"localhost")+":6800"+"/jsonrpc";
         this.refresh_interval = Number($.Storage.get("refresh_interval") || 10000);
         this.finish_notification = Number($.Storage.get("finish_notification") || 1);
         this.add_task_option = $.Storage.get("add_task_option");
