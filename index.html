@@ -340,7 +340,7 @@
         <li><strong>Status: </strong>{{status}} {{error_msg}}</li>
         <li><strong>Dir: </strong>{{dir}}</li>
         {{#bittorrent}}
-          {{#creationDate}}<li>Torrent Created At {{creationDate}}</li>{{/creationDate}}
+          {{#creationDate}}<li>Torrent Created At {{#_v.format_date}}{{creationDate}}{{/_v.format_date}}</li>{{/creationDate}}
           {{#comment}}<li><strong>Comment: </strong>{{comment}}</li>{{/comment}}
         {{/bittorrent}}
         <li class="bitfield"><strong>Bitfield: </strong>{{#_v.bitfield}}{{bitfield}}{{/_v.bitfield}}</li>
