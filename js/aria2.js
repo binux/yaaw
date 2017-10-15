@@ -747,11 +747,21 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           }
 
           result = result.result;
+          result.uris = [];
           for (var i=0; i<result.files.length; i++) {
             var file = result.files[i];
             file.title = file.path.replace(new RegExp("^"+result.dir.replace(/\\/g, "[\\/]")+"/?"), "");
             file.selected = file.selected == "true" ? true : false;
+            if (file.uris && file.uris.length) {
+              for (var i=0; i<file.uris.length; i++) {
+                var uri = file.uris[i].uri;
+                if (result.uris.indexOf(uri) == -1) {
+                  result.uris.push(uri);
+                }
+              }
+            }
           };
+          console.log(result.uris);
           $("#ib-status").empty().append(YAAW.tpl.ib_status(result));
           $("#ib-files .file-list").empty().append(YAAW.tpl.files_tree(result.files));
           if ($("#task-gid-"+gid).attr("data-status") == "active")
