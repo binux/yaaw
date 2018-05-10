@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--
   Copyright (C) 2015 Binux <roy@binux.me>
 
@@ -23,7 +23,17 @@
     <title>Yet Another Aria2 Web Frontend</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, width=device-width">
     <meta name="author" content="Binux" />
-    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="YAAW">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0082c9">
+    <link rel="apple-touch-icon-precomposed" href="img/favicon-touch.png">
+    <link rel="mask-icon" sizes="any" href="img/favicon-mask.svg" color="#0082c9">
+    <!--<link rel="manifest" href="img/manifest.json">-->
+
     <link href="img/favicon.ico" rel="shortcut icon" type="image/ico" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet" />
@@ -35,7 +45,7 @@
   <body>
     <div class="container">
       <header class="main-head page-header">
-        <h1>Yet Another Aria2 Web Frontend</h1>
+        <h1>YAAW</h1>
         <span id="offline-cached"></span>
         <div id="global-info" class="pull-right">
           <div id="global-version"></div>
@@ -390,13 +400,13 @@
       <form id="add-task-option" class="form-horizontal" onsubmit="$('#add-task-uri').submit();return false">
 	  <input type="submit" style="position:fixed;top:0;visibility:hidden"/>
         <div class="control-group">
-          <label class="control-label" for="ati-out">File Name</label>
+          <span class="control-label" for="ati-out">File Name</span>
           <div class="controls">
             <input id="ati-out" class="input-xlarge input-clear" name="out" />
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label" for="ati-dir">Dir</label>
+          <span class="control-label" for="ati-dir">Dir</span>
           <div class="controls">
             <input id="ati-dir" class="input-xlarge" name="dir" />
           </div>
@@ -420,32 +430,32 @@
         </div>
         <div class="clearfix"></div>
         <div class="control-group half">
-          <label class="control-label" for="ati-split">Split</label>
+          <span class="control-label" for="ati-split">Split</span>
           <div class="controls">
             <input id="ati-split" class="input-small input-save" name="split" value="{{split}}" />
           </div>
         </div>
         <div class="control-group half">
-          <label class="control-label" for="ati-cps">Conn/Serv</label>
+          <span class="control-label" for="ati-cps">Conn/Serv</span>
           <div class="controls">
             <input id="ati-cps" class="input-small input-save" name="max-connection-per-server" value="{{max-connection-per-server}}" />
           </div>
         </div>
         <div class="control-group half">
-          <label class="control-label" for="ati-sr">Seed Ratio</label>
+          <span class="control-label" for="ati-sr">Seed Ratio</span>
           <div class="controls">
             <input id="ati-sr" class="input-small input-save" name="seed-ratio" value="{{seed-ratio}}" />
           </div>
         </div>
         <div class="control-group half">
-          <label class="control-label" for="ati-st">Seed Time</label>
+          <span class="control-label" for="ati-st">Seed Time</span>
           <div class="controls">
             <input id="ati-st" class="input-small input-save" name="seed-time" value="{{seed-time}}" />
           </div>
         </div>
         <div class="clearfix"></div>
         <div class="control-group">
-          <label class="control-label" for="ati-header">Header</label>
+          <span class="control-label" for="ati-header">Header</span>
           <div class="controls">
             <textarea id="ati-header" class="input-xlarge input-save" name="header" warp="off">{{header}}</textarea>
           </div>
@@ -457,25 +467,25 @@
       <hr />
       <form id="aria2-gs-form" class="form-horizontal" onsubmit="false">
         <div class="control-group half">
-          <label class="control-label" for="gsi-dl">Download Limit</label>
+          <span class="control-label" for="gsi-dl">Download Limit</span>
           <div class="controls">
             <input id="gsi-dl" name="max-overall-download-limit" class="input-small" value="{{max-overall-download-limit}}" />
           </div>
         </div>
         <div class="control-group half">
-          <label class="control-label" for="gsi-ul">Upload Limit</label>
+          <span class="control-label" for="gsi-ul">Upload Limit</span>
           <div class="controls">
             <input id="gsi-ul" name="max-overall-upload-limit" class="input-small" value="{{max-overall-upload-limit}}" />
           </div>
         </div>
         <div class="control-group half">
-          <label class="control-label" for="gsi-cd">Concurrent Downs</label>
+          <span class="control-label" for="gsi-cd">Concurrent Downs</span>
           <div class="controls">
             <input id="gsi-cd" name="max-concurrent-downloads" class="input-small" value="{{max-concurrent-downloads}}" />
           </div>
         </div>
         <div class="control-group half">
-          <label class="control-label" for="gsi-mss">Min Split Size</label>
+          <span class="control-label" for="gsi-mss">Min Split Size</span>
           <div class="controls">
             <input id="gsi-mss" name="min-split-size" class="input-small" value="{{#_v.format_size_0}}{{min-split-size}}{{/_v.format_size_0}}" />
           </div>
