@@ -1,7 +1,7 @@
 YAAW
 ====
 
-Yet Another Aria2 Web Frontend in pure HTML/CSS/Javascirpt.
+Yet Another Aria2 Web Frontend in pure HTML/CSS/JavaScript.
 
 No HTTP server, backend or server-side program. All you need is just a browser.
 
