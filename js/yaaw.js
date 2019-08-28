@@ -875,7 +875,7 @@ var YAAW = (function() {
           });
           $(".rpc-path-wrap .dropdown-toggle").removeAttr("disabled").dropdown();
         }
-        if (this.finish_notification && Notification.permission !== "granted") {
+        if (this.finish_notification && window.Notification && Notification.permission !== "granted") {
           Notification.requestPermission();
         }
       },
@@ -907,7 +907,7 @@ var YAAW = (function() {
         if (changed) {
           this.save();
         }
-        if (this.finish_notification && Notification.permission !== "granted") {
+        if (this.finish_notification && window.Notification && Notification.permission !== "granted") {
           Notification.requestPermission();
         }
 
@@ -925,7 +925,7 @@ var YAAW = (function() {
     },
 
     notification: function(title, content) {
-      if (!Notification) {
+      if (!window.Notification) {
         return false;
       }
 
