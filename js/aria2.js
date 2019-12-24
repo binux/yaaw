@@ -154,7 +154,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           }
         };
       } else {
-        main_alert("alert-error", "Unknow protocol");
+        main_alert("alert-error", "Unknown protocol");
       };
     },
 
