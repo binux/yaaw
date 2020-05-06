@@ -20,6 +20,8 @@
 
 var YAAW = (function() {
   var selected_tasks = false;
+  var selected_range_start = null;
+  var selected_range_close = null;
   var on_gid = null;
   var torrent_file = null, file_type = null;
   return {
@@ -129,8 +131,32 @@ var YAAW = (function() {
 
       $("[rel=tooltip]").tooltip({"placement": "bottom"});
 
-      $(".task .select-box").live("click", function() {
-        YAAW.tasks.toggle($(this).parents(".task"));
+      $(".task .select-box").live("click", function(e) {
+        if (!e.ctrlKey) {
+          YAAW.tasks.toggle($(this).parents(".task"));
+          selected_range_start = $(this).parents(".task").hasClass("selected") ? $(this).parents(".task")[0] : null;
+          selected_range_close = null;
+        } else {
+          YAAW.tasks.select($(this).parents(".task"));
+          if (!selected_range_start)
+            selected_range_start = $(this).parents(".task")[0];
+          else if (!selected_range_close)
+            selected_range_close = $(this).parents(".task")[0];
+        }
+        if (selected_range_start && selected_range_close) {
+          if (selected_range_start == selected_range_close) {
+            selected_range_close = null;
+          } else {
+            var task_lists = $('.tasks-table .task');
+            var task_in_range = false;
+            Array.from(task_lists).forEach(function (task) {
+              if (task == selected_range_start || task == selected_range_close) task_in_range = !task_in_range;
+              if (task_in_range) YAAW.tasks.select(task);
+            });
+            selected_range_start = selected_range_close;
+            selected_range_close = null;
+          }
+        }
         YAAW.tasks.check_select();
       });
 
