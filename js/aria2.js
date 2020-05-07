@@ -265,7 +265,8 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
       if (!$.isArray(uris)) uris = [uris];
       var params = [];
       for (var i=0; i<uris.length; i++) {
-        params.push([[uris[i]], options]);
+        var uri = uris[i].trim();
+        if (uri) params.push([[uri], options]);
       };
       ARIA2.batch_request("addUri", params,
         function(result) {
