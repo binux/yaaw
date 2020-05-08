@@ -147,11 +147,10 @@ var YAAW = (function() {
           if (selected_range_start == selected_range_close) {
             selected_range_close = null;
           } else {
-            var task_lists = $('.tasks-table .task');
             var task_in_range = false;
-            Array.from(task_lists).forEach(function (task) {
-              if (task == selected_range_start || task == selected_range_close) task_in_range = !task_in_range;
-              if (task_in_range) YAAW.tasks.select(task);
+            $(".tasks-table .task").each(function (i, n) {
+              if (n == selected_range_start || n == selected_range_close) task_in_range = !task_in_range;
+              if (task_in_range) YAAW.tasks.select(n);
             });
             selected_range_start = selected_range_close;
             selected_range_close = null;
