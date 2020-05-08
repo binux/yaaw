@@ -102,16 +102,36 @@ var YAAW = (function() {
         $('#add-task-alert').hide();
       });
       $("#menuMoveTop").live("click", function() {
-        YAAW.contextmenu.movetop();
+        if (selected_tasks) {
+          YAAW.tasks.movetop();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.movetop();
+        }
       });
       $("#menuMoveUp").live("click", function() {
-        YAAW.contextmenu.moveup();
+        if (selected_tasks) {
+          YAAW.tasks.moveup();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.moveup();
+        }
       });
       $("#menuMoveDown").live("click", function() {
-        YAAW.contextmenu.movedown();
+        if (selected_tasks) {
+          YAAW.tasks.movedown();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.movedown();
+        }
       });
       $("#menuMoveEnd").live("click", function() {
-        YAAW.contextmenu.moveend();
+        if (selected_tasks) {
+          YAAW.tasks.moveend();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.moveend();
+        }
       });
       $("#menuRestart").live("click", function() {
         YAAW.contextmenu.restart();
@@ -686,6 +706,48 @@ var YAAW = (function() {
         });
         if (remove_gids.length) ARIA2.remove(remove_gids);
         if (gids.length) ARIA2.remove_result(gids);
+      },
+
+      movetop: function() {
+        var gids = new Array();
+        $(".tasks-table .task.selected").each(function(i, n) {
+          if (n.getAttribute("data-status") == "waiting" ||
+              n.getAttribute("data-status") == "paused")
+            gids.push(n.getAttribute("data-gid"));
+        });
+        gids.reverse();
+        ARIA2.change_selected_pos(gids, 0, 'POS_SET');
+      },
+
+      moveup: function() {
+        var gids = new Array();
+        $(".tasks-table .task.selected").each(function(i, n) {
+          if (n.getAttribute("data-status") == "waiting" ||
+              n.getAttribute("data-status") == "paused")
+            gids.push(n.getAttribute("data-gid"));
+        });
+        ARIA2.change_selected_pos(gids, -1, 'POS_CUR');
+      },
+
+      movedown: function() {
+        var gids = new Array();
+        $(".tasks-table .task.selected").each(function(i, n) {
+          if (n.getAttribute("data-status") == "waiting" ||
+              n.getAttribute("data-status") == "paused")
+            gids.push(n.getAttribute("data-gid"));
+        });
+        gids.reverse();
+        ARIA2.change_selected_pos(gids, 1, 'POS_CUR');
+      },
+
+      moveend: function() {
+        var gids = new Array();
+        $(".tasks-table .task.selected").each(function(i, n) {
+          if (n.getAttribute("data-status") == "waiting" ||
+              n.getAttribute("data-status") == "paused")
+            gids.push(n.getAttribute("data-gid"));
+        });
+        ARIA2.change_selected_pos(gids, 0, 'POS_END');
       },
 
       info: function(task) {
