@@ -132,7 +132,7 @@ var YAAW = (function() {
       $("[rel=tooltip]").tooltip({"placement": "bottom"});
 
       $(".task .select-box").live("click", function(e) {
-        if (!e.ctrlKey) {
+        if (!e.shiftKey) {
           YAAW.tasks.toggle($(this).parents(".task"));
           selected_range_start = $(this).parents(".task").hasClass("selected") ? $(this).parents(".task")[0] : null;
           selected_range_close = null;
