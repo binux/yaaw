@@ -20,6 +20,8 @@
 
 .select-box {
     cursor: pointer;
+    user-select: none;
+    -moz-user-select: none;
 }
 .btn-inline {
     /* fix for MAC/chrome */
