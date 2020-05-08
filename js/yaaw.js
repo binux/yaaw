@@ -207,7 +207,7 @@ var YAAW = (function() {
       var active_task_allowed_options = ["max-download-limit", "max-upload-limit"];
       $("#ib-options-save").live("click", function() {
         var options = {};
-        var gid = $(this).parents(".info-box").attr("data-gid")
+        var gid = $(this).parents(".info-box").attr("data-gid");
         var status = $("#task-gid-"+gid).attr("data-status");
         $.each($("#ib-options-form input"), function(n, e) {
           if (status == "active" && active_task_allowed_options.indexOf(e.name) == -1)
@@ -518,7 +518,7 @@ var YAAW = (function() {
 
     add_task: {
       submit: function(_this) {
-        var uri = $("#uri-input").val() || $("#uri-textarea").val() && $("#uri-textarea").val().split("\n") ;
+        var uri = $("#uri-input").val() || $("#uri-textarea").val() && $("#uri-textarea").val().split("\n");
         var options = {}, options_save = {};
         $("#add-task-option input[name], #add-task-option textarea[name]").each(function(i, n) {
           var name = n.getAttribute("name");
@@ -775,7 +775,7 @@ var YAAW = (function() {
     contextmenu: {
       init: function() {
         $(".task").live("contextmenu", function(ev) {
-          var contextmenu_position_y = ev.clientY
+          var contextmenu_position_y = ev.clientY;
           var contextmenu_position_x = ev.clientX;
           if ($(window).height() - ev.clientY < 200) {
             contextmenu_position_y = ev.clientY - $("#task-contextmenu").height();
