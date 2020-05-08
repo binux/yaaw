@@ -772,8 +772,8 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
             file.title = file.path.replace(new RegExp("^"+result.dir.replace(/\\/g, "[\\/]")+"/?"), "");
             file.selected = file.selected == "true" ? true : false;
             if (file.uris && file.uris.length) {
-              for (var i=0; i<file.uris.length; i++) {
-                var uri = file.uris[i].uri;
+              for (var j=0; j<file.uris.length; j++) {
+                var uri = file.uris[j].uri;
                 if (result.uris.indexOf(uri) == -1) {
                   result.uris.push(uri);
                 }
