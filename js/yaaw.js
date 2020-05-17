@@ -952,6 +952,7 @@ var YAAW = (function() {
         $("#setting-form input:radio[name=refresh_interval][value="+this.refresh_interval+"]").attr("checked", true);
         $("#setting-form input:radio[name=finish_notification][value="+this.finish_notification+"]").attr("checked", true);
         if (this.jsonrpc_history.length) {
+          $(".rpc-path-wrap .dropdown-menu").remove();
           var content = '<ul class="dropdown-menu">';
           $.each(this.jsonrpc_history, function(n, e) {
             content += '<li><a href="#">'+e+'</a></li>';
