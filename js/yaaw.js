@@ -819,9 +819,16 @@ var YAAW = (function() {
           if (status == "removed" || status == "complete" || status == "error") {
             $(".task-restart").show();
             $(".task-start").hide();
+            $(".task-pause").hide();
           } else {
             $(".task-restart").hide();
-            $(".task-start").show();
+            if (status == "active" || status == "waiting") {
+              $(".task-start").hide();
+              $(".task-pause").show();
+            } else {
+              $(".task-start").show();
+              $(".task-pause").hide();
+            }
           }
           return false;
         }).live("mouseout", function(ev) {
