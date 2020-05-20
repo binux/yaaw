@@ -822,8 +822,13 @@ var YAAW = (function() {
             $(".task-pause").hide();
           } else {
             $(".task-restart").hide();
-            $(".task-start").show();
-            $(".task-pause").show();
+            if (status == "active" || status == "waiting") {
+              $(".task-start").hide();
+              $(".task-pause").show();
+            } else {
+              $(".task-start").show();
+              $(".task-pause").hide();
+            }
           }
           return false;
         }).live("mouseout", function(ev) {
