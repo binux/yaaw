@@ -491,6 +491,13 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           result.progress = (result.completedLength * 1.0 / result.totalLength * 100).toFixed(2);
         result.eta = (result.totalLength - result.completedLength)/result.downloadSpeed;
 
+        result.progressStatus = {
+          "active"  : "progress-striped",
+          "complete": "progress-striped",
+          "removed" : "progress-warning",
+          "error"   : "progress-danger"
+        }[result.status];
+
         result.downloadSpeed = parseInt(result.downloadSpeed);
         result.uploadSpeed = parseInt(result.uploadSpeed);
         result.uploadLength = parseInt(result.uploadLength);
