@@ -493,7 +493,7 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
 
         result.progressStatus = {
           "active"  : "progress-striped",
-          "complete": "progress-striped",
+          "complete": "progress-success",
           "removed" : "progress-warning",
           "error"   : "progress-danger"
         }[result.status];
