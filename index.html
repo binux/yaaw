@@ -262,7 +262,7 @@
           </div>
         </div>
         <div class="right-area">
-          <div class="progress">
+          <div class="progress {{progressStatus}}">
             <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
           </div>
           <div class="progress-info">
@@ -299,7 +299,7 @@
             {{#uploadLength}}<span>(up {{#_v.format_size}}{{uploadLength}}{{/_v.format_size}})</span>{{/uploadLength}}
           </div>
           <div class="pull-right">
-            <div class="progress">
+            <div class="progress {{progressStatus}}">
               <div class="bar" style="width: {{progress}}%">{{progress}}%</div>
             </div>
           </div>
