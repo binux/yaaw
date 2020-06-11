@@ -335,17 +335,29 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
     },
 
     restart_task: function(gids) {
+      if (!$.isArray(gids)) gids = [gids];
       $.each(gids, function(n, gid) {
         var result = $("#task-gid-"+gid).data("raw");
+        var status = result.status;
         var uris = [];
         $.each(result.files, function(n, e) {
           if (e.uris.length)
             uris.push(e.uris[0].uri);
         });
+        if (result.bittorrent) {
+          var magnet_link = "magnet:?xt=urn:btih:"+result.infoHash;
+          if (result.bittorrent.info.name)
+            magnet_link += "&dn="+result.bittorrent.info.name;
+          if (result.bittorrent.announceList.length)
+            magnet_link += "&tr="+result.bittorrent.announceList.join("&tr=");
+          uris.push(magnet_link);
+        }
         if (uris.length > 0) {
           ARIA2.request("getOption", [gid], function(result) {
             var options = result.result;
             ARIA2.madd_task(uris, options);
+            if (status == "error" || status == "removed")
+              ARIA2.remove_result(gid);
           });
         }
       });
