@@ -136,16 +136,36 @@ var YAAW = (function() {
         }
       });
       $("#menuRestart").live("click", function() {
-        YAAW.contextmenu.restart();
+        if (selected_tasks) {
+          YAAW.tasks.restart();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.restart();
+        }
       });
       $("#menuStart").live("click", function() {
-        YAAW.contextmenu.unpause();
+        if (selected_tasks) {
+          YAAW.tasks.unpause();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.unpause();
+        }
       });
       $("#menuPause").live("click", function() {
-        YAAW.contextmenu.pause();
+        if (selected_tasks) {
+          YAAW.tasks.pause();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.pause();
+        }
       });
       $("#menuRemove").live("click", function() {
-        YAAW.contextmenu.remove();
+        if (selected_tasks) {
+          YAAW.tasks.remove();
+          YAAW.tasks.unSelectAll();
+        } else {
+          YAAW.contextmenu.remove();
+        }
       });
 
 
@@ -692,6 +712,16 @@ var YAAW = (function() {
           gids.push(n.getAttribute("data-gid"));
         });
         return gids;
+      },
+
+      restart: function() {
+        var gids = new Array();
+        $(".tasks-table .task.selected").each(function(i, n) {
+          var status = n.getAttribute("data-status");
+          if (status == "removed" || status == "complete" || status == "error")
+            gids.push(n.getAttribute("data-gid"));
+        });
+        if (gids.length) ARIA2.restart_task(gids);
       },
 
       pause: function() {
