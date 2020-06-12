@@ -18,6 +18,9 @@
  *
  */
 
+html {
+    height: 100%;
+}
 .select-box {
     cursor: pointer;
     user-select: none;
