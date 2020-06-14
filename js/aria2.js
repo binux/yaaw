@@ -518,23 +518,20 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
         }
       );
     },
-    
-    change_selected_pos: function(gids, pos, how) {
-      for (var gid of gids) {
-        new Promise(function(resolve) {
-          ARIA2.request("changePosition", [gid, pos, how],
-            function(result) {
-              //console.debug(result);
 
-              if (gid == gids[gids.length -1]) {
-                main_alert("alert-info", "Moved", 1000);
-                ARIA2.refresh();
-              }
-              resolve();
-            }
-          );
-        })
-      }
+    change_selected_pos: function(gids, pos, how) {
+      var params = [];
+      $.each(gids, function(i, n) {
+        params.push([n, pos, how]);
+      });
+      ARIA2.batch_request("changePosition", params,
+        function(result) {
+          //console.debug(result);
+
+          main_alert("alert-info", "Moved", 1000);
+          ARIA2.refresh();
+        }
+      );
     },
 
     pause: function(gids) {
