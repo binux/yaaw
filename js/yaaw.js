@@ -148,15 +148,6 @@ var YAAW = (function() {
         YAAW.contextmenu.remove();
       });
 
-      $("html").live("dragover", function(e) {
-        e.preventDefault();  
-        e.stopPropagation();
-      });
-      $("html").live("drop", function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        YAAW.add_task.ondrop(e);
-      });
 
       $("[rel=tooltip]").tooltip({"placement": "bottom"});
 
@@ -288,6 +279,19 @@ var YAAW = (function() {
           YAAW.add_task.upload(file);
           return false;
         }
+
+        var container = $(".container").get(0);
+        container.ondragover = function() {
+          return false;
+        };
+        container.ondragend = function() {
+          return false;
+        };
+        container.ondrop = function(e) {
+          e.preventDefault();
+          YAAW.add_task.ondrop(e);
+          return false;
+        };
 
         var tup = $("#torrent-up-input").get(0);
         tup.onchange = function(e) {
@@ -578,21 +582,6 @@ var YAAW = (function() {
         }
       },
 
-      ondrop: function(event) {
-        var uri = event.originalEvent.dataTransfer.getData("text").split("\n");
-        var options = {};
-        $("#add-task-option input[name], #add-task-option textarea[name]").each(function(i, n) {
-          var name = n.getAttribute("name");
-          var value = (n.type == "checkbox" ? n.checked : n.value);
-          if (name && value) {
-            options[name] = String(value);
-          }
-        });
-        if (uri) {
-          ARIA2.madd_task(uri, options);
-        }
-      },
-
       clean: function() {
         $("#uri-input").attr("placeholder", "HTTP, FTP or Magnet");
         $("#add-task-modal .input-clear").val("");
@@ -614,6 +603,33 @@ var YAAW = (function() {
         };
         reader.readAsDataURL(file);
       },
+
+      ondrop: function(e) {
+        var uri = e.dataTransfer.getData("text") && e.dataTransfer.getData("text").split("\n");
+        var file = e.dataTransfer.files[0];
+        var options = {};
+        $("#add-task-option input[name], #add-task-option textarea[name]").each(function(i, n) {
+          var name = n.getAttribute("name");
+          var value = (n.type == "checkbox" ? n.checked : n.value);
+          if (name && value) options[name] = String(value);
+        });
+
+        if (uri) {
+          ARIA2.madd_task(uri, options);
+        } else if (file) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            torrent_file = e.target.result.replace(/.*?base64,/, "");
+            file_type = file.type;
+            if (file_type.indexOf("metalink") != -1) {
+              ARIA2.add_metalink(torrent_file, options);
+            } else {
+              ARIA2.add_torrent(torrent_file, options);
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      }
     },
 
     tasks: {
