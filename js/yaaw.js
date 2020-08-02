@@ -830,17 +830,6 @@ var YAAW = (function() {
     contextmenu: {
       init: function() {
         $(".task").live("contextmenu", function(ev) {
-          var contextmenu_position_y = ev.clientY;
-          var contextmenu_position_x = ev.clientX;
-          if ($(window).height() - ev.clientY < 200) {
-            contextmenu_position_y = ev.clientY - $("#task-contextmenu").height();
-          }
-          if ($(window).width() - ev.clientX < 200) {
-            contextmenu_position_x = ev.clientX - $("#task-contextmenu").width();
-          }
-          $("#task-contextmenu").css("top", contextmenu_position_y).css("left", contextmenu_position_x).show();
-          on_gid = ""+this.getAttribute("data-gid");
-
           var status = this.getAttribute("data-status");
           if (status == "waiting" || status == "paused")
             $("#task-contextmenu .task-move").show();
@@ -860,6 +849,17 @@ var YAAW = (function() {
               $(".task-pause").hide();
             }
           }
+
+          var contextmenu_position_y = ev.clientY;
+          var contextmenu_position_x = ev.clientX;
+          if ($(window).height() - ev.clientY < 200) {
+            contextmenu_position_y = ev.clientY - $("#task-contextmenu").height();
+          }
+          if ($(window).width() - ev.clientX < 200) {
+            contextmenu_position_x = ev.clientX - $("#task-contextmenu").width();
+          }
+          $("#task-contextmenu").css("top", contextmenu_position_y).css("left", contextmenu_position_x).show();
+          on_gid = ""+this.getAttribute("data-gid");
           return false;
         }).live("mouseout", function(ev) {
           // toElement is not available in Firefox, use relatedTarget instead.
