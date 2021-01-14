@@ -191,7 +191,7 @@
 .task .download-speed,
 .task .upload-speed,
 .task .seeders {
-    margin-right: 8px;
+    margin-right: 2px;
 }
 
 #other-tasks .task-info {
