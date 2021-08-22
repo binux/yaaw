@@ -355,6 +355,8 @@ if (typeof ARIA2=="undefined"||!ARIA2) var ARIA2=(function(){
           ARIA2.request("getOption", [gid], function(result) {
             var options = result.result;
             ARIA2.madd_task(uris, options);
+            //delete old info(mostly failure), won`t delete file from disk actually.
+            ARIA2.remove_result(gid);
           });
         }
       });
